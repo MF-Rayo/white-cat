@@ -1,5 +1,5 @@
 import { ChartLine, MapPin, Newspaper, Users, Settings, BookOpenText } from "lucide-react"
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
+import { HashRouter as BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
 import Sidebar, { SidebarItem } from "@/components/Sidebar"
 import IocPage from "@/pages/IocMap"
 import NewsPage from "@/pages/News"
@@ -95,15 +95,17 @@ function AppLayout() {
       </Sidebar>
 
       <div className={`flex-1 h-screen p-2 lg:p-2 ${isMobile ? 'pt-16' : 'pl-16'} flex items-center justify-center overflow-y-auto`}>
-        <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<DashboardPage/>} />
-          <Route path="/news" element={<NewsPage/>} />
-          <Route path="/activegroups" element={<ActiveGroupsPage/>} />
-          <Route path="/ioc" element={<IocPage/>} />
-          <Route path="/settings" element={<Color/>} />
-          <Route path="/disclaimer" element={<Fetch/>} />
-        </Routes>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<DashboardPage/>} />
+            <Route path="/news" element={<NewsPage/>} />
+            <Route path="/activegroups" element={<ActiveGroupsPage/>} />
+            <Route path="/ioc" element={<IocPage/>} />
+            <Route path="/settings" element={<Color/>} />
+            <Route path="/disclaimer" element={<Fetch/>} />
+          </Routes>
+        </Router>
       </div>
     </div>
   )

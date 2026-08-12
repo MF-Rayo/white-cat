@@ -122,7 +122,10 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
     if (isMobile) {
         return (
             <li
-                onClick={onClick}
+                onClick={(e) => {
+                    if (onClick) onClick(e);      
+                    setMobileMenuOpen(false);   
+                }}
                 style={{ fontFamily: 'Nunito, sans-serif' }}
                 className={`
                     flex items-center gap-3 py-3 px-4 rounded-lg
