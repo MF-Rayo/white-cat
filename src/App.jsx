@@ -11,7 +11,7 @@ import { useState, useEffect } from "react"
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/white-cat/">
       <AppLayout />
     </BrowserRouter>
   )

@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 export default defineConfig({
-  base: '/white-cat/',
+  base: '/white-cat',
   plugins: [
     react(),
     tailwindcss(),
