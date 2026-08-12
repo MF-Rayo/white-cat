@@ -11,9 +11,9 @@ import { useState, useEffect } from "react"
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppLayout />
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
@@ -95,17 +95,15 @@ function AppLayout() {
       </Sidebar>
 
       <div className={`flex-1 h-screen p-2 lg:p-2 ${isMobile ? 'pt-16' : 'pl-16'} flex items-center justify-center overflow-y-auto`}>
-        <HashRouter>
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<DashboardPage/>} />
-            <Route path="/news" element={<NewsPage/>} />
-            <Route path="/activegroups" element={<ActiveGroupsPage/>} />
-            <Route path="/ioc" element={<IocPage/>} />
-            <Route path="/settings" element={<Color/>} />
-            <Route path="/disclaimer" element={<Fetch/>} />
-          </Routes>
-        </HashRouter>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<DashboardPage/>} />
+          <Route path="/news" element={<NewsPage/>} />
+          <Route path="/activegroups" element={<ActiveGroupsPage/>} />
+          <Route path="/ioc" element={<IocPage/>} />
+          <Route path="/settings" element={<Color/>} />
+          <Route path="/disclaimer" element={<Fetch/>} />
+        </Routes>
       </div>
     </div>
   )
