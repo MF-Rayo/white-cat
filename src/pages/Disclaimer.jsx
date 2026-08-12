@@ -19,15 +19,15 @@ function DisclaimerBlock({ command, title, sections, lang }) {
 const sectionsEn = [
   {
     heading: "Project Purpose",
-    body: "This platform was built as a personal software engineering project to practice full-stack development — React and Tailwind CSS on the frontend, FastAPI on the backend. It is not a commercial product, and no data, service, or subscription is sold through this site.",
+    body: "This platform is a self-taught, personal project built to learn full-stack development on my own — React and Tailwind CSS on the frontend, FastAPI on the backend. It is not a commercial product, and no data, service, or subscription is sold through this site.",
   },
   {
     heading: "Data Sources & Attribution",
-    body: "News articles, threat indicators, and related metrics are retrieved in real time from public third-party APIs and cybersecurity feeds. All trademarks, logos, and original content remain the property of their respective owners. This platform functions strictly as an aggregator, crediting each source and linking back to the original publication.",
+    body: "News articles, threat indicators, and related metrics are retrieved in real time from established, publicly available cybersecurity feeds and APIs. All trademarks, logos, and original content remain the property of their respective owners. This platform functions strictly as an aggregator, crediting each source and linking back to the original publication.",
   },
   {
     heading: "No Warranty",
-    body: "Content is displayed \"as is\" for informational purposes. While every effort is made to relay data accurately, no guarantee is made regarding its completeness, timeliness, or correctness. Decisions made based on this information are the sole responsibility of the reader.",
+    body: "Content is displayed \"as is\" for informational purposes. While the underlying sources are reputable, no guarantee is made regarding the completeness, timeliness, or correctness of the data shown. Decisions made based on this information are the sole responsibility of the reader.",
   },
 ]
 

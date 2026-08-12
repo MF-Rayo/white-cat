@@ -50,7 +50,7 @@ export default function Sidebar({ children, footer }) {
                             onClick={() => setMobileMenuOpen(false)}
                         />
                         <div className="fixed top-14 left-0 right-0 bottom-0 z-40 bg-(--bg-color)/95 backdrop-blur-xl overflow-y-auto animate-slideDown">
-                            <SidebarContext.Provider value={{ expanded: true }}>
+                            <SidebarContext.Provider value={{ expanded: true, closeMobileMenu: () => setMobileMenuOpen(false) }}>
                                 <ul className="flex flex-col p-4 space-y-1">
                                     {children}
                                 </ul>
@@ -96,7 +96,7 @@ export default function Sidebar({ children, footer }) {
                             </button>
                     </div>
 
-                    <SidebarContext.Provider value={{ expanded }}>
+                    <SidebarContext.Provider value={{ expanded, closeMobileMenu: () => {} }}>
                         <ul className="flex-1 px-3 mt-2">{children}</ul>
                         <ul className="px-3 m-0 list-none mb-2">{footer}</ul>
                     </SidebarContext.Provider>
@@ -108,7 +108,7 @@ export default function Sidebar({ children, footer }) {
 }
 
 export function SidebarItem({ icon, text, active, alert, onClick }) {
-    const { expanded } = useContext(SidebarContext)
+    const { expanded, closeMobileMenu } = useContext(SidebarContext)
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
     useEffect(() => {
@@ -124,7 +124,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
             <li
                 onClick={(e) => {
                     if (onClick) onClick(e);      
-                    setMobileMenuOpen(false);   
+                    closeMobileMenu();   
                 }}
                 style={{ fontFamily: 'Nunito, sans-serif' }}
                 className={`
