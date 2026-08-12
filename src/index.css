@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Pixelify+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+@import "colors.css";
+@import "ioc.css";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+
+* {
+  font-family: "Poppins", "Nunito", "sans-serif";
+}
+
+body {
+  background-color: var(--bg-color);
+  background-image: var(--image);
+  background-position: center;     
+  background-repeat: no-repeat;    
+  background-size: cover;        
+}
+
+html, * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+html::-webkit-scrollbar, 
+*::-webkit-scrollbar {
+  width: 6px; 
+}
+
+html::-webkit-scrollbar:horizontal,
+*::-webkit-scrollbar:horizontal {
+  height: 6px; 
+}
+
+html::-webkit-scrollbar-track, 
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+html::-webkit-scrollbar-thumb, 
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 10px !important;
+  min-height: 40px;
+}
+
+html::-webkit-scrollbar-thumb:hover, 
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
+}

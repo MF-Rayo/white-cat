@@ -1,0 +1,32 @@
+:root {
+    --bar-bg: #161616;
+    --bg-color: #050810;
+    --card-bg: #090b0c5b;
+    
+    --kitty: #0f0a1a;
+
+    --primary-color: #3066f6;
+
+    --text-color: #ffffff;
+    --text-secondary: #AAB0BC;
+    --border-color: #2b2b2c00;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --line-gradient: rgba(17, 23, 31, 0.9);
+
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color:  #ef4444;
+    --info-color:    #00d4ff; 
+
+    --border-hover:rgba(255,255,255,0.18);
+    --card-bg: var(--card-bg-light);
+
+    --accent:      #3b82f6;
+    --accent-dim:  rgba(59,130,246,0.12);
+    --accent-glow: rgba(59,130,246,0.25);
+    --radius-card: 14px;
+    --radius-sm:   8px;
+
+    --image: url(./assets/bg/blue.jpg);
+}
