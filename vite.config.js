@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 export default defineConfig({
-  base: 'https://github.com/MF-Rayo/white-cat',
+  base: '/white-cat/',
   plugins: [
     react(),
     tailwindcss(),
