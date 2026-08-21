@@ -23,11 +23,9 @@ export function groupsColumns() {
     },
     {
       key: "date",
-      label: "Hour",
+      label: "Total",
       render: (row) => (
-        <span className="text-xs text-(--text-secondary)/70">
-          {formatDate(row.date)}
-        </span>
+        <span className="text-xs text-(--text-secondary)/70">{row.count}</span>
       ),
     },
   ];
@@ -43,7 +41,6 @@ export function newsColumns() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-(--success-color)" />
           </span>
           <span>{truncateText(row.title, 12)}</span>
-          
         </div>
       ),
     },
@@ -68,7 +65,7 @@ export function attacksColumns() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--warning-color) opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-(--warning-color)" />
           </span>
-          <span>{row.top_threats}</span>
+          <span>{row.threat_type}</span>
         </div>
       ),
     },
@@ -97,7 +94,7 @@ export function iocColumns() {
     },
     {
       key: "malware_printable",
-      label: "Malware",
+      label: "Threat",
       render: (row) => (
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">

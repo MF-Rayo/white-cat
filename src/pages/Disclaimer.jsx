@@ -2,7 +2,7 @@ import TerminalKitty from "@/components/ui/kitty"
 
 function DisclaimerBlock({ command, title, sections, lang }) {
   return (
-    <div className="p-4 font-mono text-sm text-(--text-color)">
+    <div className="p-4 m-4 font-mono text-sm text-(--text-color)">
       <p className="text-(--primary-color) mb-2">$ {command}</p>
       <p className="font-bold mb-3 text-(--text-secondary)">{title}</p>
       <div className="space-y-3">

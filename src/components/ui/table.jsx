@@ -2,7 +2,7 @@ import { ExternalLink } from "lucide-react";
 
 export function DataTable({ columns, rows, linkKey }) {
   return (
-    <div className="rounded-[var(--radius-card,14px)] border border-(--border-color) bg-(--bg-color)/60 backdrop-blur-xl overflow-hidden">
+    <div className="h-[100%] rounded-(--radius-card,14px) border border-(--border-color) bg-(--bg-color)/60 backdrop-blur-xl overflow-hidden">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-(--border-color)">
@@ -29,7 +29,7 @@ export function DataTable({ columns, rows, linkKey }) {
                 </td>
               ))}
               {linkKey && (
-                <td className="px-2">
+                <td className="px-2 cursor-pointer">
                   <a href={row[linkKey]} target="_blank" rel="noopener noreferrer">
                     <ExternalLink
                       size={13}

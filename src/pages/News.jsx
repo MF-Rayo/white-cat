@@ -5,6 +5,7 @@ import { fetchData } from "@/lib/fetchData"
 import { endpoints } from "@/lib/api"
 import { CardImage, CardSkeleton, NoResults } from "@/components/ui/card"
 import TerminalKitty from "@/components/ui/kitty"
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 const apiDate = fetchData(endpoints.newsDates)
 const apiSource = fetchData(endpoints.newsSources)
@@ -56,7 +57,12 @@ export default function News() {
     <TerminalKitty
       path="~/News"
       headerContent={
-        <Suspense fallback={<Skeleton className="h-8 w-40" />}>
+        <Suspense fallback={
+          <>
+            <Skeleton className="h-8 w-40" />
+            <Skeleton className="h-8 w-40" />
+          </>
+        }>
           <Filter
             label="All News Sources"
             apiData={apiSource}
@@ -73,9 +79,11 @@ export default function News() {
       }
     >
       <div className="min-h-screen">
-        <Suspense fallback={<CardSkeleton />} key={newsUrl}>
-          <NewsList apiData={apiData} search={search} />
-        </Suspense>
+        <ErrorBoundary resetKey={newsUrl} onRetry={() => invalidate(newsUrl)}>
+          <Suspense fallback={<CardSkeleton />} key={newsUrl}>
+            <NewsList apiData={apiData} search={search} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </TerminalKitty>
   )

@@ -8,6 +8,7 @@ import TerminalKitty from "@/components/ui/kitty"
 import { Filter } from "@/components/ui/filter"
 import { iocColumns } from "@/components/ui/tableColumns";
 import { Skeleton } from "@/components/ui/skeleton"
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
@@ -152,7 +153,7 @@ function Legend({ colorMap }) {
   )
 }
 
-function IOCList({ apiData, searchTerm }) {
+function IocContent({ apiData, searchTerm, tableRef }) {
   const rawData = apiData.read();
   const arr = Array.isArray(rawData) ? rawData : [];
   const colorMap = useMemo(() => buildColorMap(arr), [arr]);
@@ -162,36 +163,63 @@ function IOCList({ apiData, searchTerm }) {
   );
 
   return (
-    <div style={{ position: "relative", height: "100vh", width: "100%", background: "#262626", zIndex: 1}}>
-      <MapContainer
-        center={[20, 0]}
-        zoom={2}
-        minZoom={2}
-        maxZoom={16}
-        maxBounds={[[-180, -360], [180, 360]]}
-        maxBoundsViscosity={1.0}
-        style={{ height: "100%", width: "100%", background: "#262626" }}
-      >
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          subdomains="abcd"
+    <>
+      <div style={{ position: "relative", height: "100vh", width: "100%", background: "#262626", zIndex: 1 }}>
+        <MapContainer
+          center={[20, 0]}
+          zoom={2}
+          minZoom={2}
           maxZoom={16}
-          noWrap={true}
-          keepBuffer={4}
-          errorTileUrl="data:image/png;base64,iVBORw0KGgo="
-        />
-        <IocMarkers data={filtered} colorMap={colorMap} />
-      </MapContainer>
-      <Legend colorMap={colorMap} />
-    </div>
-  )
+          maxBounds={[[-180, -360], [180, 360]]}
+          attributionControl={false}
+          maxBoundsViscosity={1.0}
+          style={{ height: "100%", width: "100%", background: "#262626" }}
+        >
+          <TileLayer
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            subdomains="abcd"
+            maxZoom={16}
+            noWrap={true}
+            keepBuffer={4}
+            errorTileUrl="data:image/png;base64,iVBORw0KGgo="
+          />
+          <IocMarkers data={filtered} colorMap={colorMap} />
+        </MapContainer>
+        <Legend colorMap={colorMap} />
+
+        {/* botón flotante para bajar a la tabla */}
+        <button
+          onClick={() => tableRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          style={{
+            position: "absolute", top: 20, right: 20, zIndex: 1000,
+            background: "color-mix(in srgb, var(--bg-color) 70%, transparent)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "10px",
+            padding: "8px 14px",
+            color: "var(--primary-color)",
+            fontFamily: "monospace",
+            fontSize: 12,
+            cursor: "pointer",
+          }}
+        >
+          ↓ View Table
+        </button>
+      </div>
+
+      <div ref={tableRef} className="py-4 px-4">
+        <DataTable rows={arr} columns={iocColumns()} />
+      </div>
+    </>
+  );
 }
 
 export default function IocMap() {
   const [search] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("all");
   const [selectedDate, setSelectedDate] = useState("all");
-  
+  const tableRef = useRef(null);
+
   const params = new URLSearchParams();
   if (selectedDate !== "all") params.set("date", selectedDate);
   if (selectedCountry !== "all") params.set("country", selectedCountry);
@@ -201,45 +229,53 @@ export default function IocMap() {
     : endpoints.ioc;
 
   const apiData = fetchData(iocUrl);
-  const columnsData = apiData.read();
-  
+
   return (
     <TerminalKitty
-      path="~/IOC MAP"
+      path="~/Threat MAP"
       headerContent={
-        <Suspense fallback={<Skeleton className="h-8 w-40" />}>
-          <Filter
-            label="All Countries"
-            apiData={apiCountry}
-            selected={selectedCountry}
-            onChange={setSelectedCountry}
-          />
-          <Filter
-            label="Today's Report"
-            apiData={apiDate}
-            selected={selectedDate}
-            onChange={setSelectedDate}
-          />
-        </Suspense>
+        <ErrorBoundary
+          resetKey={`${endpoints.iocCountry}|${endpoints.iocDates}`}
+          onRetry={() => {
+            invalidate(endpoints.iocCountry);
+            invalidate(endpoints.iocDates);
+          }}
+        >
+          <Suspense fallback={
+            <>
+              <Skeleton className="h-8 w-40" />
+              <Skeleton className="h-8 w-40" />
+            </>
+          }>
+            <Filter
+              label="All Countries"
+              apiData={apiCountry}
+              selected={selectedCountry}
+              onChange={setSelectedCountry}
+            />
+            <Filter
+              label="Today's Report"
+              apiData={apiDate}
+              selected={selectedDate}
+              onChange={setSelectedDate}
+            />
+          </Suspense>
+        </ErrorBoundary>
       }
     >
-      <div style={{ position: "relative", height: "100vh", width: "100%", background: "#262626" }}>
-        <Suspense fallback={
-          <div style={{
-            position: "absolute", inset: 0, display: "flex",
-            alignItems: "center", justifyContent: "center",
-            background: "var(--bg-color)", zIndex: 1,
-            fontFamily: "monospace", color: "var(--primary-color)", fontSize: 14
-          }}> Loading IOCs...</div>
-        }>
-          <IOCList apiData={apiData} searchTerm={search} />
-          <div className="py-4 px-4" >
-            <DataTable
-              rows={columnsData}
-              columns={iocColumns()}
-            />
-          </div>
-        </Suspense>
+      <div style={{ position: "relative", width: "100%"}}>
+        <ErrorBoundary resetKey={iocUrl} onRetry={() => invalidate(iocUrl)}>
+          <Suspense fallback={
+            <div style={{
+              position: "relative", height: "100vh", display: "flex",
+              alignItems: "center", justifyContent: "center",
+              background: "var(--bg-color)", zIndex: 1,
+              fontFamily: "monospace", color: "var(--primary-color)", fontSize: 14
+            }}> Loading IOCs...</div>
+          }>
+            <IocContent apiData={apiData} searchTerm={search} tableRef={tableRef} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </TerminalKitty>
   )

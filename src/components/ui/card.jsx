@@ -129,7 +129,7 @@ export function NoResults(){
 
 export function KpiCard({ label, value, delta, deltaTone = "up", icon: Icon, accent }) {
   return (
-    <div className="bg-(--bg-color)/60 backdrop-blur-xl rounded-lg p-4 relative overflow-hidden">
+    <div className="bg-(--bg-color)/60 backdrop-blur-xl rounded-[var(--radius-card,14px)]  p-4 relative overflow-hidden">
       <div
         className="absolute top-0 left-0 h-full w-3px"
       />

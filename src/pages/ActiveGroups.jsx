@@ -5,6 +5,7 @@ import { fetchData } from "@/lib/fetchData"
 import { endpoints } from "@/lib/api"
 import { CardImage, CardSkeleton, NoResults } from "@/components/ui/card"
 import TerminalKitty from "@/components/ui/kitty"
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 const apiDate = fetchData(endpoints.activeGroupsDates)
 const apiGroup = fetchData(endpoints.activeGroupsGroups)
@@ -22,7 +23,7 @@ function ActiveGroupsList({ apiData, search }) {
         filtered.map((item) => (
           <CardImage
             key={item.post_url}
-            title={`Group: ${item.group_name}`}
+            title={`${item.group_name}`}
             summary={item.description}
             frontPage={item.screenshot}
             source={item.source}
@@ -44,7 +45,7 @@ export default function ActiveGroups() {
 
   const params = new URLSearchParams();
   if (selectedDate !== "all") params.set("date", selectedDate);
-  if (selectedGroup !== "all") params.set("group", selectedGroup);
+  if (selectedGroup !== "all") params.set("groupname", selectedGroup);
 
   const activeGroupUrl = params.toString()
     ? `${endpoints.activeGroups}?${params}`
@@ -56,7 +57,12 @@ export default function ActiveGroups() {
     <TerminalKitty
       path="~/ActiveGroups"
       headerContent={
-        <Suspense fallback={<Skeleton className="h-8 w-40" />}>
+        <Suspense fallback={
+          <>
+            <Skeleton className="h-8 w-40" />
+            <Skeleton className="h-8 w-40" />
+          </>
+        }>
           <Filter
             label="All Active Groups"
             apiData={apiGroup}
@@ -73,9 +79,11 @@ export default function ActiveGroups() {
       }
     >
       <div className="min-h-screen">
-        <Suspense fallback={<CardSkeleton />} key={activeGroupUrl}>
-          <ActiveGroupsList apiData={apiData} search={search} />
-        </Suspense>
+        <ErrorBoundary resetKey={activeGroupUrl} onRetry={() => invalidate(activeGroupUrl)}>
+          <Suspense fallback={<CardSkeleton />} key={activeGroupUrl}>
+            <ActiveGroupsList apiData={apiData} search={search} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </TerminalKitty>
   )

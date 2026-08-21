@@ -29,4 +29,16 @@
     --radius-sm:   8px;
 
     --image: url(./assets/bg/blue.webp);
+ 
+
+    --bar_a: #EF4444; 
+    --bar_b: #F59E0B; 
+    --bar_c: #10B981; 
+    --bar_d: #2563EB; 
+    --bar_e: #8B5CF6; 
+    --bar_f: #06B6D4; 
+    --bar_g: #F43F5E; 
+    --bar_h: #84CC16; 
+    --bar_i: #D97706; 
+    --bar_j: #64748B; 
 }

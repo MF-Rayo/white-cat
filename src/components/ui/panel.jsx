@@ -35,8 +35,8 @@ export function CustomTooltip({ active, payload, label }) {
 
 export function PanelSkeleton() {
   return (
-    <div className="pt-4 grid grid-cols-5 gap-4 min-h-[300px]">
-      <Panel title="Today's Top 10 IOC Origins" className="xl:col-span-3 rounded-lg">
+    <div className="pt-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <Panel title="Today's Top 10 IOC Origins" className="lg:col-span-3 rounded-[var(--radius-card,14px)]">
         <div className="min-h-[300px] h-full w-full overflow-hidden">
           <div className="flex flex-col gap-4 h-full justify-center">
             {[...Array(10)].map((_, i) => (
@@ -48,7 +48,7 @@ export function PanelSkeleton() {
           </div>
         </div>
       </Panel>
-      <div className="col-span-2 bg-(--bg-color)/60 backdrop-blur-xl rounded-lg h-full overflow-hidden">
+      <div className="lg:col-span-2 bg-(--bg-color)/60 backdrop-blur-xl rounded-lg h-[300px] lg:h-full overflow-hidden">
           <Skeleton className="h-full w-full" />
       </div>
     </div>
