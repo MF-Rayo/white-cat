@@ -1,16 +1,50 @@
-# React + Vite
+# 🐾 White Cat — Project & Learning Sandbox
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> ⚠️ **Nota de proyecto:** Este es un **proyecto personal experimental e incompleto**. Su único propósito es poner en práctica lo aprendido en **React** (Frontend) y **FastAPI** (Backend), explorando la integración de APIs, bases de datos asíncronas y consumo de datos en tiempo real.
 
-Currently, two official plugins are available:
+🌐 **Demo en vivo (Frontend):** [https://mf-rayo.github.io/white-cat/](https://mf-rayo.github.io/white-cat/#/dashboard)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🎯 Objetivo del Proyecto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+El objetivo principal de **White Cat** no es ser un producto comercial ni un servicio de noticias definitivo, sino servir como un **entorno de pruebas (sandbox)** para ejercitar:
 
-## Expanding the ESLint configuration
+* Consumo de APIs públicas y parseo de feeds RSS en segundo plano.
+* Manejo de estado, contextos y enrutamiento en **React**.
+* Modelado y optimización de consultas asíncronas con **FastAPI** y **SQLAlchemy**.
+* Despliegue continuo de SPA (Single Page Application) en GitHub Pages.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ⚖️ Aviso Legal, Atribución y Fuentes (Fair Use Disclaimer)
+
+**White Cat NO almacena, redistribuye ni reclama autoría de ningún contenido periodístico.**
+
+1. **Uso de Feeds RSS Públicos:** La información de noticias se extrae a través de los feeds RSS abiertos y públicos brindados por sitios de ciberseguridad como *BleepingComputer, The Hacker News, The Record, Daily Dark Web*, entre otros.
+2. **Formato de Presentación (Snippets):** La aplicación únicamente muestra un extracto o titular breve a modo de vista previa (*preview*).
+3. **Redirección Obligatoria:** Todos los elementos incluyen de manera clara y visible la **fuente original** y un enlace directo. La lectura completa del artículo **siempre ocurre en el sitio web del autor original**.
+4. **Fines meramente educativos:** Este proyecto es sin fines de lucro. Si representas a alguno de los sitios web indexados y deseas que se remueva la vista previa de tus feeds, por favor abre un *Issue* en este repositorio y se eliminará de inmediato.
+
+---
+
+## 🛠️ Tecnologías en Práctica
+
+Este repositorio representa el código del **Frontend**:
+
+* **React + Vite**
+* **Tailwind CSS** (Diseño de la interfaz)
+* **Recharts** (Práctica de gráficos e indicadores)
+* **pnpm** (Gestor de paquetes)
+
+*El Backend asociado (no incluido en este despliegue estático) está construido con FastAPI, MySQL/MariaDB y SQLAlchemy Async.*
+
+---
+
+## 🚧 Estado del Proyecto
+
+* [x] Estructura inicial de Dashboard y componentes UI.
+* [x] Mapeo e integración de endpoints en React.
+* [ ] Optimización de rendimiento y carga modular.
+* [ ] Manejo avanzado de errores y estados vacíos.
+* [ ] Ajuste responsive completo.
