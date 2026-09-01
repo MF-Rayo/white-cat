@@ -61,13 +61,13 @@ function DashboardContent({ apiData }) {
         <Panel title="Today's Top 10 Threat Origins" className="lg:col-span-4">
           <div className="min-h-[300px] h-full w-full overflow-hidden">
             <ResponsiveContainer width="100%" height="100%">
-              <BarCharts dataChart={data.top_countries} ></BarCharts>
+              <BarCharts dataChart={data.top_countries}></BarCharts>
             </ResponsiveContainer>
           </div>
         </Panel>
 
-        <div className="lg:col-span-2 backdrop-blur-xl rounded-[var(--radius-card,14px)] lg:h-full overflow-hidden">
-          <SimpleMap data={data.top_countries} ></SimpleMap>
+        <div className="lg:col-span-2 h-[300px] lg:h-full backdrop-blur-xl rounded-[var(--radius-card,14px)] overflow-hidden">
+          <SimpleMap data={data.top_countries}></SimpleMap>
         </div>
       </div>
 
