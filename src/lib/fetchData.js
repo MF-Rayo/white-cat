@@ -23,7 +23,7 @@ function createResource(url, cacheRef, cacheKey) {
   let status = "pending";
   let result;
 
-  const promise = fetch(url)
+  const promise = fetch(url, { credentials: "include" })
     .then(async (res) => {
       if (!res.ok) {
         let detail;

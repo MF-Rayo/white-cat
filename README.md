@@ -19,7 +19,7 @@ El objetivo principal de **White Cat** no es ser un producto comercial ni un ser
 
 ## ⚖️ Aviso Legal, Atribución y Fuentes (Fair Use Disclaimer)
 
-**White Cat NO almacena, redistribuye ni reclama autoría de ningún contenido periodístico.**
+**White Cat NO reclama autoría de ningún contenido periodístico.**
 
 1. **Uso de Feeds RSS Públicos:** La información de noticias se extrae a través de los feeds RSS abiertos y públicos brindados por sitios de ciberseguridad como *BleepingComputer, The Hacker News, The Record, Daily Dark Web*, entre otros.
 2. **Formato de Presentación (Snippets):** La aplicación únicamente muestra un extracto o titular breve a modo de vista previa (*preview*).
@@ -45,6 +45,6 @@ Este repositorio representa el código del **Frontend**:
 
 * [x] Estructura inicial de Dashboard y componentes UI.
 * [x] Mapeo e integración de endpoints en React.
+* [x] Manejo avanzado de errores.
 * [ ] Optimización de rendimiento y carga modular.
-* [ ] Manejo avanzado de errores y estados vacíos.
 * [ ] Ajuste responsive completo.

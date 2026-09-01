@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback } from "react"
-import { Alert } from "../components/ui/Alert"
+import { Alert } from "@/components/ui/Alert"
 
 const AlertContext = createContext(null)
 

@@ -1,8 +1,98 @@
-import { ChevronFirst, ChevronLast, Menu, X } from "lucide-react"
+import { ChevronFirst, ChevronLast, ChevronDown, Menu, X } from "lucide-react"
 import logo from "../assets/light.png"
-import { createContext, useContext, useState, useEffect } from "react"
+import { createPortal } from "react-dom"
+import { createContext, useContext, useState, useEffect, useRef } from "react"
 
 const SidebarContext = createContext();
+
+export function SidebarCategory({ icon, text, children, defaultOpen = false }) {
+    const ctx = useContext(SidebarContext)
+    const { expanded } = ctx
+    const [open, setOpen] = useState(defaultOpen)
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+    const [flyoutOpen, setFlyoutOpen] = useState(false)
+    const [flyoutPos, setFlyoutPos] = useState({ top: 0, left: 0 })
+    const itemRef = useRef(null)
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    useEffect(() => {
+        if (!expanded && !isMobile) setOpen(false)
+    }, [expanded, isMobile])
+
+    const showLabel = expanded || isMobile
+    const collapsed = !showLabel
+
+    const handleMouseEnter = () => {
+        if (!collapsed || !itemRef.current) return
+        const rect = itemRef.current.getBoundingClientRect()
+        setFlyoutPos({ top: rect.top, left: rect.right })
+        setFlyoutOpen(true)
+    }
+
+    const handleMouseLeave = () => setFlyoutOpen(false)
+
+    return (
+        <li
+            className="mb-1 relative"
+            ref={itemRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <div
+                onClick={() => {
+                    if (collapsed) return
+                    setOpen((curr) => !curr)
+                }}
+                style={{ fontFamily: 'Nunito, sans-serif' }}
+                className="flex items-center justify-between py-2.5 px-2 rounded-lg cursor-pointer select-none
+                        text-(--text-secondary) hover:text-(--text-color) hover:bg-(--primary-color)/10 transition-all duration-100"
+            >
+                <div className="flex items-center gap-3">
+                    {icon}
+                    {showLabel && <span className="font-medium whitespace-nowrap">{text}</span>}
+                </div>
+                {showLabel && (
+                    <ChevronDown size={16} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+                )}
+            </div>
+
+            {showLabel && (
+                <ul
+                    className={`overflow-hidden transition-all duration-300 pl-4 ml-3 border-l border-(--border-color)
+                                ${open ? "max-h-96 opacity-100 mt-1" : "max-h-0 opacity-0"}`}
+                >
+                    {children}
+                </ul>
+            )}
+
+            {collapsed && flyoutOpen && createPortal(
+                <div
+                    style={{ position: "fixed", top: flyoutPos.top, left: flyoutPos.left }}
+                    className="min-w-[180px] rounded-lg bg-(--bg-color)/90 backdrop-blur-xl overflow-hidden z-[9999] py-1
+                            shadow-lg border border-(--border-color) animate-fadeIn"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                >
+                    <div className="px-3 py-2 text-(--text-color) text-sm font-semibold whitespace-nowrap border-b border-(--border-color)">
+                        {text}
+                    </div>
+                    <ul className="py-1 px-1">
+                        <SidebarContext.Provider value={{ ...ctx, expanded: true }}>
+                            {children}
+                        </SidebarContext.Provider>
+                    </ul>
+                </div>,
+                document.body
+            )}
+        </li>
+    )
+}
+
 
 export default function Sidebar({ children, footer }) {
     const [expanded, setExpanded] = useState(true)
@@ -36,7 +126,7 @@ export default function Sidebar({ children, footer }) {
                     <div className="flex items-center gap-2">
                         <img src={logo} className="w-8 h-8" alt="Logo" />
                         <span className="text-(--text-color) font-extrabold tracking-widest uppercase text-lg whitespace-nowrap">
-                            White Cat
+                            WHITE CAT
                         </span>
                     </div>
                     
@@ -93,11 +183,11 @@ export default function Sidebar({ children, footer }) {
                                     <ChevronLast className="hidden group-hover:block" />
                                 </>
                             )}
-                            </button>
+                        </button>
                     </div>
 
                     <SidebarContext.Provider value={{ expanded, closeMobileMenu: () => {} }}>
-                        <ul className="flex-1 px-3 mt-2">{children}</ul>
+                        <ul className="flex-1 px-3 mt-2 overflow-y-auto overflow-x-hidden min-h-0">{children}</ul>
                         <ul className="px-3 m-0 list-none mb-2">{footer}</ul>
                     </SidebarContext.Provider>
 
@@ -170,7 +260,8 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
             )}
 
             {!expanded && (
-            <div className="absolute left-full rounded-md px-2 py-1 ml-6 bg-(--bg-color)/60 backdrop-blur-xl text-(--text-color) text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0 whitespace-nowrap">
+            <div className="absolute left-full rounded-md px-2 py-1 ml-6 bg-(--bg-color)/60 backdrop-blur-xl 
+                text-(--text-color) text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0 whitespace-nowrap">
                 {text}
             </div>
             )}

@@ -1,5 +1,7 @@
 import { useState } from "react"
+import { CustomTooltip} from "@/components/ui/panel"
 import { PieChart, Pie, Sector, Cell, Label, Tooltip } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid} from "recharts"
 
 const COLORS = [
   "var(--bar_a)",
@@ -15,15 +17,7 @@ const COLORS = [
 ]
 
 function renderActiveShape(props) {
-  const {
-    cx,
-    cy,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle,
-    fill,
-  } = props
+  const {cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill} = props
 
   return (
     <Sector
@@ -38,11 +32,11 @@ function renderActiveShape(props) {
   )
 }
 
-export function ChartPieActiveGroups({ value, className }) {
+export function ChartPieActiveGroups({ value, title, item, className }) {
   const [activeIndex, setActiveIndex] = useState(0)
 
   const chartData = value.map((g) => ({
-    name: g.threat_type,
+    name: g[item],
     count: g.count,
   }))
 
@@ -51,12 +45,10 @@ export function ChartPieActiveGroups({ value, className }) {
   if (chartData.length === 0) {
     return (
       <div className={className}>
-        <div className="border-b px-4">
-          <h3 className="font-semibold">Threat</h3>
+        <div className="px-4 py-3">
+          <h3 className="text-left text-xs text-(--text-secondary) font-bold">{title}</h3>
         </div>
-        <div className="flex h-[250px] items-center justify-center text-sm text-muted-foreground">
-          No hay grupos activos reportados hoy
-        </div>
+        <div className="flex h-[250px] items-center justify-center text-sm text-muted-foreground"></div>
       </div>
     )
   }
@@ -64,7 +56,7 @@ export function ChartPieActiveGroups({ value, className }) {
   return (
     <div className={className}>
       <div className="px-4 py-3">
-        <h3 className="text-left text-xs text-(--text-secondary) font-bold">Threat</h3>
+        <h3 className="text-left text-xs text-(--text-secondary) font-bold">{title}</h3>
       </div>
       <div className="flex justify-center pt-4">
         <PieChart width={280} height={280}>
@@ -92,7 +84,7 @@ export function ChartPieActiveGroups({ value, className }) {
                       {total}
                     </tspan>
                     <tspan x={cx} y={cy + 14} fill="var(--text-secondary)" className="text-xs">
-                      Threat
+                      Total
                     </tspan>
                   </text>
                 )
@@ -121,5 +113,45 @@ export function ChartPieActiveGroups({ value, className }) {
         ))}
       </div>
     </div>
+  )
+}
+
+
+function colorByRank(index) {
+  return COLORS[index % COLORS.length]
+}
+
+export function BarCharts({ dataChart }){
+
+  const data = dataChart ?? []
+
+  return(
+    <BarChart
+      data={data}
+      layout="vertical"
+      margin={{ top: 8, right: 16, left: 8, bottom: 0 }}
+    >
+      <CartesianGrid stroke={COLORS.border} strokeDasharray="3 3" horizontal={false} />
+      <XAxis
+        type="number"
+        tick={{ fill: COLORS.mid, fontSize: 10 }}
+        axisLine={{ stroke: COLORS.border }}
+        tickLine={false}
+      />
+      <YAxis
+        type="category"
+        dataKey="country"
+        width={110}
+        tick={{ fill: COLORS.mid, fontSize: 10 }}
+        axisLine={false}
+        tickLine={false}
+      />
+      <Tooltip content={<CustomTooltip />} cursor={false} />
+      <Bar dataKey="count" radius={[0, 4, 4, 0]}>
+        {data.map((_, i) => (
+          <Cell key={i} fill={colorByRank(i)} />
+        ))}
+      </Bar>
+    </BarChart>
   )
 }

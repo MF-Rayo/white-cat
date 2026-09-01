@@ -14,13 +14,12 @@ export function Select({ value, onChange, options }) {
   }, [])
 
   return (
-    <div ref={ref} className="relative min-w-140px">
+    <div ref={ref} className="relative min-w-[140px] rounded-[var(--radius-card,14px)]">
 
-      <button
+      <button 
         onClick={() => setOpen(prev => !prev)}
-        className={`w-full flex items-center justify-between gap-2 px-4 py-1 rounded-lg text-xs
-          bg-(--card-bg) text-(--text-color)
-          border transition-colors cursor-pointer
+        className={`w-full flex items-center justify-between gap-2 px-4 py-1 rounded-(--radius-card,14px) 
+          text-xs bg-(--card-bg) text-(--text-color) border transition-colors cursor-pointer
           ${open ? "border-(--primary-color)" : "border-(--primary-color)/30 hover:border-(--primary-color)/60"}`}
       >
         <span>{selected.label}</span>
@@ -33,9 +32,8 @@ export function Select({ value, onChange, options }) {
       </button>
 
       {open && (
-        <ul className="absolute z-50 mt-1 w-full rounded-lg overflow-hidden
-          backdrop-blur-md bg-(--card-bg) transition-shadow border border-(--primary-color)/30
-          shadow-lg shadow-black/20
+        <ul className="absolute z-50 mt-1 w-full rounded-(--radius-card,14px)
+          bg-(--bg-color) transition-shadow border
           max-h-60 overflow-y-auto">
 
           {options.map(opt => (

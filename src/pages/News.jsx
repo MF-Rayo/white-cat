@@ -5,7 +5,7 @@ import { fetchData } from "@/lib/fetchData"
 import { endpoints } from "@/lib/api"
 import { CardImage, CardSkeleton, NoResults } from "@/components/ui/card"
 import TerminalKitty from "@/components/ui/kitty"
-import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { ErrorBoundary } from "@/hooks/ErrorBoundary.jsx";
 
 const apiDate = fetchData(endpoints.newsDates)
 const apiSource = fetchData(endpoints.newsSources)

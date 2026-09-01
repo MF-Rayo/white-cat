@@ -1,21 +1,5 @@
 import TerminalKitty from "@/components/ui/kitty"
 
-function DisclaimerBlock({ command, title, sections, lang }) {
-  return (
-    <div className="p-4 m-4 font-mono text-sm text-(--text-color)">
-      <p className="text-(--primary-color) mb-2">$ {command}</p>
-      <p className="font-bold mb-3 text-(--text-secondary)">{title}</p>
-      <div className="space-y-3">
-        {sections.map((s, i) => (
-          <p key={i} className="text-(--text-secondary) leading-relaxed">
-            <strong className="text-(--text-secondary)">{s.heading}:</strong> {s.body}
-          </p>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 const sectionsEn = [
   {
     heading: "Project Purpose",
@@ -31,15 +15,52 @@ const sectionsEn = [
   },
 ]
 
-export default function Fetch() {
+const sectionsEs = [
+  {
+    heading: "Propósito del Proyecto",
+    body: "Esta plataforma es un proyecto personal y autodidacta desarrollado para aprender desarrollo full-stack: React y Tailwind CSS en el frontend, y FastAPI en el backend. No es un producto comercial y no se vende ningún tipo de dato, servicio o suscripción a través de este sitio.",
+  },
+  {
+    heading: "Fuentes de Datos y Atribución",
+    body: "Las noticias, indicadores de amenazas y métricas relacionadas se obtienen en tiempo real a partir de fuentes de ciberseguridad y APIs públicas y consolidadas. Todas las marcas registradas, logotipos y contenido original son propiedad de sus respectivos dueños. Esta plataforma funciona estrictamente como un agregador, dando crédito a cada fuente y enlazando a la publicación original.",
+  },
+  {
+    heading: "Sin Garantía",
+    body: "El contenido se muestra \"tal cual\" con fines informativos. Si bien las fuentes utilizadas son reconocidas, no se garantiza la exhaustividad, puntualidad o exactitud de los datos presentados. Las decisiones tomadas con base en esta información son responsabilidad exclusiva del lector.",
+  },
+]
+
+export default function DisclaimerBlock() {
   return (
     <TerminalKitty path="~/Disclaimer" headerContent={null}>
-      <DisclaimerBlock
-        command="cat disclaimer_en.md"
-        title="Legal, Educational Notice & Disclaimer"
-        sections={sectionsEn}
-        lang="en"
-      />
+      
+      <div className="p-4 m-4 font-mono text-sm text-(--text-color)">
+        <div className="mb-1 text-xs pb-2 select-none">
+          <span className="text-(--primary-color) text-sm font-bold">$whitecat@debian: </span>
+          <span className="text-(--text-color) text-sm">cat disclaimer_en.md</span>
+        </div>
+        <p className="font-bold mb-3 text-(--text-secondary)">Legal, Educational Notice & Disclaimer</p>
+        <div className="space-y-3">
+          {sectionsEn.map((s, i) => (
+            <p key={i} className="text-(--text-secondary) leading-relaxed">
+              <strong className="text-(--text-secondary)">{s.heading}:</strong> {s.body}
+            </p>
+          ))}
+        </div>
+        <div className="mt-4 text-xs pb-2 select-none">
+          <span className="text-(--primary-color) text-sm font-bold">$whitecat@debian: </span>
+          <span className="text-(--text-color) text-sm">cat disclaimer_es.md</span>
+        </div>
+        <p className="font-bold mb-3 text-(--text-secondary)">Legal, Educational Notice & Disclaimer</p>
+        <div className="space-y-3">
+          {sectionsEs.map((s, i) => (
+            <p key={i} className="text-(--text-secondary) leading-relaxed">
+              <strong className="text-(--text-secondary)">{s.heading}:</strong> {s.body}
+            </p>
+          ))}
+        </div>
+      </div>
+
     </TerminalKitty>
   )
 }

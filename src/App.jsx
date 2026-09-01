@@ -1,12 +1,16 @@
-import { ChartLine, MapPin, Newspaper, Users, Settings, BookOpenText } from "lucide-react"
-import { HashRouter, BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
-import Sidebar, { SidebarItem } from "@/components/Sidebar"
-import IocPage from "@/pages/IocMap"
+import { ChartLine, FileBraces, Network, Brain, Earth, Newspaper, Users, Settings, BookOpenText, 
+  UserRoundKey, Link2, FileTerminal, LogOut, ScanSearch, Library, Summary, ShieldAlert } from "lucide-react"
+import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
+import Sidebar, { SidebarItem, SidebarCategory  } from "@/components/Sidebar"
+import ThreatPage from "#src/pages/ThreatMap.jsx"
 import NewsPage from "@/pages/News"
 import DashboardPage from "@/pages/Dashboard"
 import ActiveGroupsPage from "@/pages/ActiveGroups"
-import Fetch from "@/pages/Disclaimer"
+import DisclaimerBlock from "@/pages/Disclaimer"
+import WebSandbox from "@/pages/tools/webSanbox"
+import WebCheckMail from "@/pages/tools/webCheckMail"
 import Color from "@/pages/Settings"
+import { useAuth } from "@/context/AuthContext"
 import { useState, useEffect } from "react"
 
 function App() {
@@ -30,6 +34,29 @@ function AppLayout() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+
+  function Logout(){
+    const { isAuthenticated, logout } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    async function handleLogout(){
+      await logout();
+      navigate("/")
+    }
+
+    if (isAuthenticated)
+      return(
+        <SidebarItem 
+          icon={<LogOut size={20} />} 
+          text="Logout"
+          active={location.pathname === "/logout"} 
+          onClick={handleLogout} 
+          alert 
+        />
+      )
+  }
+
   return (
     <div className="flex h-screen w-full">
       <Sidebar footer={
@@ -49,6 +76,9 @@ function AppLayout() {
             onClick={() => navigate("/settings")} 
             alert 
           />
+
+          <Logout/>
+
           <SidebarItem className="mt-auto"
               icon={
                   <img 
@@ -71,27 +101,41 @@ function AppLayout() {
           active={location.pathname === "/dashboard"} 
           onClick={() => navigate("/dashboard")} 
         />
+        <SidebarCategory icon={<Brain size={20} />} text="Threat Intelligence" defaultOpen>
+          <SidebarItem 
+            icon={<Earth size={18} />} 
+            text="Threat Map"
+            active={location.pathname === "/threat/map"} 
+            onClick={() => navigate("/threat/map")} 
+          />
+          <SidebarItem 
+            icon={<Newspaper size={18} />} 
+            text="Reported News"
+            active={location.pathname === "/news"} 
+            onClick={() => navigate("/news")} 
+          />
+          <SidebarItem 
+            icon={<Users size={18} />} 
+            text="Active Groups"
+            active={location.pathname === "/activegroups"} 
+            onClick={() => navigate("/activegroups")} 
+          />
+        </SidebarCategory>
 
-        <SidebarItem 
-          icon={<MapPin size={20} />} 
-          text="Threat map"
-          active={location.pathname === "/ioc"} 
-          onClick={() => navigate("/ioc")} 
-        />
-
-        <SidebarItem 
-          icon={<Users size={20} />} 
-          text="Active Groups"
-          active={location.pathname === "/activegroups"} 
-          onClick={() => navigate("/activegroups")} 
-        />
-
-        <SidebarItem 
-          icon={<Newspaper size={20} />} 
-          text="Reported News"
-          active={location.pathname === "/news"} 
-          onClick={() => navigate("/news")} 
-        />
+        <SidebarCategory icon={<ScanSearch size={20} />} text="Investigation Tools">
+          <SidebarItem 
+            icon={<Link2   size={18} />} 
+            text="Web Sandbox"
+            active={location.pathname === "/web/sanbox"} 
+            onClick={() => navigate("/web/sanbox")} 
+          />
+          <SidebarItem 
+            icon={<UserRoundKey size={18} />} 
+            text="Email Leak Checker"
+            active={location.pathname === "/check/mail"} 
+            onClick={() => navigate("/check/mail")} 
+          />
+        </SidebarCategory> 
       </Sidebar>
 
       <div className={`flex-1 h-screen p-2 lg:p-2 ${isMobile ? 'pt-16' : 'pl-16'} flex items-center justify-center overflow-y-auto`}>
@@ -100,9 +144,11 @@ function AppLayout() {
           <Route path="/dashboard" element={<DashboardPage/>} />
           <Route path="/news" element={<NewsPage/>} />
           <Route path="/activegroups" element={<ActiveGroupsPage/>} />
-          <Route path="/ioc" element={<IocPage/>} />
+          <Route path="/threat/map" element={<ThreatPage/>} />
           <Route path="/settings" element={<Color/>} />
-          <Route path="/disclaimer" element={<Fetch/>} />
+          <Route path="/disclaimer" element={<DisclaimerBlock/>} />
+          <Route path="/web/sanbox" element={<WebSandbox/>} />
+          <Route path="/check/mail" element={<WebCheckMail/>} />
         </Routes>
       </div>
     </div>

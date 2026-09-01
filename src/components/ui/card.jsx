@@ -6,15 +6,9 @@ export function CardImage({title, summary, frontPage, date, url, source}) {
   })
 
   return (
-    <div
-      onClick={() => window.open(url, "_blank")}
-      className="group relative flex flex-col overflow-hidden rounded-xl cursor-pointer transition-all duration-300 hover:scale-[1.02]"
-      style={{
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        border: "1px solid var(--border-color)",
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)",
-      }}
+    <div onClick={() => window.open(url, "_blank")}
+      className="group relative flex flex-col overflow-hidden bg-(--bg-color)/60 backdrop-blur-xl rounded-[var(--radius-card,14px)] 
+      cursor-pointer transition-all duration-300 hover:scale-[1.02]"
     >
 
       <div className="relative overflow-hidden" style={{ height: "180px" }}>
@@ -25,16 +19,9 @@ export function CardImage({title, summary, frontPage, date, url, source}) {
           style={{ filter: "brightness(0.8) saturate(0.8)" }}
         />
 
-        <div
-          className="absolute top-3 left-3 flex items-center gap-1.5 px-2 py-1 rounded"
-          style={{
-            background: "rgba(0,0,0,0.6)",
-            backdropFilter: "blur(8px)",
-          }}
-        >
+        <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2 py-1 rounded-[var(--radius-card,14px)] bg-(--bg-color)">
           <span className="w-1.5 h-1.5 rounded-full bg-(--primary-color) animate-pulse" />
-          <span className="text-[10px] font-bold tracking-widest uppercase text-(--primary-color)"
-            style={{ fontFamily: "Poppins, sans-serif" }}>
+          <span className="text-[10px] font-bold tracking-widest uppercase text-(--primary-color)">
             {source}
           </span>
         </div>
@@ -155,22 +142,18 @@ export function KpiCard({ label, value, delta, deltaTone = "up", icon: Icon, acc
 
 export function KpiCardSkeleton() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {[...Array(4)].map((_, i) => (
-        <div key={i} className="bg-(--bg-color)/60 backdrop-blur-xl rounded-lg p-4 relative overflow-hidden">
-          <div className="absolute top-0 left-0 h-full w-3px bg-(--text-secondary)/20" />
-          <div className="flex items-start justify-between pl-2">
-            <div className="flex-1">
-              <Skeleton className="h-3 w-20 mb-2" />
-              <Skeleton className="h-8 w-24" />
-            </div>
-            <Skeleton className="h-5 w-5 rounded" />
-          </div>
-          <div className="pl-2 mt-3">
-            <Skeleton className="h-3 w-16" />
-          </div>
+    <div className="bg-(--bg-color)/60 backdrop-blur-xl rounded-lg p-4 relative overflow-hidden">
+      <div className="absolute top-0 left-0 h-full w-3px bg-(--text-secondary)/20" />
+      <div className="flex items-start justify-between pl-2">
+        <div className="flex-1">
+          <Skeleton className="h-3 w-20 mb-2" />
+          <Skeleton className="h-8 w-24" />
         </div>
-      ))}
+        <Skeleton className="h-5 w-5 rounded" />
+      </div>
+      <div className="pl-2 mt-3">
+        <Skeleton className="h-3 w-16" />
+      </div>
     </div>
   );
 }
