@@ -1,33 +1,42 @@
 import { Suspense } from "react"
-import { Panel, PanelSkeleton } from "@/components/ui/panel"
+import { ResponsiveContainer } from "recharts"
+import { Panel } from "@/components/ui/panel";
 import TerminalKitty from "@/components/ui/kitty"
-import { Skeleton } from "@/components/ui/skeleton"
-import { KpiCard, KpiCardSkeleton } from "@/components/ui/card"
-import { ChartPieActiveGroups, BarCharts } from "@/components/ui/chart"
-import { LiveData } from "@/components/ui/live"
 
 import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
-
-import { ShieldAlert, Globe2, Activity, Skull } from "lucide-react"
-import { ResponsiveContainer } from "recharts"
-
-
-import { SimpleMap } from "@/components/ui/map.jsx"
+import { SimpleMap } from "@/components/ui/map"
+import { KpiCard, AreaChart, LineChart, DonutChart, BarChart } from "metricui";
 
 
-function getDeltaProps(pct) {
-  const isUp = pct >= 0
-  return {
-    deltaTone: isUp ? "up" : "down",
-    delta: `${Math.abs(pct)}%`,
-  }
+export function sparklineToAreaChartData(sparkline, seriesId) {
+  const days = sparkline.length; 
+  const today = new Date(); 
+
+  const todayUTC = Date.UTC(
+    today.getUTCFullYear(),
+    today.getUTCMonth(),
+    today.getUTCDate()
+  );
+
+  const startUTC = todayUTC - (days - 1) * 24 * 60 * 60 * 1000;
+
+  const data = sparkline.map((value, i) => {
+    const dayTimestamp = startUTC + i * 24 * 60 * 60 * 1000;
+    const d = new Date(dayTimestamp);
+    
+    const year = d.getUTCFullYear();
+    const month = String(d.getUTCMonth() + 1).padStart(2, "0"); 
+    const day = String(d.getUTCDate()).padStart(2, "0");
+    
+    const label = `${month}-${day}`; 
+    
+    return { x: label, y: value };
+  });
+
+  return [{ id: seriesId, data }];
 }
 
-function LiveDataWrapper({ apiData }) {
-  const data = apiData.read()
-  return <LiveData data={data} />
-}
 
 function DashboardContent({ apiData }) {
   const data = apiData.read()
@@ -35,64 +44,136 @@ function DashboardContent({ apiData }) {
   return (
     <>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard label="Threat Today"
-          value={data.threat_today_count}
-          {...getDeltaProps(data.threat_today_pct)}
-          icon={Activity} accent={"var(--primary-color)"}
+
+        <KpiCard
+          title="Today's Threats"
+          value={data.threat_today}
+          format="number"
+          comparison={{ value: data.threat_yesterday }}
+          comparisonLabel="vs yesterday"
+          sparkline={{
+            data: data.threat_week_sparkline,
+            type: "line",
+            interactive: true,
+          }}
+          className="card-metricui"
         />
-        <KpiCard label="Threat Week"
-          value={data.threat_week_count}
-          {...getDeltaProps(data.threat_week_pct)}
-          icon={ShieldAlert} accent={"var(--primary-color)"}
+
+        <KpiCard
+          title="Threats Of The Week"
+          value={data.threat_week}
+          format="number"
+          comparison={{ value: data.threat_last_week }}
+          comparisonLabel="vs last week"
+          sparkline={{
+            data: data.threat_week_sparkline,
+            type: "line",
+            interactive: true,
+          }}
+          className="card-metricui"
         />
-        <KpiCard label="Active Groups"
-          value={data.activegroups_today_count}
-          {...getDeltaProps(data.active_groups_pct)}
-          icon={Skull} accent={"var(--primary-color)"}
+
+        <KpiCard
+          title="Today's Threat Sources"
+          value={data.source_of_threats}
+          format="number"
+          comparison={{ value: data.source_of_yesterday_threats }}
+          comparisonLabel="vs yesterday"
+          sparkline={{
+            data: data.source_of_week_sparkline,
+            type: "line",
+            interactive: true,
+          }}
+          className="card-metricui"
         />
-        <KpiCard label="Countries"
-          value={data.countries_count}
-          {...getDeltaProps(data.countries_pct)}
-          icon={Globe2} accent={"var(--primary-color)"}
+
+        <KpiCard
+          title="Today's Active Groups"
+          value={data.active_groups}
+          format="number"
+          comparison={{ value: data.active_groups_yesterday }}
+          comparisonLabel="vs yesterday"
+          sparkline={{
+            data: data.active_groups_sparkline,
+            type: "line",
+            interactive: true,
+          }}
+          className="card-metricui"
         />
+
       </div>
 
       <div className="pt-4 grid grid-cols-1 lg:grid-cols-6 gap-4">
-        <Panel title="Today's Top 10 Threat Origins" className="lg:col-span-4">
-          <div className="min-h-[300px] h-full w-full overflow-hidden">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarCharts dataChart={data.top_countries}></BarCharts>
-            </ResponsiveContainer>
-          </div>
+
+        <div className="lg:col-span-4">
+          <AreaChart
+            data={sparklineToAreaChartData(data.threat_week_sparkline, "Threat")}
+            title="Threats Of The Week"
+            format={{ style: "number" }}
+            className="card-metricui"
+          />
+        </div>
+       
+        <Panel title="The 10 sources of reported threats" 
+          className="lg:col-span-2 lg:h-full rounded-[var(--radius-card,14px)]
+          font-medium overflow-hidden h-[300px]">
+          <SimpleMap data={data.top_countries_today}></SimpleMap>
         </Panel>
 
-        <div className="lg:col-span-2 h-[300px] lg:h-full backdrop-blur-xl rounded-[var(--radius-card,14px)] overflow-hidden">
-          <SimpleMap data={data.top_countries}></SimpleMap>
-        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-4">
-        <div>
-          <ChartPieActiveGroups title={"Top Threats Today"}  
-            className="bg-(--bg-color)/60 backdrop-blur-xl rounded-(--radius-card,14px) h-[100%]" 
-            item={"threat_type"}
-            value={data.top_threats} />
-        </div>
-        <div>
-          <ChartPieActiveGroups title={"Top Threats Week"} 
-            className="bg-(--bg-color)/60 backdrop-blur-xl rounded-(--radius-card,14px) h-[100%]" 
-            item={"threat_type"}
-            value={data.top_threats_week} />
-        </div>
-        <div>
-          <ChartPieActiveGroups title={"Top Active Groups"} 
-            className="bg-(--bg-color)/60 backdrop-blur-xl rounded-(--radius-card,14px) h-[100%]" 
-            item={"group_name"}
-            value={data.top_activegroups} />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 pt-4 items-stretch">
+
+        <DonutChart
+          data={data.top_threats_today}
+          title="Top Threats Today"
+          enableArcLabels
+          enableArcLinkLabels
+          arcLabelsSkipAngle={15}
+          arcLinkLabelsSkipAngle={15}
+          className="card-metricui h-full flex-1"
+        />
+
+        <DonutChart
+          data={data.top_active_groups_today}
+          title="Top Active Groups of Today"
+          enableArcLabels
+          enableArcLinkLabels
+          arcLabelsSkipAngle={15}
+          arcLinkLabelsSkipAngle={15}
+          className="card-metricui h-full flex-1"
+        />
+
+        <div className="lg:col-span-2" >
+          <BarChart
+            preset="horizontal"
+            data={data.top_threats_week}
+            categories={["count"]}
+            index="threat_type"
+            title="Top Threats of the Week"
+            format={{ style: "number" }}
+            className="card-metricui h-full flex-1"
+          />
         </div>
       </div>
     </>
   )
+}
+
+function LastDate({ apiData }) {
+  const date = apiData.read();
+
+  const time = new Date(date.added + "Z").toLocaleTimeString("es-ES", {
+    timeZone: "UTC",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
+  return (
+    <p className="text-(--text-secondary)">Last Update: {time} UTC</p>
+  );
 }
 
 export default function DashboardPage() {
@@ -101,31 +182,31 @@ export default function DashboardPage() {
   return (
     <TerminalKitty path="~/Dashboard"
       headerContent={
-        <Suspense fallback={
-          <>
-            <Skeleton className="h-8 w-100" />
-          </>
-        }>
-          <LiveDataWrapper apiData={apiData} />
-        </Suspense>
-      }>
+        <LastDate apiData={apiData}/>
+    }>
       <div className="min-h-screen p-4">
         <Suspense fallback={
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <KpiCardSkeleton />
-              <KpiCardSkeleton />
-              <KpiCardSkeleton />
-              <KpiCardSkeleton />
+              <KpiCard loading className="card-metricui"/>
+              <KpiCard loading className="card-metricui"/>
+              <KpiCard loading className="card-metricui"/>
+              <KpiCard loading className="card-metricui"/>
             </div>
             <div className="pt-4 grid grid-cols-1 lg:grid-cols-6 gap-4">
-              <PanelSkeleton className="min-h-[300px] lg:col-span-4" />
-              <PanelSkeleton className="min-h-[300px] lg:col-span-2" />
+              <div className="lg:col-span-4">
+                <LineChart data={[]} title="Users" loading className="card-metricui"/>
+              </div>
+              <div className="lg:col-span-2">
+                <LineChart data={[]} title="Users" loading className="card-metricui"/>
+              </div>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-4">
-              <PanelSkeleton className="min-h-[300px]" />
-              <PanelSkeleton className="min-h-[300px]" />
-              <PanelSkeleton className="min-h-[300px]" />
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 pt-4">
+              <DonutChart data={[]} loading className="card-metricui"/>
+              <DonutChart data={[]} loading className="card-metricui"/>
+              <div className="lg:col-span-2" >
+                <BarChart data={[]} categories={["revenue"]} index="month" loading className="card-metricui"/>
+              </div>
             </div>
           </>
         }>

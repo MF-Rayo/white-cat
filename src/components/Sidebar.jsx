@@ -49,7 +49,7 @@ export function SidebarCategory({ icon, text, children, defaultOpen = false }) {
                     setOpen((curr) => !curr)
                 }}
                 style={{ fontFamily: 'Nunito, sans-serif' }}
-                className="flex items-center justify-between py-2.5 px-2 rounded-lg cursor-pointer select-none
+                className="flex items-center justify-between py-2.5 px-2 rounded-[var(--radius-card,14px)] cursor-pointer select-none
                         text-(--text-secondary) hover:text-(--text-color) hover:bg-(--primary-color)/10 transition-all duration-100"
             >
                 <div className="flex items-center gap-3">
@@ -73,7 +73,7 @@ export function SidebarCategory({ icon, text, children, defaultOpen = false }) {
             {collapsed && flyoutOpen && createPortal(
                 <div
                     style={{ position: "fixed", top: flyoutPos.top, left: flyoutPos.left }}
-                    className="min-w-[180px] rounded-lg bg-(--bg-color)/90 backdrop-blur-xl overflow-hidden z-[9999] py-1
+                    className="min-w-[180px] rounded-[var(--radius-card,14px)] bg-(--bg-color)/90 backdrop-blur-xl overflow-hidden z-[9999] py-1
                             shadow-lg border border-(--border-color) animate-fadeIn"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
@@ -118,7 +118,7 @@ export default function Sidebar({ children, footer }) {
                 <div className="fixed top-0 left-0 right-0 z-50 h-14 bg-(--bg-color)/60 backdrop-blur-xl border-b border-(--border-color) flex items-center justify-between px-4">
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="p-2 rounded-lg hover:bg-(--card-bg) text-(--text-color) transition-colors"
+                        className="p-2 rounded-[var(--radius-card,14px)] hover:bg-(--card-bg) text-(--text-color) transition-colors"
                     >
                         {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
@@ -161,7 +161,7 @@ export default function Sidebar({ children, footer }) {
     return (
         <>
             <aside className="h-[100vh] py-2 z-100 pl-2 flex flex-col justify-center shrink-0">
-                <nav className="h-full flex flex-col bg-(--bg-color)/60 backdrop-blur-xl rounded-xl">
+                <nav className="h-full flex flex-col bg-(--bg-color)/60 backdrop-blur-xl rounded-[var(--radius-card,14px)]">
                     <div className="p-2 pb-1 flex justify-between items-center">
                         <img src={logo} className={`overflow-hidden transition-all ${expanded ? "w-12" : "w-0"}`} />
                         
@@ -173,7 +173,7 @@ export default function Sidebar({ children, footer }) {
 
                         <button 
                             onClick={() => setExpanded((curr) => !curr)} 
-                            className="transition-all duration-300 group p-2 rounded-lg hover:bg-(--card-bg) text-(--text-color) cursor-pointer"
+                            className="transition-all duration-300 group p-2 rounded-[var(--radius-card,14px)] hover:bg-(--card-bg) text-(--text-color) cursor-pointer"
                             >
                             {expanded ? (
                                 <ChevronFirst />
@@ -218,7 +218,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
                 }}
                 style={{ fontFamily: 'Nunito, sans-serif' }}
                 className={`
-                    flex items-center gap-3 py-3 px-4 rounded-lg
+                    flex items-center gap-3 py-3 px-4 rounded-[var(--radius-card,14px)]
                     cursor-pointer transition-all duration-100 select-none
                     ${active
                         ? "text-(--primary-color) bg-(--primary-color)/10 backdrop-blur-lg[.25]"
@@ -243,7 +243,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
             onClick={onClick}
             style={{ fontFamily: 'Nunito, sans-serif' }}
             className={`
-                relative flex items-center gap-0 py-2.5 px-2 rounded-lg
+                relative flex items-center gap-0 py-2.5 px-2 rounded-[var(--radius-card,14px)]
                 cursor-pointer transition-all duration-100 group select-none
                 ${active
                     ? "text-(--primary-color) bg-(--primary-color)/10 backdrop-blur-lg[.25]"

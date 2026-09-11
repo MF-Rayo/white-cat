@@ -1,11 +1,14 @@
 import { Suspense, useState } from "react"
-import { Filter } from "@/components/ui/filter"
 import { Skeleton } from "@/components/ui/skeleton"
 import { fetchData } from "@/lib/fetchData"
 import { endpoints } from "@/lib/api"
+
+import { FilterBar, FilterProvider,
+  DropdownFilter, useMetricFilters } from "metricui"
+
 import { CardImage, CardSkeleton, NoResults } from "@/components/ui/card"
 import TerminalKitty from "@/components/ui/kitty"
-import { ErrorBoundary } from "@/hooks/ErrorBoundary.jsx";
+import { ErrorBoundary } from "@/hooks/ErrorBoundary"
 
 const apiDate = fetchData(endpoints.newsDates)
 const apiSource = fetchData(endpoints.newsSources)
@@ -18,7 +21,7 @@ function NewsList({ apiData, search }) {
   );
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 p-3">
+    <div className="grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-4 gap-3 p-3">
       {filtered.length > 0 ? (
         filtered.map((item) => (
           <CardImage
@@ -26,7 +29,7 @@ function NewsList({ apiData, search }) {
             title={item.title}
             summary={item.summary}
             frontPage={item.img}
-            source={item.source}
+            source={`Source: ${item.source}`}
             date={item.date}
             url={item.url}
           />
@@ -38,10 +41,40 @@ function NewsList({ apiData, search }) {
   );
 }
 
-export default function News() {
-  const [search] = useState("");
-  const [selectedSource, setSelectedSource] = useState("all");
-  const [selectedDate, setSelectedDate] = useState("all");
+function NewsFilters() {
+  const sources = apiSource.read();
+  const dates = apiDate.read();
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="dropdown-align-left">
+        <DropdownFilter
+          label="News Source"
+          options={sources}
+          field="source"
+          showAll
+          allLabel="All News Sources"
+        />
+      </div>
+      <div className="dropdown-align-left">
+        <DropdownFilter
+          label="Date"
+          options={dates}
+          field="date"
+          showAll
+          allLabel="Today's News"
+        />
+      </div>
+    </div>
+  );
+}
+
+
+function NewsBody({ search }) {
+  const filters = useMetricFilters();
+
+  const selectedSource = filters?.dimensions?.source || "all";
+  const selectedDate = filters?.dimensions?.date || "all";
 
   const params = new URLSearchParams();
   if (selectedDate !== "all") params.set("date", selectedDate);
@@ -57,34 +90,44 @@ export default function News() {
     <TerminalKitty
       path="~/News"
       headerContent={
-        <Suspense fallback={
-          <>
-            <Skeleton className="h-8 w-40" />
-            <Skeleton className="h-8 w-40" />
-          </>
-        }>
-          <Filter
-            label="All News Sources"
-            apiData={apiSource}
-            selected={selectedSource}
-            onChange={setSelectedSource}
-          />
-          <Filter
-            label="Today's News"
-            apiData={apiDate}
-            selected={selectedDate}
-            onChange={setSelectedDate}
-          />
+        <Suspense
+          fallback={
+            <>
+              <Skeleton className="h-8 w-40" />
+              <Skeleton className="h-8 w-40" />
+            </>
+          }
+        >
+          <NewsFilters />
         </Suspense>
       }
     >
       <div className="min-h-screen">
         <ErrorBoundary resetKey={newsUrl} onRetry={() => invalidate(newsUrl)}>
-          <Suspense fallback={<CardSkeleton />} key={newsUrl}>
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-4 gap-3 p-4">
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <CardSkeleton key={index} />
+                ))}
+              </div>
+            }
+            key={newsUrl}
+          >
             <NewsList apiData={apiData} search={search} />
           </Suspense>
         </ErrorBoundary>
       </div>
     </TerminalKitty>
-  )
+  );
+}
+
+export default function News() {
+  const [search] = useState("");
+
+  return (
+    <FilterProvider>
+      <NewsBody search={search} />
+    </FilterProvider>
+  );
 }

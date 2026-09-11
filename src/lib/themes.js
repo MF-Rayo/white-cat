@@ -3,6 +3,7 @@ import orangeBg from "../assets/bg/orange.webp";
 import greenBg from "../assets/bg/green.webp";
 import blackBg from "../assets/bg/black.webp";
 import purpleBg from "../assets/bg/purple.webp";
+import redBg from "../assets/bg/red.webp";
 
 export const themes = {
   blue: {
@@ -20,6 +21,14 @@ export const themes = {
     "--primary-color": "#6B30F6",
     "--kitty": "#0f0a1a",
     "--image": `url(${purpleBg})`,
+  },
+  red: {
+    "--bar-bg": "#161616",
+    "--bg-color": "#100505",
+    "--card-bg": "#0c09095b",
+    "--primary-color": "#f63030",
+    "--kitty": "#1a0a0a",
+    "--image": `url(${redBg})`,
   },
   orange: {
     "--bar-bg": "#1a1310",

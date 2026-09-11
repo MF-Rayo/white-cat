@@ -1,17 +1,10 @@
-import { MapContainer, TileLayer, useMap, Marker } from "react-leaflet"
+import { MapContainer, TileLayer, useMap, Marker, Tooltip } from "react-leaflet"
 import { useRef, useEffect, useMemo} from "react"
 
-const COLORS = [
-    "var(--bar_a)",
-    "var(--bar_b)",
-    "var(--bar_c)",
-    "var(--bar_d)",
-    "var(--bar_e)",
-    "var(--bar_f)",
-    "var(--bar_g)",
-    "var(--bar_h)",
-    "var(--bar_i)",
-    "var(--bar_j)",
+const COLORS = [ 
+    "var(--bar_a)", "var(--bar_b)", "var(--bar_c)",
+    "var(--bar_d)", "var(--bar_e)", "var(--bar_f)", 
+    "var(--bar_g)", "var(--bar_h)", "var(--bar_i)", "var(--bar_j)" 
 ]
 
 function hashToColor(str) {
@@ -42,7 +35,7 @@ function makeIcon(color) {
 function row(color, label, value) {
     if (!value) return ""
     return `<div style="display:flex;gap:6px;margin-bottom:3px">
-        <span style="color:${color};min-width:80px;flex-shrink:0">${label}:</span>
+        <span style="color:${color};min-width:80px;flex-shrink:0;font-weight:bold">${label}:</span>
         <span style="color:var(--text-color);word-break:break-all;overflow-wrap:anywhere">${value}</span>
     </div>`
 }
@@ -92,29 +85,32 @@ function ThreatMarkers({ data }) {
             const marker = L.marker([lat, lon], { icon: makeIcon(color) })
 
             marker.bindPopup(`
-                <div style="font-family: 'Poppins', sans-serif; font-size: 12px; min-width: 260px; background: color-mix(in srgb, var(--bg-color) 60%, transparent); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(20px); padding: 5%; border: 1px solid ${color}; border-radius: 14px;">
+                <div style="font-size: 12px; min-width: 260px; background: var(--bg-color); padding: 4%; border: 1px solid ${color}; border-radius: 14px;">
                 <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-                    <span style="width:9px;height:9px;border-radius:50%;background:${color};box-shadow:0 0 6px ${color}88;flex-shrink:0"></span>
                     <span style="color:${color};font-weight:bold">${key}</span>
                 </div>
                 ${row(color, item.ioc_type || "IOC", `<code>${item.ioc_value}</code>`)}
                 ${row(color, "IP", item.ip)}
-                ${row(color, "Reporter", item.reporter)}
+                ${row(color, "Threat Type", item.threat_type)}
                 ${row(color, "Country", item.country)}
                 ${row(color, "City", item.city)}
-                ${row(color, "Type", item.threat_type)}
                 ${row(color, "UTC", item.first_seen_utc)}
                 ${row(color, "Confidence", item.confidence_level != null ? `${item.confidence_level}%` : null)}
+                ${row(color, "Reporter", item.reporter)}
                 ${item.reference ? row(color, "Ref", `<a href="${item.reference}" target="_blank" style="color:${color}">${item.reference}</a>`) : ""}
+                
+                ${item.ioc_type === "domain" || item.ioc_type === "url" ? `
                     <div style="margin-top:10px">
                         <button
-                        onclick="window.__analyzeInSandbox('${item.ioc_value}')"
-                        style="width:100%;padding:6px 0;border:1px solid ${color};border-radius:8px;background:transparent;color:${color};font-weight:bold;cursor:pointer;font-family:inherit;font-size:inherit"
+                            onclick="window.__analyzeInSandbox('${item.ioc_value}')"
+                            style="width:100%;padding:6px 0;border:1px solid ${color};
+                            border-radius:8px;background:transparent;color:${color};
+                            font-weight:bold;cursor:pointer;font-family:inherit;font-size:inherit"
                         >
-                            Analizar (Sandbox)
+                            Analyze (Sandbox)
                         </button>
                     </div>
-                </div>
+                ` : ''}
             `, { maxWidth: 400 })
 
             cluster.addLayer(marker)
@@ -134,83 +130,35 @@ function ThreatMarkers({ data }) {
     return null
 }
 
-
-function Legend({ data }) {
-
-    const entries = useMemo(() => {
-        const names = new Set(
-            data.map(item =>
-                item.malware_printable || item.malware || item.threat_type || "unknown"
-            )
-        )
-        return [...names]
-            .sort()
-            .map(name => [name, hashToColor(name)])
-    }, [data])
-
-    return (
-        <div style={{
-            position: "absolute", bottom: "5%", right: 0, zIndex: 1000,
-            background: "color-mix(in srgb, var(--bg-color) 60%, transparent)",
-            backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid var(--border-color)", borderRadius: "15px",
-            padding: "12px 14px", minWidth: "200px", maxWidth: "600px", maxHeight: "400px",
-            overflowY: "auto", fontFamily: "monospace", fontSize: "11px"
-        }}>
-            <p style={{ color: "var(--primary-color)", fontWeight: "bold", marginBottom: 8, letterSpacing: "0.1em", margin: "0 0 8px" }}>
-                Threat Legend
-            </p>
-            {entries.map(([name, color]) => (
-                <div key={name} style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 4 }}>
-                    <span style={{
-                        width: 8, 
-                        height: 8, 
-                        borderRadius: "50%", 
-                        background: `color-mix(in srgb, ${color} 40%, transparent)`, 
-                        border: `1px solid ${color}`,
-                        boxSizing: "border-box",
-                        flexShrink: 0
-                    }} />
-                    <span style={{
-                        color: "var(--text-color)", overflow: "hidden", textOverflow: "ellipsis",
-                        whiteSpace: "nowrap", maxWidth: 150
-                    }}>{name}</span>
-                </div>
-            ))}
-        </div>
-    )
-}
-
 export function ThreatMap({ apiData }) {
     const data = apiData.read();
     return (
         <>
-            <MapContainer
-                center={[20, 0]}
-                zoom={2}
-                minZoom={2}
+        <MapContainer
+            center={[20, 0]}
+            zoom={2}
+            minZoom={2}
+            maxZoom={16}
+            maxBounds={[[-90, -180], [90, 180]]}
+            attributionControl={true}
+            maxBoundsViscosity={1.0}
+            style={{ height: "100%", width: "100%", background: "#232227" }}
+        >
+            <TileLayer
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
                 maxZoom={16}
-                maxBounds={[[-90, -180], [90, 180]]}
-                attributionControl={false}
-                maxBoundsViscosity={1.0}
-                style={{ height: "100%", width: "100%", background: "#232227" }}
-            >
-                <TileLayer
-                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-                    maxZoom={16}
-                    bounds={[[-90, -180], [90, 180]]}
-                    keepBuffer={4}
-                    errorTileUrl="data:image/png;base64,iVBORw0KGgo="
-                    noWrap={true} />
-                <ThreatMarkers data={data} />
-            </MapContainer>
-            <Legend data={data} />
+                bounds={[[-90, -180], [90, 180]]}
+                keepBuffer={4}
+                errorTileUrl="data:image/png;base64,iVBORw0KGgo="
+                noWrap={true} />
+            <ThreatMarkers data={data} />
+        </MapContainer>
         </>
     );
 }
 
 
-
+{/*  */}
 
 function makeIconTop(color, size = 16) {
     return L.divIcon({
@@ -221,7 +169,6 @@ function makeIconTop(color, size = 16) {
             border-radius:50%;
             background: color-mix(in srgb, ${color} 40%, transparent);
         "></div>`,
-
         className: "",
         iconSize: [size, size],
         iconAnchor: [size / 2, size / 2],
@@ -249,7 +196,12 @@ function CountryMarkers({ data }) {
                 key={item.ip || country || i}
                 position={[lat, lng]}
                 icon={makeIconTop(color, size)}
-            />
+            >
+    
+                <Tooltip direction="top" offset={[0, -size / 2]} opacity={1} className="country-tooltip">
+                    <span>{country}: {count}</span>
+                </Tooltip>
+            </Marker>
         )
     })
 }
@@ -268,13 +220,8 @@ export function SimpleMap({ data }) {
             boxZoom={false}
             keyboard={false}
             dragging={false}
-            maxBounds={[[-90, -180], [90, 180]]}
             maxBoundsViscosity={1.0}
-            style={{
-                width: "100%",
-                height: "100%",
-                background: "#232227",
-            }}
+            style={{ width: "100%", height: "100%", background: "#232227" }}
         >
             <TileLayer
                 url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"

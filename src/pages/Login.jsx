@@ -22,14 +22,20 @@ export default function Bash() {
   const { showAlert } = useAlert();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
     
-    const res = await login(username, password);
-    if (!res.ok) {
-      showAlert({ type: "warning", message: res.error });
+    if (loading) return;
+    setLoading(true);
+    try{
+      const res = await login(username, password);
+      if (!res.ok) {
+        showAlert({ type: "info", message: res.error });
+      }
+    } finally{
+      setLoading(false);
     }
   }
 
@@ -64,10 +70,14 @@ export default function Bash() {
 
       <div className="mb-0">
         <div className="flex items-center gap-2">
-          <span className="text-(--primary-color) font-bold select-none">username:</span>
-          <input type="text" placeholder="root" value={username}
+          <span className="text-[var(--primary-color)] font-bold select-none">username:</span>
+          <input
+            type="text"
+            placeholder="root"
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-transparent border-0 rounded px-2 py-1 text-(--text-color) focus:outline-none transition-all text-sm"
+            disabled={loading}
+            className="w-full !bg-transparent border-none outline-none focus:outline-none focus:ring-0 focus:border-none shadow-none px-2 py-1 text-[var(--text-color)] text-sm"
             autoComplete="off"
           />
         </div>
@@ -75,16 +85,23 @@ export default function Bash() {
 
       <div className="mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-(--primary-color) font-bold select-none">password:</span>
-          <input type="password" placeholder="••••••••" value={password}
+          <span className="text-[var(--primary-color)] font-bold select-none">password:</span>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-transparent border-0 rounded px-2 py-1 text-(--text-color) focus:outline-none transition-all text-sm"
+            disabled={loading}
+            className="w-full !bg-transparent border-none outline-none focus:outline-none focus:ring-0 focus:border-none shadow-none px-2 py-1 text-[var(--text-color)] text-sm"
             autoComplete="off"
           />
         </div>
       </div>
 
-      <button type="submit"></button>
+
+      <button type="submit" disabled={loading}>
+        {loading ? <p className="text-(--text-secondary)">Authenticating...</p> : ""}
+      </button>
     </form>
   );
 }

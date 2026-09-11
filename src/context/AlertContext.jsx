@@ -19,7 +19,7 @@ export function AlertProvider({ children }) {
     <AlertContext.Provider value={{ showAlert }}>
       {children}
 
-      <div className="fixed top-18 right-6 z-50 flex flex-col gap-2 w-80">
+      <div className="fixed top-5 right-6 z-50 flex flex-col gap-2 w-80">
         {alerts.map(alert => (
           <Alert
             key={alert.id}
@@ -36,6 +36,5 @@ export function AlertProvider({ children }) {
 
 export function useAlert() {
   const ctx = useContext(AlertContext)
-  if (!ctx) throw new Error("useAlert debe usarse dentro de <AlertProvider>")
   return ctx
 }

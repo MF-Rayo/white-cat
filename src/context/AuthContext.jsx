@@ -9,12 +9,12 @@ export function AuthProvider({ children }) {
 
     const checkSession = useCallback(async () => {
         try {
-        const res = await fetch(endpoints.authMe, { credentials: "include" });
-        setUser(res.ok ? await res.json() : null);
+            const res = await fetch(endpoints.authMe, { credentials: "include" });
+            setUser(res.ok ? await res.json() : null);
         } catch {
-        setUser(null);
+            setUser(null);
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     }, []);
 
@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
             } catch {
                 detail = null;
             }
-            return { ok: false, error: detail || "Error al iniciar sesión" };
+            return { ok: false, error: detail };
         }
 
         const data = await res.json();
@@ -51,8 +51,14 @@ export function AuthProvider({ children }) {
     }, []);
 
     const logout = useCallback(async () => {
-        await fetch(endpoints.authLogout, { method: "POST", credentials: "include" });
-        setUser(null);
+        try {
+            const res = await fetch(endpoints.authLogout, { 
+                method: "POST", 
+                credentials: "include" 
+            });
+        } finally {
+            setUser(null);
+        }
     }, []);
 
     return (

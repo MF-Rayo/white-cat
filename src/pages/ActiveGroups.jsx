@@ -1,8 +1,10 @@
 import { Suspense, useState } from "react"
-import { Filter } from "@/components/ui/filter"
 import { Skeleton } from "@/components/ui/skeleton"
 import { fetchData } from "@/lib/fetchData"
 import { endpoints } from "@/lib/api"
+
+import { FilterBar, FilterProvider, DropdownFilter, useMetricFilters } from "metricui"
+
 import { CardImage, CardSkeleton, NoResults } from "@/components/ui/card"
 import TerminalKitty from "@/components/ui/kitty"
 import { ErrorBoundary } from "@/hooks/ErrorBoundary.jsx";
@@ -18,15 +20,15 @@ function ActiveGroupsList({ apiData, search }) {
   );
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 p-3">
+    <div className="grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-4 gap-3 p-3">
       {filtered.length > 0 ? (
         filtered.map((item) => (
           <CardImage
             key={item.post_url}
-            title={`${item.group_name}`}
+            title={`Group Name: ${item.group_name}`}
             summary={item.description}
             frontPage={item.screenshot}
-            source={item.source}
+            source={`Source: ${item.source}`}
             date={item.date}
             url={item.post_url}
           />
@@ -38,10 +40,41 @@ function ActiveGroupsList({ apiData, search }) {
   );
 }
 
-export default function ActiveGroups() {
-  const [search] = useState("");
-  const [selectedGroup, setSelectedGroup] = useState("all")
-  const [selectedDate, setSelectedDate] = useState("all")
+
+function ActiveGroupsFilters() {
+  const group = apiGroup.read();
+  const dates = apiDate.read();
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="dropdown-align-left">
+        <DropdownFilter
+          label="Group Name"
+          options={group}
+          field="name"
+          showAll
+          allLabel="All Groups"
+        />
+      </div>
+      <div className="dropdown-align-left">
+        <DropdownFilter
+          label="Date"
+          options={dates}
+          field="date"
+          showAll
+          allLabel="Today's Report"
+        />
+      </div>
+    </div>
+  );
+}
+
+
+function ActiveGroupsBody({ search }) {
+  const filters = useMetricFilters();
+
+  const selectedGroup = filters?.dimensions?.name || "all";
+  const selectedDate = filters?.dimensions?.date || "all";
 
   const params = new URLSearchParams();
   if (selectedDate !== "all") params.set("date", selectedDate);
@@ -55,36 +88,36 @@ export default function ActiveGroups() {
 
   return (
     <TerminalKitty
-      path="~/ActiveGroups"
+      path="~/Active Groups"
       headerContent={
-        <Suspense fallback={
-          <>
-            <Skeleton className="h-8 w-40" />
-            <Skeleton className="h-8 w-40" />
-          </>
-        }>
-          <Filter
-            label="All Active Groups"
-            apiData={apiGroup}
-            selected={selectedGroup}
-            onChange={setSelectedGroup}
-          />
-          <Filter
-            label="Today's Report"
-            apiData={apiDate}
-            selected={selectedDate}
-            onChange={setSelectedDate}
-          />
+        <Suspense>
+          <ActiveGroupsFilters/>
         </Suspense>
       }
     >
       <div className="min-h-screen">
         <ErrorBoundary resetKey={activeGroupUrl} onRetry={() => invalidate(activeGroupUrl)}>
-          <Suspense fallback={<CardSkeleton />} key={activeGroupUrl}>
+          <Suspense fallback={
+            <div className="grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-4 gap-3 p-4">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>  
+          } key={activeGroupUrl}>
             <ActiveGroupsList apiData={apiData} search={search} />
           </Suspense>
         </ErrorBoundary>
       </div>
     </TerminalKitty>
   )
+}
+
+export default function ActiveGroups() {
+  const [search] = useState("");
+
+  return (
+    <FilterProvider>
+      <ActiveGroupsBody search={search} />
+    </FilterProvider>
+  );
 }

@@ -9,7 +9,7 @@
 
     --text-color: #ffffff;
     --text-secondary: #AAB0BC;
-    --border-color: #2b2b2c00;
+    --border-color: #3a3a3a8e;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
     --line-gradient: rgba(17, 23, 31, 0.9);
@@ -33,11 +33,18 @@
     --bar_a: #EF4444; 
     --bar_b: #F59E0B; 
     --bar_c: #10B981; 
-    --bar_d: #2563EB; 
-    --bar_e: #8B5CF6; 
-    --bar_f: #06B6D4; 
-    --bar_g: #F43F5E; 
-    --bar_h: #84CC16; 
-    --bar_i: #D97706; 
-    --bar_j: #64748B; 
+    --bar_d: #EC4899; 
+    --bar_e: #1d78f8; 
+    --bar_f: #F97316; 
+    --bar_g: #8B5CF6;
+    --bar_h: #99f163; 
+    --bar_i: #14B8A6; 
+    --bar_j: #f1cd63; 
+}
+
+input:focus,
+input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
 }

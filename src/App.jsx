@@ -1,14 +1,14 @@
 import { ChartLine, FileBraces, Network, Brain, Earth, Newspaper, Users, Settings, BookOpenText, 
-  UserRoundKey, Link2, FileTerminal, LogOut, ScanSearch, Library, Summary, ShieldAlert } from "lucide-react"
+  UserRoundKey, Link2, FileTerminal, LogOut, ScanSearch, Library, Summary, ShieldAlert, ChartArea } from "lucide-react"
 import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
 import Sidebar, { SidebarItem, SidebarCategory  } from "@/components/Sidebar"
-import ThreatPage from "#src/pages/ThreatMap.jsx"
+import ThreatPage from "@/pages/ThreatMap"
 import NewsPage from "@/pages/News"
 import DashboardPage from "@/pages/Dashboard"
 import ActiveGroupsPage from "@/pages/ActiveGroups"
 import DisclaimerBlock from "@/pages/Disclaimer"
-import WebSandbox from "@/pages/tools/webSanbox"
-import WebCheckMail from "@/pages/tools/webCheckMail"
+import WebSandbox from "@/pages/tools/Sandbox"
+import WebCheckMail from "@/pages/tools/CheckMail"
 import Color from "@/pages/Settings"
 import { useAuth } from "@/context/AuthContext"
 import { useState, useEffect } from "react"
@@ -62,13 +62,7 @@ function AppLayout() {
       <Sidebar footer={
         <>
           <hr className="my-3 border-white/5" />
-          <SidebarItem 
-            icon={<BookOpenText size={20} />} 
-            text="Disclaimer"
-            active={location.pathname === "/disclaimer"} 
-            onClick={() => navigate("/disclaimer")} 
-            alert 
-          />
+          <Logout/>
           <SidebarItem 
             icon={<Settings size={20} />} 
             text="Settings"
@@ -76,8 +70,13 @@ function AppLayout() {
             onClick={() => navigate("/settings")} 
             alert 
           />
-
-          <Logout/>
+          <SidebarItem 
+            icon={<BookOpenText size={20} />} 
+            text="Disclaimer"
+            active={location.pathname === "/disclaimer"} 
+            onClick={() => navigate("/disclaimer")} 
+            alert 
+          />
 
           <SidebarItem className="mt-auto"
               icon={
@@ -104,21 +103,21 @@ function AppLayout() {
         <SidebarCategory icon={<Brain size={20} />} text="Threat Intelligence" defaultOpen>
           <SidebarItem 
             icon={<Earth size={18} />} 
-            text="Threat Map"
+            text="Global Threat Map"
             active={location.pathname === "/threat/map"} 
             onClick={() => navigate("/threat/map")} 
-          />
-          <SidebarItem 
-            icon={<Newspaper size={18} />} 
-            text="Reported News"
-            active={location.pathname === "/news"} 
-            onClick={() => navigate("/news")} 
           />
           <SidebarItem 
             icon={<Users size={18} />} 
             text="Active Groups"
             active={location.pathname === "/activegroups"} 
             onClick={() => navigate("/activegroups")} 
+          />
+          <SidebarItem 
+            icon={<Newspaper size={18} />} 
+            text="Cybersecurity News"
+            active={location.pathname === "/news"} 
+            onClick={() => navigate("/news")} 
           />
         </SidebarCategory>
 

@@ -29,11 +29,3 @@ export function Panel({ title, right, children, className = "" }) {
     </div>
   );
 }
-
-export function PanelSkeleton({className  = "" }) {
-  return (
-    <div className={`rounded-[var(--radius-card,14px)] ${className}`}>
-      <Skeleton className="h-full w-full" />
-    </div>
-  );
-}

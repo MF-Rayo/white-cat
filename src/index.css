@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Pixelify+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 @import "colors.css";
+@import "metricui-custom.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
@@ -66,10 +67,7 @@ html::-webkit-scrollbar-thumb:hover,
 }
 
 
-
 /*ESTILO PARA LOS MARCADORES DE LOS MAPAS*/
-
-
 
 .leaflet-popup-content-wrapper {
   background-color: var(--card-bg) !important;
@@ -183,28 +181,42 @@ html::-webkit-scrollbar-thumb:hover,
 
 
 .marker-cluster-small {
-    background-color: color-mix(in srgb, var(--success-color) 25%, transparent) !important; 
+  background-color: color-mix(in srgb, var(--success-color) 25%, transparent) !important; 
 }
 .marker-cluster-small div {
-    background-color: color-mix(in srgb, var(--success-color) 40%, transparent) !important; 
-    border: 1px solid var(--success-color) !important;
-    font-weight: bold;
+  background-color: color-mix(in srgb, var(--success-color) 40%, transparent) !important; 
+  border: 1px solid var(--success-color) !important;
+  font-weight: bold;
 }
 
 .marker-cluster-medium {
-    background-color: color-mix(in srgb, var(--warning-color) 25%, transparent) !important; 
+  background-color: color-mix(in srgb, var(--warning-color) 25%, transparent) !important; 
 }
 .marker-cluster-medium div {
-    background-color: color-mix(in srgb, var(--warning-color) 40%, transparent) !important; 
-    border: 1px solid var(--warning-color) !important;
-    font-weight: bold;
+  background-color: color-mix(in srgb, var(--warning-color) 40%, transparent) !important; 
+  border: 1px solid var(--warning-color) !important;
+  font-weight: bold;
 }
 
 .marker-cluster-large {
-    background-color: color-mix(in srgb, var(--danger-color) 25%, transparent) !important; 
+  background-color: color-mix(in srgb, var(--danger-color) 25%, transparent) !important; 
 }
 .marker-cluster-large div {
-    background-color: color-mix(in srgb, var(--danger-color) 40%, transparent) !important; 
-    border: 1px solid var(--danger-color) !important;
-    font-weight: bold;
+  background-color: color-mix(in srgb, var(--danger-color) 40%, transparent) !important; 
+  border: 1px solid var(--danger-color) !important;
+  font-weight: bold;
+}
+
+.country-tooltip {
+  background-color:var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+.country-tooltip::before {
+  border-top-color: var(--bg-color) !important;
 }

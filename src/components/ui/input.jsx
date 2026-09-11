@@ -32,7 +32,7 @@ export default function CustomInputButton({
             onChange={onChange}
             placeholder={placeholder}
             disabled={disabled}
-            className={`w-full px-4 py-2 text-sm text-(--text-color) bg-background border border-(--border-color) rounded-[var(--radius-card,14px)] 
+            className={`w-[20vh] md:w-[40vh] px-4 py-2 text-sm text-(--text-color) bg-background border border-(--border-color) rounded-[var(--radius-card,14px)] 
                 focus:outline-none focus:ring-1 focus:ring-transparent focus:border-(--primary-color) transition-all 
                 disabled:opacity-50 disabled:cursor-not-allowed ${inputClassName}`}
             {...restProps}

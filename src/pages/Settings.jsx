@@ -6,6 +6,7 @@ import { Palette } from "lucide-react"
 
 const themeOptions = [
   { name: "blue", label: "Blue", color: "#3066f6" },
+  { name: "red", label: "Red", color: "#c92020" },
   { name: "purple", label: "Purple", color: "#6B30F6" },
   { name: "orange", label: "Orange", color: "#f6752b" },
   { name: "green", label: "Green", color: "#20c96b" },

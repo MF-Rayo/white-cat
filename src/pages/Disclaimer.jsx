@@ -7,7 +7,7 @@ const sectionsEn = [
   },
   {
     heading: "Data Sources & Attribution",
-    body: "News articles, threat indicators, and related metrics are retrieved in real time from established, publicly available cybersecurity feeds and APIs. All trademarks, logos, and original content remain the property of their respective owners. This platform functions strictly as an aggregator, crediting each source and linking back to the original publication.",
+    body: "News, threat indicators and related metrics are obtained in about 10 to 30 minutes from public and consolidated cybersecurity sources and APIs. All trademarks, logos and original content are the property of their respective owners. This platform works strictly as an aggregator, giving credit to each source and linking to the original publication.",
   },
   {
     heading: "No Warranty",
@@ -22,7 +22,7 @@ const sectionsEs = [
   },
   {
     heading: "Fuentes de Datos y Atribución",
-    body: "Las noticias, indicadores de amenazas y métricas relacionadas se obtienen en tiempo real a partir de fuentes de ciberseguridad y APIs públicas y consolidadas. Todas las marcas registradas, logotipos y contenido original son propiedad de sus respectivos dueños. Esta plataforma funciona estrictamente como un agregador, dando crédito a cada fuente y enlazando a la publicación original.",
+    body: "Las noticias, indicadores de amenazas y métricas relacionadas se obtienen en unos 10 a 30 min a partir de fuentes de ciberseguridad y APIs públicas y consolidadas. Todas las marcas registradas, logotipos y contenido original son propiedad de sus respectivos dueños. Esta plataforma funciona estrictamente como un agregador, dando crédito a cada fuente y enlazando a la publicación original.",
   },
   {
     heading: "Sin Garantía",

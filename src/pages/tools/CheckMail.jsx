@@ -165,9 +165,12 @@ export default function Mail(){
 
     if (loading) {
         return (
-            <TerminalKitty path="~/Auth">
-                <div>cargando</div>
-            </TerminalKitty>
+        <TerminalKitty path="~/Auth">
+            <div className="flex flex-col items-center justify-center min-h-screen text-[var(--text-secondary)]">
+                <i className="bx bx-loader-circle bx-spin text-[10vh] text-[var(--primary-color)]"></i>
+                <p className="text-[2vh] font-mono">Loading...</p>
+            </div>
+        </TerminalKitty>  
         );
     }
 

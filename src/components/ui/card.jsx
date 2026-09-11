@@ -84,17 +84,13 @@ export function CardImage({title, summary, frontPage, date, url, source}) {
 
 export function CardSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 p-3">
-      {[...Array(6)].map((_, i) => (
-        <div key={i} className="rounded-xl overflow-hidden border border-(--text-color)/10">
-          <Skeleton className="h-48 w-full" />
-          <div className="p-4 space-y-2">
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-5/6" />
-          </div>
-        </div>
-      ))}
+    <div className="h-full rounded-[var(--radius-card,14px)] overflow-hidden border border-(--text-color)/10 bg-(--bg-color)">
+      <Skeleton className="h-48 w-full" />
+      <div className="p-4 space-y-2">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-3 w-full" />
+        <Skeleton className="h-3 w-5/6" />
+      </div>
     </div>
   )
 }
@@ -111,49 +107,4 @@ export function NoResults(){
       <span className="text-sm mt-1">Try adjusting your filters</span>
     </div>
   )
-}
-
-
-export function KpiCard({ label, value, delta, deltaTone = "up", icon: Icon, accent }) {
-  return (
-    <div className="bg-(--bg-color)/60 backdrop-blur-xl rounded-[var(--radius-card,14px)]  p-4 relative overflow-hidden">
-      <div
-        className="absolute top-0 left-0 h-full w-3px"
-      />
-      <div className="flex items-start justify-between pl-2">
-        <div>
-          <p className="text-[10px] tracking-[0.14em] text-(--text-secondary) uppercase mb-2">
-            {label}
-          </p>
-          <p className="text-[28px] leading-none text-(--text-color) font-semibold">
-            {value}
-          </p>
-        </div>
-        <Icon size={18} style={{ color: accent }} strokeWidth={2} />
-      </div>
-      {delta && (
-        <p className="pl-2 mt-3 text-[11px]" style={{ color: deltaTone === "up" ? "var(--danger-color)" : "var(--success-color)" }}>
-          {deltaTone === "up" ? "▲" : "▼"} {delta}
-        </p>
-      )}
-    </div>
-  );
-}
-
-export function KpiCardSkeleton() {
-  return (
-    <div className="bg-(--bg-color)/60 backdrop-blur-xl rounded-lg p-4 relative overflow-hidden">
-      <div className="absolute top-0 left-0 h-full w-3px bg-(--text-secondary)/20" />
-      <div className="flex items-start justify-between pl-2">
-        <div className="flex-1">
-          <Skeleton className="h-3 w-20 mb-2" />
-          <Skeleton className="h-8 w-24" />
-        </div>
-        <Skeleton className="h-5 w-5 rounded" />
-      </div>
-      <div className="pl-2 mt-3">
-        <Skeleton className="h-3 w-16" />
-      </div>
-    </div>
-  );
 }

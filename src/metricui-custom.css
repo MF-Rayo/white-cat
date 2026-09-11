@@ -1,0 +1,191 @@
+@import "metricui/styles.css";
+
+
+/*ESTILO PARA LAS CARDS KPI - METRICui*/
+
+.card-metricui {
+  background-color: color-mix(in srgb, var(--bg-color) 60%, transparent);
+  backdrop-filter: blur(24px);
+  border-radius: var(--radius-card, 14px);
+  border-style: none;
+  padding: 1rem; 
+  position: relative;
+  overflow: hidden;
+
+  /* .dark esto lo indica en https://www.metricui.com/docs/guides/theming */
+  
+  --foreground: var(--text-color);
+  --background: var(--bg-color);
+  --card-bg: var(--bg-color);
+  --card-border: var(--border-hover);
+  --card-glow: var(--border-hover);
+  --muted: var(--text-secondary);
+  --accent: var(--primary-color);
+}
+
+.metricui-kpi-value, 
+[class*="value"] {
+  color: var(--text-color) !important;
+}
+
+.metricui-kpi-title,
+[class*="title"] {
+  color: var(--text-secondary) !important; 
+}
+
+.metricui-kpi-comparison,
+[class*="comparison"] {
+  color: var(--success-color) !important;
+}
+
+
+
+/* Alineación y estilos de DropdownFix */
+.dropdown-align-left {
+  position: relative;
+}
+
+.dropdown-align-left ul,
+.dropdown-align-left [role="menu"],
+.dropdown-align-left > div > div:last-child {
+  right: 0 !important;
+  left: auto !important;
+  background-color: var(--bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-card) !important;
+  padding: 8px !important;
+  max-height: 280px !important;
+  overflow-y: auto !important;
+  color: var(--text-color) !important;
+}
+
+.dropdown-align-left button:first-child,
+.dropdown-align-left > button,
+.dropdown-align-left [role="combobox"] {
+  background-color: var(--bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-card) !important;
+  color: var(--text-color) !important;
+  transition: border-color 0.15s ease, background-color 0.15s ease !important;
+}
+
+.dropdown-align-left button:first-child:hover,
+.dropdown-align-left > button:hover,
+.dropdown-align-left [role="combobox"]:hover {
+  border-color: var(--border-hover, var(--broder-hover)) !important;
+}
+
+.dropdown-align-left input[type="text"],
+.dropdown-align-left input[type="search"] {
+  background-color: var(--bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+  border-radius: var(--radius-card) !important;
+  padding: 6px 10px !important;
+  font-size: 0.8125rem !important;
+}
+
+.dropdown-align-left input[type="text"]::placeholder,
+.dropdown-align-left input[type="search"]::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+.dropdown-align-left input[type="text"]:focus,
+.dropdown-align-left input[type="search"]:focus {
+  outline: none !important;
+  border-color: var(--primary-color) !important;
+}
+
+.dropdown-align-left li,
+.dropdown-align-left [role="menuitem"],
+.dropdown-align-left option,
+.dropdown-align-left span {
+  color: var(--text-color) !important;
+  font-size: 0.8125rem !important;
+}
+
+.dropdown-align-left li,
+.dropdown-align-left [role="menuitem"] {
+  padding: 8px 12px !important;
+  border-radius: calc(var(--radius-card) / 1.5) !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.dropdown-align-left li:hover,
+.dropdown-align-left [role="menuitem"]:hover,
+.dropdown-align-left [role="menuitem"][data-highlighted] {
+  background-color: var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+.dropdown-align-left li[data-selected="true"],
+.dropdown-align-left [aria-selected="true"],
+.dropdown-align-left li[aria-selected="true"],
+.dropdown-align-left li[data-state="checked"] {
+  background-color: color-mix(in srgb, var(--primary-color) 25%, transparent) !important;
+  border: 1px solid var(--primary-color) !important;
+  color: var(--text-color) !important;
+  font-weight: 600 !important;
+}
+
+.dropdown-align-left li[data-selected="true"] span,
+.dropdown-align-left [aria-selected="true"] span,
+.dropdown-align-left li[data-state="checked"] span {
+  color: var(--text-color) !important;
+}
+
+.dropdown-align-left li[data-selected="true"] svg,
+.dropdown-align-left [aria-selected="true"] svg,
+.dropdown-align-left li[data-selected="true"] path,
+.dropdown-align-left [aria-selected="true"] path,
+.dropdown-align-left li[data-state="checked"] svg {
+  color: var(--primary-color) !important;
+  stroke: var(--primary-color) !important;
+  fill: var(--primary-color) !important;
+}
+
+
+/* Solo borde inferior en el buscador de DataTable*/
+
+.card-metricui div:has(> input[type="text"]),
+.card-metricui div:has(> input[type="search"]),
+[class*="DataTable"] div:has(> input) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.card-metricui input[type="text"],
+.card-metricui input[type="search"],
+[class*="DataTable"] input {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  border-radius: 0 !important; 
+  
+  background-color: transparent !important;
+  color: var(--text-color) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  
+  padding: 6px 4px !important;
+  font-size: 0.8125rem !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.card-metricui input[type="text"]:focus,
+.card-metricui input[type="search"]:focus,
+[class*="DataTable"] input:focus {
+  border-bottom: 1px solid var(--primary-color) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.card-metricui input::placeholder,
+[class*="DataTable"] input::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.6;
+}
+
