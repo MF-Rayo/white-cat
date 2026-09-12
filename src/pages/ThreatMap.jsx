@@ -30,7 +30,7 @@ function DataMap({ apiData, apiSummary }) {
 
   return(
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
         <KpiCard
           title="Today's Threats"
           value={data.threat_today}
@@ -160,7 +160,7 @@ function ThreatBody( { search } ) {
 
   return (
     <TerminalKitty
-      path="~/Global Threat Map"
+      path="~/Threat Map"
       headerContent={
         <ErrorBoundary
           resetKey={`${endpoints.iocCountry}|${endpoints.iocDates}`}
@@ -179,7 +179,7 @@ function ThreatBody( { search } ) {
         <ErrorBoundary resetKey={theartUrl} onRetry={() => invalidate(theartUrl)}>
           <Suspense fallback={
             <>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
               <KpiCard loading className="card-metricui"/>
               <KpiCard loading className="card-metricui"/>
               <KpiCard loading className="card-metricui"/>

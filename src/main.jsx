@@ -17,13 +17,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </AlertProvider>
     </AuthProvider>
 )
-
-{/*
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <AlertProvider>
-      <App />
-    </AlertProvider>
-  </React.StrictMode>,
-)
-  */}

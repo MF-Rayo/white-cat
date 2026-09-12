@@ -6,8 +6,10 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
-* {
-  font-family: "Poppins", "Nunito", "sans-serif";
+html, body, #root {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -15,7 +17,8 @@ body {
   background-image: var(--image);
   background-position: center;     
   background-repeat: no-repeat;    
-  background-size: cover;        
+  background-size: cover;          
+  background-attachment: fixed;
 }
 
 html, * {

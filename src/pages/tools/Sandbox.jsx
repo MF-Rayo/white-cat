@@ -4,7 +4,6 @@ import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
 import SimpleLogin from "@/pages/Login"
 
-
 import { KpiCard,FilterBar, FilterProvider,
   DropdownFilter, useMetricFilters, DataTable } from "metricui";
 
@@ -109,68 +108,17 @@ function Box ({ domainURL }) {
 
     return(
         <>
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 px-4 pt-4">
-            
-            <KpiCard
-            title="Host"
-            value={data.host}
-            format="number"
-            className="card-metricui"
-            />
-
-            <KpiCard
-            title="IPs / Requests"
-            value={data.ips_count}
-            format="number"
-            sparkline={{
-                data: [2, 6, 0, 14, 10, `${data.ips_count}`],
-                type: "line",
-                interactive: true,
-            }} className="card-metricui"
-            />
-
-            <KpiCard
-            title="Domains"
-            value={data.domain_count}
-            format="number"
-            sparkline={{
-                data: [7, 4, 0 , 2, 9, `${data.domain_count}`],
-                type: "line",
-                interactive: true,
-            }} className="card-metricui"
-            />
-
-            <KpiCard
-            title="Links Found"
-            value={data.links_count}
-            format="number"
-            sparkline={{
-                data: [20, 31, 50, 6, 10, `${data.links_count}`],
-                type: "line",
-                interactive: true,
-            }} className="card-metricui"
-            />
-
-            <KpiCard
-            title="Certificates"
-            value={data.certificate_count}
-            format="number"
-            sparkline={{
-                data: [2, 31, 0, 14, 10, `${data.certificate_count}`],
-                type: "line",
-                interactive: true,
-            }} className="card-metricui"
-            />
-
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 px-4 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 px-4 pt-4">
+            <Panel title={`Screenshot ${data.host}`} className="lg:col-span-3">
+                <img src={data.screenshotURL} alt={`Screenshot de ${data.domain}`}
+                    className="w-full rounded-b-[var(--radius-card,14px)]"/>
+            </Panel>
             <div className="lg:col-span-3">
                 <DataTable
                 className="card-metricui"
                 data={rows}
                 columns={columns}
-                title={data?.host ? `IP Intelligence: ${data.host}` : "IP Intelligence"}
+                title={data?.host ? `IP Intelligence:  ${data.ips_count}` : "IP Intelligence"}
                 pageSize={7}
                 searchable
                 renderExpanded={(row) => (
@@ -183,13 +131,9 @@ function Box ({ domainURL }) {
                 )}
                 />
             </div>
-            <Panel title="Screenshot" className="lg:col-span-3">
-                <img src={data.screenshotURL} alt={`Screenshot de ${data.domain}`}
-                    className="w-full rounded-b-[var(--radius-card,14px)]"/>
-            </Panel>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 p-4">
             <div className="lg:col-span-2">
                 <DataTable
                     data={data.links}
@@ -321,14 +265,7 @@ function SandboxBody({ search }) {
                     <Suspense
                         fallback={
                             <>
-                            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 p-4">
-                                <KpiCard loading className="card-metricui"/>
-                                <KpiCard loading className="card-metricui"/>
-                                <KpiCard loading className="card-metricui"/>
-                                <KpiCard loading className="card-metricui"/>
-                                <KpiCard loading className="card-metricui"/> 
-                            </div>
-                            <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 px-4 pt-4">
+                            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 px-4 pt-4">
                                 <div className="lg:col-span-3">
                                     <DataTable data={[]} loading className="card-metricui"/>
                                 </div>

@@ -43,7 +43,7 @@ function DashboardContent({ apiData }) {
 
   return (
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
 
         <KpiCard
           title="Today's Threats"
@@ -163,8 +163,12 @@ function DashboardContent({ apiData }) {
 function LastDate({ apiData }) {
   const date = apiData.read();
 
-  const time = new Date(date.added + "Z").toLocaleTimeString("es-ES", {
+  const formattedDate = new Date(date.updated).toLocaleString("en-US", {
     timeZone: "UTC",
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -172,7 +176,9 @@ function LastDate({ apiData }) {
   });
 
   return (
-    <p className="text-(--text-secondary)">Last Update: {time} UTC</p>
+    <p className="text-white/40 text-xs">
+      Updated: {formattedDate} UTC
+    </p>
   );
 }
 
@@ -182,12 +188,14 @@ export default function DashboardPage() {
   return (
     <TerminalKitty path="~/Dashboard"
       headerContent={
-        <LastDate apiData={apiData}/>
+        <Suspense>
+          <LastDate apiData={apiData}/>
+        </Suspense>
     }>
       <div className="min-h-screen p-4">
         <Suspense fallback={
           <>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               <KpiCard loading className="card-metricui"/>
               <KpiCard loading className="card-metricui"/>
               <KpiCard loading className="card-metricui"/>
