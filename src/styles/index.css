@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Pixelify+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
-@import "colors.css";
+@import "config.css";
 @import "metricui-custom.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -14,7 +14,6 @@ html, body, #root {
 
 body {
   background-color: var(--bg-color);
-  background-image: var(--image);
   background-position: center;     
   background-repeat: no-repeat;    
   background-size: cover;          
@@ -73,15 +72,25 @@ html::-webkit-scrollbar-thumb:hover,
 /*ESTILO PARA LOS MARCADORES DE LOS MAPAS*/
 
 .leaflet-popup-content-wrapper {
-  background-color: var(--card-bg) !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-  border-radius: 10px !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+  background: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
   padding: 0 !important;
 }
 
 .leaflet-popup-tip {
-  background-color: var(--card-bg) !important;
+  background: var(--bg-color) !important;
+  box-shadow: none !important;
+}
+
+/* Ajusta el botón de cerrar */
+.leaflet-popup-close-button {
+  color: #888 !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #fff !important;
 }
 
 .leaflet-popup-content {
@@ -144,42 +153,6 @@ html::-webkit-scrollbar-thumb:hover,
   padding: 0px 5px;
   font-size: 12px;
   word-break: break-all;
-}
-
-
-
-#map-legend{
-  background:var(--card-bg);
-  border:1px solid var(--border-color);
-  border-radius:8px;
-  padding:10px 14px;
-  color:var(--text-color);
-  font-size:12px;
-  max-height:500px;
-  overflow-y:auto;
-  min-width:300px;
-}
-
-#map-legend p {
-  margin: 0 0 6px;
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: .06em;
-  color: var(--text-muted, #8a91a8);
-  text-transform: uppercase;
-  font-weight: 700;
-  font-family: 'Nunito', sans-serif !important;
-}
-
-#map-legend::-webkit-scrollbar {
-  width: 4px;
-}
-#map-legend::-webkit-scrollbar-track {
-  background: transparent;
-}
-#map-legend::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.15);
-  border-radius: 4px;
 }
 
 

@@ -85,7 +85,7 @@ function ThreatMarkers({ data }) {
             const marker = L.marker([lat, lon], { icon: makeIcon(color) })
 
             marker.bindPopup(`
-                <div style="font-size: 12px; min-width: 260px; background: var(--bg-color); padding: 4%; border: 1px solid ${color}; border-radius: 14px;">
+                <div style="font-size: 12px; min-width: 260px; background: var(--bg-color); padding: 4%; border: 1px solid ${color};">
                 <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
                     <span style="color:${color};font-weight:bold">${key}</span>
                 </div>
@@ -104,14 +104,14 @@ function ThreatMarkers({ data }) {
                         <button
                             onclick="window.__analyzeInSandbox('${item.ioc_value}')"
                             style="width:100%;padding:6px 0;border:1px solid ${color};
-                            border-radius:8px;background:transparent;color:${color};
+                            background:transparent;color:${color};
                             font-weight:bold;cursor:pointer;font-family:inherit;font-size:inherit"
                         >
                             Analyze (Sandbox)
                         </button>
                     </div>
                 ` : ''}
-            `, { maxWidth: 400 })
+            `, { maxWidth: 400, className: 'custom-dark-popup' })
 
             cluster.addLayer(marker)
         })

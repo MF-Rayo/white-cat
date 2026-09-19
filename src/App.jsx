@@ -1,17 +1,20 @@
-import { ChartLine, FileBraces, Network, Brain, Earth, Newspaper, Users, Settings, BookOpenText, 
-  UserRoundKey, Link2, FileTerminal, LogOut, ScanSearch, Library, Summary, ShieldAlert, ChartArea } from "lucide-react"
-import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
-import Sidebar, { SidebarItem, SidebarCategory  } from "@/components/Sidebar"
-import ThreatPage from "@/pages/ThreatMap"
-import NewsPage from "@/pages/News"
-import DashboardPage from "@/pages/Dashboard"
-import ActiveGroupsPage from "@/pages/ActiveGroups"
-import DisclaimerBlock from "@/pages/Disclaimer"
-import WebSandbox from "@/pages/tools/Sandbox"
-import WebCheckMail from "@/pages/tools/CheckMail"
-import Color from "@/pages/Settings"
-import { useAuth } from "@/context/AuthContext"
 import { useState, useEffect } from "react"
+import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
+
+import { useAuth } from "@/context/AuthContext"
+
+import DataPixelArc from "@/components/PixelArc"
+import Sidebar, { SidebarItem, SidebarCategory  } from "@/components/Sidebar"
+
+import ThreatPage from "@/pages/ThreatMap"
+import DashboardPage from "@/pages/Dashboard"
+import WebSandbox from "@/pages/tools/Sandbox"
+import DisclaimerBlock from "@/pages/Disclaimer"
+import WebCheckMail from "@/pages/tools/CheckMail"
+import ActiveGroupsPage from "@/pages/ActiveGroups"
+
+import { ChartLine, Earth, Users, Newspaper, LogOut,
+  Brain, BookOpenText, ScanSearch, Link2, UserRoundKey } from "lucide-react"
 
 function App() {
   return (
@@ -24,16 +27,6 @@ function App() {
 function AppLayout() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
 
   function Logout(){
     const { isAuthenticated, logout } = useAuth();
@@ -59,17 +52,15 @@ function AppLayout() {
 
   return (
     <div className="flex h-screen w-full">
+
+      <div className="fixed inset-0 -z-10">
+        <DataPixelArc style={{ minWidth: 0, minHeight: 0 }} />
+      </div>
+      
       <Sidebar footer={
         <>
           <hr className="my-3 border-white/5" />
           <Logout/>
-          <SidebarItem 
-            icon={<Settings size={20} />} 
-            text="Settings"
-            active={location.pathname === "/settings"} 
-            onClick={() => navigate("/settings")} 
-            alert 
-          />
           <SidebarItem 
             icon={<BookOpenText size={20} />} 
             text="Disclaimer"
@@ -113,12 +104,6 @@ function AppLayout() {
             active={location.pathname === "/activegroups"} 
             onClick={() => navigate("/activegroups")} 
           />
-          <SidebarItem 
-            icon={<Newspaper size={18} />} 
-            text="Cybersecurity News"
-            active={location.pathname === "/news"} 
-            onClick={() => navigate("/news")} 
-          />
         </SidebarCategory>
 
         <SidebarCategory icon={<ScanSearch size={20} />} text="Investigation Tools">
@@ -137,14 +122,12 @@ function AppLayout() {
         </SidebarCategory> 
       </Sidebar>
 
-      <div className={`flex-1 h-screen p-2 lg:p-2 ${isMobile ? 'pt-16' : 'pl-16'} flex items-center justify-center overflow-y-auto`}>
+      <div className="h-screen w-full overflow-y-auto">
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage/>} />
-          <Route path="/news" element={<NewsPage/>} />
-          <Route path="/activegroups" element={<ActiveGroupsPage/>} />
           <Route path="/threat/map" element={<ThreatPage/>} />
-          <Route path="/settings" element={<Color/>} />
+          <Route path="/activegroups" element={<ActiveGroupsPage/>} />
           <Route path="/disclaimer" element={<DisclaimerBlock/>} />
           <Route path="/web/sanbox" element={<WebSandbox/>} />
           <Route path="/check/mail" element={<WebCheckMail/>} />

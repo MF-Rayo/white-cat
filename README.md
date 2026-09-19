@@ -21,8 +21,8 @@ El objetivo principal de **White Cat** no es ser un producto comercial ni un ser
 
 **White Cat NO reclama autoría de ningún contenido periodístico.**
 
-1. **Uso de Feeds RSS Públicos:** La información de noticias se extrae a través de los feeds RSS abiertos y públicos brindados por sitios de ciberseguridad como *BleepingComputer, The Hacker News, The Record, Daily Dark Web*, entre otros.
-2. **Formato de Presentación (Snippets):** La aplicación únicamente muestra un extracto o titular breve a modo de vista previa (*preview*).
+1. **Uso de Feeds RSS Públicos:** La información de noticias se extrae a través de los feeds RSS abiertos y públicos brindados por sitios de ciberseguridad como *BleepingComputer, The Hacker News, The Record*, entre otros.
+2. **Formato de Presentación (Snippets):** La aplicación únicamente muestra un extracto o titular breve.
 3. **Redirección Obligatoria:** Todos los elementos incluyen de manera clara y visible la **fuente original** y un enlace directo. La lectura completa del artículo **siempre ocurre en el sitio web del autor original**.
 4. **Fines meramente educativos:** Este proyecto es sin fines de lucro. Si representas a alguno de los sitios web indexados y deseas que se remueva la vista previa de tus feeds, por favor abre un *Issue* en este repositorio y se eliminará de inmediato.
 
@@ -34,18 +34,25 @@ Este repositorio representa el código del **Frontend**:
 
 * **React + Vite**
 * **Tailwind CSS** (Diseño de la interfaz)
-* **MetricUI** (Práctica de gráficos e indicadores)
 * **pnpm** (Gestor de paquetes)
 
-*El Backend asociado está construido con FastAPI, MySQL/MariaDB y SQLAlchemy Async.*
+*El Backend asociado está construido con FastAPI, MySQL y SQLAlchemy Async.*
 
 ---
 
-## Estado del Proyecto
+## Componentes
+
+* [metricUI](https://www.metricui.com)
+* [Lucide](https://lucide.dev/)
+* [SeraUI](https://seraui.com/docs/login)
+
+---
+
+## Features
 
 * [x] Estructura inicial de Dashboard y componentes UI.
 * [x] Mapeo e integración de endpoints en React.
 * [x] Manejo de errores.
-* [ ] Optimización de rendimiento y carga modular.
-* [x] Ajuste responsive completo.
-* [ ]  Implementacion de WebSockets desde el servidor.
+* [x] Optimización de rendimiento y carga modular.
+* [ ] Ajuste responsive completo.
+* [x] Server Sent Events.

@@ -1,4 +1,4 @@
-import TerminalKitty from "@/components/ui/kitty"
+import Container from "@/components/Container"
 
 const sectionsEn = [
   {
@@ -32,11 +32,11 @@ const sectionsEs = [
 
 export default function DisclaimerBlock() {
   return (
-    <TerminalKitty path="~/Disclaimer" headerContent={null}>
+    <Container path="~/Disclaimer" className="bg-[var(--bg-color)]/60">
       
       <div className="p-4 m-4 font-mono text-sm text-(--text-color)">
         <div className="mb-1 text-xs pb-2 select-none">
-          <span className="text-(--primary-color) text-sm font-bold">$whitecat@debian: </span>
+          <span className="text-(--primary-color) text-sm font-bold">whitecat@dev: </span>
           <span className="text-(--text-color) text-sm">cat disclaimer_en.md</span>
         </div>
         <p className="font-bold mb-3 text-(--text-secondary)">Legal, Educational Notice & Disclaimer</p>
@@ -48,7 +48,7 @@ export default function DisclaimerBlock() {
           ))}
         </div>
         <div className="mt-4 text-xs pb-2 select-none">
-          <span className="text-(--primary-color) text-sm font-bold">$whitecat@debian: </span>
+          <span className="text-(--primary-color) text-sm font-bold">whitecat@dev: </span>
           <span className="text-(--text-color) text-sm">cat disclaimer_es.md</span>
         </div>
         <p className="font-bold mb-3 text-(--text-secondary)">Legal, Educational Notice & Disclaimer</p>
@@ -61,6 +61,6 @@ export default function DisclaimerBlock() {
         </div>
       </div>
 
-    </TerminalKitty>
+    </Container>
   )
 }

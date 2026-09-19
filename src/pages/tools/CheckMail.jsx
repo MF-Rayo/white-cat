@@ -6,7 +6,7 @@ import CustomInputButton from "@/components/ui/input"
 import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
 import { ErrorBoundary } from "@/hooks/ErrorBoundary";
-import TerminalKitty from "@/components/ui/kitty";
+import Container from "@/components/Container"
 import { ShieldAlert, ShieldCheck, ExternalLink, KeyRound, Search } from "lucide-react";
 
 
@@ -163,22 +163,13 @@ export default function Mail(){
     const [query, setQuery] = useState("");
     const [activeURL, setActiveURL] = useState(null);
 
-    if (loading) {
-        return (
-        <TerminalKitty path="~/Auth">
-            <div className="flex flex-col items-center justify-center min-h-screen text-[var(--text-secondary)]">
-                <i className="bx bx-loader-circle bx-spin text-[10vh] text-[var(--primary-color)]"></i>
-                <p className="text-[2vh] font-mono">Loading...</p>
-            </div>
-        </TerminalKitty>  
-        );
-    }
+    if (loading) {return (<Container path="~/Loading..."/>);}
 
     if (!isAuthenticated) {
         return (
-            <TerminalKitty path="~/Login">
+            <Container path="~/Login">
                 <SimpleLogin />
-            </TerminalKitty>
+            </Container>
         );
     }
 
@@ -190,7 +181,7 @@ export default function Mail(){
 
 
     return(
-        <TerminalKitty path="~/Check Mail"
+        <Container path="~/Check Mail"
             headerContent={
                 <CustomInputButton
                     value={query}
@@ -211,6 +202,6 @@ export default function Mail(){
                 </Suspense>
             </ErrorBoundary>
         )}
-        </TerminalKitty>
+        </Container>
     )
 }

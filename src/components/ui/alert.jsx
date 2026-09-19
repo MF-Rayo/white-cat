@@ -10,10 +10,10 @@ const icons = {
 }
 
 const colors = {
-  success: "text-(--success-color) bg-[color-mix(in_srgb,var(--card-bg)_50%,var(--success-color)_8%)] border-(--success-color)",
-  warning: "text-(--warning-color) bg-[color-mix(in_srgb,var(--card-bg)_50%,var(--warning-color)_8%)] border-(--warning-color)",
-  danger:  "text-(--danger-color)  bg-[color-mix(in_srgb,var(--card-bg)_50%,var(--danger-color)_8%)]  border-(--danger-color)",
-  info:    "text-(--info-color)    bg-[color-mix(in_srgb,var(--card-bg)_50%,var(--info-color)_8%)]    border-(--info-color)",
+  success: "text-(--success-color) bg-(--bg-color) border-(--success-color)",
+  warning: "text-(--warning-color) bg-(--bg-color) border-(--warning-color)",
+  danger:  "text-(--danger-color)  bg-(--bg-color) border-(--danger-color)",
+  info:    "text-(--info-color)    bg-(--bg-color) border-(--info-color)",
 }
 
 export function Alert({ id, type = "info", message, onClose }) {

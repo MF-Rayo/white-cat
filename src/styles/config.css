@@ -2,8 +2,6 @@
     --bar-bg: #161616;
     --bg-color: #050810;
     --card-bg: #090b0c5b;
-    
-    --kitty: #0f0a1a;
 
     --primary-color: #3066f6;
 
@@ -25,8 +23,10 @@
     --accent:      #3b82f6;
     --accent-dim:  rgba(59,130,246,0.12);
     --accent-glow: rgba(59,130,246,0.25);
-    --radius-card: 14px;
-    --radius-sm:   8px;
+   
+    --radius-card: 0px;
+    --gap: calc(var(--spacing) * 2);
+    --pd: calc(var(--spacing) * 2);
 
     --image: url(./assets/bg/blue.webp);
 

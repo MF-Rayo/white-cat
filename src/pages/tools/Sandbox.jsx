@@ -8,7 +8,7 @@ import { KpiCard,FilterBar, FilterProvider,
   DropdownFilter, useMetricFilters, DataTable } from "metricui";
 
 import { Panel } from "@/components/ui/panel";
-import TerminalKitty from "@/components/ui/kitty";
+import Container from "@/components/Container"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ErrorBoundary } from "@/hooks/ErrorBoundary";
 import { SimpleMap } from "@/components/ui/map"
@@ -39,11 +39,7 @@ function Box ({ domainURL }) {
     ];
 
     const rows = useMemo(() => {
-        if (!data) return [];
-        
-        if (Array.isArray(data.ipStats) && data.ipStats.length > 0) {
-            return data.ipStats;
-        }
+        return Array.isArray(data?.ipStats) ? data.ipStats : [];
     }, [data]);
 
 
@@ -85,11 +81,7 @@ function Box ({ domainURL }) {
     ];
 
     const rowsCookies = useMemo(() => {
-        if (!data) return [];
-        
-        if (Array.isArray(data.cookies) && data.ipStats.length > 0) {
-            return data.cookies;
-        }
+        return Array.isArray(data?.cookies) ? data.cookies : [];
     }, [data]);
 
 
@@ -98,11 +90,7 @@ function Box ({ domainURL }) {
     ];
 
     const rowsRedirects = useMemo(() => {
-        if (!data) return [];
-        
-        if (Array.isArray(data.redirects) && data.ipStats.length > 0) {
-            return data.redirects;
-        }
+        return Array.isArray(data?.redirects) ? data.redirects : [];
     }, [data]);
 
 
@@ -220,21 +208,32 @@ function SandboxBody({ search }) {
     ? `${endpoints.sandBoxPrev}?${params}`
     : endpoints.sandBoxPrev;
 
+    const formatUrl = (input) => {
+    const trimmed = input.trim();
+        if (!trimmed) return "";
+        
+        if (!/^https?:\/\//i.test(trimmed)) {
+            return `http://${trimmed}`;
+        }
+        
+        return trimmed;
+    };
+
+    const handleSearch = () => {
+    const formattedQuery = formatUrl(query);
+        if (!formattedQuery) return;
+        setScanDomain(formattedQuery);
+    };
 
     const scanParams = new URLSearchParams();
     if (scanDomain) scanParams.set("url", scanDomain);
 
     const scanURL = scanDomain
-        ? `${endpoints.sandBoxScan}?${scanParams}`
-        : null;
-
-    const handleSearch = () => {
-        if (!query.trim()) return;
-        setScanDomain(query.trim());
-    };
+    ? `${endpoints.sandBoxScan}?${scanParams}`
+    : null;
 
     return (
-        <TerminalKitty
+        <Container
         path = "~/SandBox"
         headerContent={
             <Suspense>
@@ -282,7 +281,7 @@ function SandboxBody({ search }) {
             </ErrorBoundary>
         )}
 
-        </TerminalKitty>
+        </Container>
     );
 }
 
@@ -291,29 +290,20 @@ export default function Sandbox() {
     const [search] = useState("");
     const { isAuthenticated, loading } = useAuth();
 
-    if (loading) {
-        return (
-        <TerminalKitty path="~/Auth">
-            <div className="flex flex-col items-center justify-center min-h-screen text-[var(--text-secondary)]">
-                <i className="bx bx-loader-circle bx-spin text-[10vh] text-[var(--primary-color)]"></i>
-                <p className="text-[2vh] font-mono">Loading...</p>
-            </div>
-        </TerminalKitty>    
-        );
-    }
+    if (loading) {return (<Container path="~/Loading..."/>);}
 
     if (!isAuthenticated) {
         return (
-            <TerminalKitty path="~/Login">
+            <Container path="~/Login">
                 <SimpleLogin />
-            </TerminalKitty>
+            </Container>
         );
     }
 
   return (
     <FilterProvider>
       <ErrorBoundary fallback={<div>Algo salió mal</div>}>
-        <Suspense fallback={<TerminalKitty path="~/SandBox" />}>
+        <Suspense fallback={<Container path="~/SandBox" />}>
           <SandboxBody search={search} />
         </Suspense>
       </ErrorBoundary>

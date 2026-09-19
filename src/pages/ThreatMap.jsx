@@ -9,7 +9,7 @@ import { KpiCard, DonutChart, FilterBar, FilterProvider,
 import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
 import { Panel } from "@/components/ui/panel";
-import TerminalKitty from "@/components/ui/kitty"
+import Container from "@/components/Container"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ErrorBoundary } from "@/hooks/ErrorBoundary";
 
@@ -30,7 +30,7 @@ function DataMap({ apiData, apiSummary }) {
 
   return(
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gap) p-(--pd)">
         <KpiCard
           title="Today's Threats"
           value={data.threat_today}
@@ -74,9 +74,9 @@ function DataMap({ apiData, apiSummary }) {
         />
       </div>
 
-      <div className="px-4 grid grid-cols-1 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) px-(--pd)">
         <Panel title="Threat Map" 
-          className="lg:col-span-4 rounded-[var(--radius-card,14px)] overflow-hidden min-h-[70vh]">
+          className="lg:col-span-4 rounded-[var(--radius-card)] overflow-hidden min-h-[70vh]">
           <ThreatMap apiData={apiData}></ThreatMap>
         </Panel>
         <div className="lg:col-span-2">
@@ -87,11 +87,11 @@ function DataMap({ apiData, apiSummary }) {
             enableArcLinkLabels
             arcLabelsSkipAngle={15}
             arcLinkLabelsSkipAngle={15}
-            className="card-metricui"
+            className="card-metricui h-full"
           />   
         </div>
       </div>
-      <div className="p-4">
+      <div className="p-(--pd)">
         {dataTable.length > 0 && (
           <TableUI dataTable={dataTable} />
         )}
@@ -107,7 +107,7 @@ function ThreatFilters() {
   const threat = apiThreat.read();
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-(--gap)">
       <div className="dropdown-align-left">
         <DropdownFilter
           label="Threat"
@@ -159,7 +159,7 @@ function ThreatBody( { search } ) {
   const apiData = fetchData(theartUrl);
 
   return (
-    <TerminalKitty
+    <Container
       path="~/Threat Map"
       headerContent={
         <ErrorBoundary
@@ -179,16 +179,16 @@ function ThreatBody( { search } ) {
         <ErrorBoundary resetKey={theartUrl} onRetry={() => invalidate(theartUrl)}>
           <Suspense fallback={
             <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gap) p-(--pd)">
               <KpiCard loading className="card-metricui"/>
               <KpiCard loading className="card-metricui"/>
               <KpiCard loading className="card-metricui"/>
             </div>
-            <div className="px-4 grid grid-cols-1 lg:grid-cols-6 gap-4">
-              <div className="lg:col-span-4 rounded-[var(--radius-card,14px)] overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) px-(--pd)">
+              <div className="lg:col-span-4 rounded-[var(--radius-card)] overflow-hidden">
                 <LineChart data={[]} title="Map" loading className="card-metricui"/>
               </div>
-              <div className="lg:col-span-2 rounded-[var(--radius-card,14px)] overflow-hidden">
+              <div className="lg:col-span-2 rounded-[var(--radius-card)] overflow-hidden">
                 <LineChart data={[]} title="chart" loading className="card-metricui"/>
               </div>
             </div>
@@ -201,7 +201,7 @@ function ThreatBody( { search } ) {
           </Suspense>
         </ErrorBoundary>
       </div>
-    </TerminalKitty>
+    </Container>
   )
 }
 

@@ -4,10 +4,10 @@
 /*ESTILO PARA LAS CARDS KPI - METRICui*/
 
 .card-metricui {
-  background-color: color-mix(in srgb, var(--bg-color) 60%, transparent);
+  background-color: color-mix(in srgb, var(--bg-color) 80%, transparent);
   backdrop-filter: blur(24px);
-  border-radius: var(--radius-card, 14px);
-  border-style: none;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-color);
   padding: 1rem; 
   position: relative;
   overflow: hidden;
@@ -16,12 +16,24 @@
   
   --foreground: var(--text-color);
   --background: var(--bg-color);
-  --card-bg: var(--bg-color);
-  --card-border: var(--border-hover);
   --card-glow: var(--border-hover);
   --muted: var(--text-secondary);
   --accent: var(--primary-color);
+
+  --card-bg: var(--bg-color);
+  --card-border: var(--border-hover);
 }
+
+/*Quitar borde blanco en tabla*/
+.card-metricui [class*="gradient"],
+.card-metricui [class*="shadow"],
+.card-metricui [class*="from-white"],
+.card-metricui [class*="to-transparent"],
+.card-metricui [class*="pointer-events-none"] {
+  display: none !important;
+  opacity: 0 !important;
+}
+
 
 .metricui-kpi-value, 
 [class*="value"] {

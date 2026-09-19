@@ -7,7 +7,7 @@ export function CardImage({title, summary, frontPage, date, url, source}) {
 
   return (
     <div onClick={() => window.open(url, "_blank")}
-      className="group relative flex flex-col overflow-hidden bg-(--bg-color)/60 backdrop-blur-xl rounded-[var(--radius-card,14px)] 
+      className="group relative flex flex-col overflow-hidden bg-(--bg-color)/80 backdrop-blur-xl rounded-[var(--radius-card,14px)] 
       cursor-pointer transition-all duration-300 hover:scale-[1.02]"
     >
 
@@ -44,24 +44,17 @@ export function CardImage({title, summary, frontPage, date, url, source}) {
           {title}
         </h3>
 
-        <p
-          className="text-xs leading-relaxed line-clamp-3"
-          style={{ color: "var(--text-secondary)", fontFamily: "Poppins, sans-serif" }}
-        >
+        <p className="text-xs leading-relaxed line-clamp-3 text-(--text-secondary)">
           {summary}
         </p>
 
         <div className="flex items-center justify-between pt-1 mt-auto">
-          <span
-            className="text-[10px] font-mono tracking-widest uppercase opacity-40"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            read_more
+          <span className="text-[10px] font-mono tracking-widest uppercase opacity-40 text-(--text-secondary)">
+            Go to the original source of the information
           </span>
-          <div
-            className="flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase transition-all duration-200 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0"
-            style={{ color: "var(--primary-color)", fontFamily: "Poppins, sans-serif" }}
-          >
+          <div className="flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase 
+            transition-all duration-200 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0
+            text-(--primary-color)">
             <span>→</span>
           </div>
         </div>

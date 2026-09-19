@@ -6,7 +6,7 @@ import { endpoints } from "@/lib/api"
 import { FilterBar, FilterProvider, DropdownFilter, useMetricFilters } from "metricui"
 
 import { CardImage, CardSkeleton, NoResults } from "@/components/ui/card"
-import TerminalKitty from "@/components/ui/kitty"
+import Container from "@/components/Container"
 import { ErrorBoundary } from "@/hooks/ErrorBoundary.jsx";
 
 const apiDate = fetchData(endpoints.activeGroupsDates)
@@ -87,7 +87,7 @@ function ActiveGroupsBody({ search }) {
   const apiData = fetchData(activeGroupUrl);
 
   return (
-    <TerminalKitty
+    <Container
       path="~/Active Groups"
       headerContent={
         <Suspense>
@@ -108,7 +108,7 @@ function ActiveGroupsBody({ search }) {
           </Suspense>
         </ErrorBoundary>
       </div>
-    </TerminalKitty>
+    </Container>
   )
 }
 
