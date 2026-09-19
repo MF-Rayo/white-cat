@@ -42,9 +42,10 @@ Este repositorio representa el código del **Frontend**:
 
 ## Componentes
 
-* [metricUI](https://www.metricui.com)
+* [MetricUI](https://www.metricui.com)
 * [Lucide](https://lucide.dev/)
 * [SeraUI](https://seraui.com/docs/login)
+* [OriginKit](https://www.originkit.dev/components/pixel-arc?preset=base)
 
 ---
 
