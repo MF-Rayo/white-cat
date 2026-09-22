@@ -56,6 +56,6 @@ Este repositorio representa el código del **Frontend**:
 * [x] Estructura inicial de Dashboard y componentes UI.
 * [x] Mapeo e integración de endpoints en React.
 * [x] Manejo de errores.
-* [x] Optimización de rendimiento y carga modular.
+* [ ] Optimización de rendimiento y carga modular.
 * [ ] Ajuste responsive completo.
 * [x] Server Sent Events.

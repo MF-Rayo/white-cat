@@ -96,7 +96,7 @@ function Box ({ domainURL }) {
 
     return(
         <>
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 px-4 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) px-(--pd) pt-(--pd)">
             <Panel title={`Screenshot ${data.host}`} className="lg:col-span-3">
                 <img src={data.screenshotURL} alt={`Screenshot de ${data.domain}`}
                     className="w-full rounded-b-[var(--radius-card,14px)]"/>
@@ -121,7 +121,7 @@ function Box ({ domainURL }) {
             </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) p-(--pd)">
             <div className="lg:col-span-2">
                 <DataTable
                     data={data.links}

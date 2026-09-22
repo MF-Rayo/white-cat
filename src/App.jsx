@@ -120,6 +120,7 @@ function AppLayout() {
             onClick={() => navigate("/check/mail")} 
           />
         </SidebarCategory> 
+        
       </Sidebar>
 
       <div className="h-screen w-full overflow-y-auto">

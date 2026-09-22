@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { DataTable } from "metricui"; 
+import { DataTable, MetricProvider } from "metricui"; 
 
 const COLORS = [
   "var(--bar_a)", "var(--bar_b)", "var(--bar_c)", "var(--bar_d)", "var(--bar_e)",
@@ -133,14 +133,16 @@ export default function TableUI({ dataTable }) {
 
   return (
     <div className="lg:col-span-8">
-      <DataTable
-        data={dataTable}
-        columns={columns}
-        title="Live Threat Feed"
-        pageSize={8}
-        searchable
-        className="card-metricui w-full overflow-hidden"
-      />
+      <MetricProvider theme="emerald" exportable>
+        <DataTable
+          data={dataTable}
+          columns={columns}
+          title="Live Threat Feed"
+          pageSize={8}
+          searchable
+          className="card-metricui w-full overflow-hidden"
+        />
+      </MetricProvider>
     </div>
   );
 }

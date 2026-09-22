@@ -1,10 +1,12 @@
 import { Suspense, useMemo } from "react"
 import { ResponsiveContainer } from "recharts"
-import { Panel } from "@/components/ui/panel";
-import Container from "@/components/Container"
 
 import { SimpleMap } from "@/components/ui/map"
-import { KpiCard, AreaChart, LineChart, DonutChart, BarChart, DataTable } from "metricui";
+import { Panel } from "@/components/ui/panel";
+import { DataBarChart }  from "@/components/ui/chart";
+
+import Container from "@/components/Container"
+import { KpiCard, AreaChart, LineChart, DonutChart, DataTable, BarChart, MetricProvider } from "metricui";
 
 import { DashboardSummaryProvider, useDashboardSummary } from "@/context/DashboardContext";
 
@@ -59,8 +61,7 @@ function TableNew({ dataTable }) {
         data={dataTable}
         columns={columns}
         title="Today's Cybersecurity News"
-        pageSize={10}
-        searchable
+        pageSize={8}
         onRowClick={handleRowClick}
         className="card-metricui w-full overflow-hidden cursor-pointer"
       />
@@ -71,9 +72,10 @@ function TableNew({ dataTable }) {
 
 function DashboardContent({ apiData }) {
   const data = apiData;
+
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-(--gap)">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-(--gap)">
 
         <KpiCard
           title="Today's Threats"
@@ -118,10 +120,10 @@ function DashboardContent({ apiData }) {
         />
 
         <KpiCard
-          title="Today's Active Groups"
-          value={data.active_groups}
+          title="Today's Active Group Posts"
+          value={data.active_groups_posts}
           format="number"
-          comparison={{ value: data.active_groups_yesterday }}
+          comparison={{ value: data.active_groups_posts_yesterday }}
           comparisonLabel="vs yesterday"
           sparkline={{
             data: data.active_groups_sparkline,
@@ -164,8 +166,8 @@ function DashboardContent({ apiData }) {
         />
 
         <DonutChart
-          data={data.top_active_groups_today}
-          title="Top Active Groups of Today"
+          data={data.active_groups}
+          title="Today's Active Group Posts"
           enableArcLabels
           enableArcLinkLabels
           arcLabelsSkipAngle={15}
@@ -174,21 +176,12 @@ function DashboardContent({ apiData }) {
         />
 
         <div className="lg:col-span-2" >
-          <BarChart
-            preset="horizontal"
-            data={data.top_threats_week}
-            categories={["count"]}
-            index="threat_type"
-            title="Top Threats of the Week"
-            format={{ style: "number" }}
-            className="card-metricui h-full"
-          />
+          <DataBarChart groupsData={data?.active_groups_this_week} 
+          title="Active Group Posts of the Week" preset="horizontal"/>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-(--gap) pt-(--pd) items-stretch">
-        <div className="lg:col-span-2" >
-          <TableNew dataTable={data.cyber_news_today}/>
-        </div>
+       <div className="py-(--pd)" >
+        <TableNew dataTable={data.cyber_news_today}/>
       </div>
     </>
   )
@@ -239,10 +232,9 @@ function DashboardSkeleton() {
     <Container path="~/Dashboard">
       <div className="min-h-screen p-(--pd)">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-(--gap)">
+          {Array.from({ length: 4 }).map((_, index) => (
           <KpiCard loading className="card-metricui"/>
-          <KpiCard loading className="card-metricui"/>
-          <KpiCard loading className="card-metricui"/>
-          <KpiCard loading className="card-metricui"/>
+          ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) pt-(--pd)">
           <div className="lg:col-span-4">
@@ -256,7 +248,7 @@ function DashboardSkeleton() {
           <DonutChart data={[]} loading className="card-metricui"/>
           <DonutChart data={[]} loading className="card-metricui"/>
           <div className="lg:col-span-2" >
-            <BarChart data={[]} categories={["revenue"]} index="month" loading className="card-metricui"/>
+           <DonutChart data={[]} loading className="card-metricui"/>
           </div>
         </div>
       </div>
@@ -264,7 +256,6 @@ function DashboardSkeleton() {
     </>
   )
 }
-
 
 
 export default function DashboardPage() {
@@ -284,7 +275,9 @@ function DashboardInner() {
   return (
     <Container path="~/Dashboard" headerContent={<LastDate apiData={apiData} />}>
       <div className="min-h-screen p-(--pd)">
-        <DashboardContent apiData={apiData} />
+        <MetricProvider exportable>
+          <DashboardContent apiData={apiData} />
+        </MetricProvider>
       </div>
     </Container>
   );
