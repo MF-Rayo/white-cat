@@ -42,7 +42,7 @@ const Login3 = () => {
   return(
     <div className="min-h-full flex items-center justify-center p-4">
       <div className="fixed inset-0 -z-10">
-        <HalftoneBloom />
+        <DataPixelArc />
       </div>
 
       <div className="w-full max-w-md">
