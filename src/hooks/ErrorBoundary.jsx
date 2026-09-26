@@ -15,29 +15,37 @@ class ErrorBoundaryClass extends React.Component {
       return;
     }
 
-    this.props.onError?.({
-      type: "danger",
-      message: error?.message,
-    });
+    if (error?.status === 429) {
+      this.props.onRateLimited?.(error);
+      return;
+    }
+
+    this.props.onError?.(error);
   }
 
   render() {
-    if (this.state.hasError) return null;
+    if (this.state.hasError) return this.props.fallback ?? null;
     return this.props.children;
   }
 }
 
-export function ErrorBoundary({ children, resetKey, onRetry }) {
-  const { showAlert } = useAlert();
+export function ErrorBoundary({ children, resetKey, onRetry, fallback }) {
+  const { showError, showWarning } = useAlert();
   const { logout } = useAuth();
 
   return (
     <ErrorBoundaryClass
       key={resetKey}
-      onError={showAlert}
+      fallback={fallback}
       onRetry={onRetry}
+      onError={(error) => {
+        showError(error?.detail || error?.message);
+      }}
+      onRateLimited={(error) => {
+        showWarning(error?.detail);
+      }}
       onSessionExpired={() => {
-        showAlert({ type: "warning", message: "Your session expired, log in again" });
+        showWarning("Your session expired, log in again");
         logout();
       }}
     >

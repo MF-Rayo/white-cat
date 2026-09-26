@@ -2,15 +2,13 @@ import { useState, useEffect } from "react"
 import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
 
 import { useAuth } from "@/context/AuthContext"
-
-import DataPixelArc from "@/components/PixelArc"
 import Sidebar, { SidebarItem, SidebarCategory  } from "@/components/Sidebar"
 
 import ThreatPage from "@/pages/ThreatMap"
 import DashboardPage from "@/pages/Dashboard"
 import WebSandbox from "@/pages/tools/Sandbox"
 import DisclaimerBlock from "@/pages/Disclaimer"
-import WebCheckMail from "@/pages/tools/CheckMail"
+import WebCheckMail from "@/pages/tools/LeakChecker"
 import ActiveGroupsPage from "@/pages/ActiveGroups"
 
 import { ChartLine, Earth, Users, Newspaper, LogOut,
@@ -52,10 +50,6 @@ function AppLayout() {
 
   return (
     <div className="flex h-screen w-full">
-
-      <div className="fixed inset-0 -z-10">
-        <DataPixelArc style={{ minWidth: 0, minHeight: 0 }} />
-      </div>
       
       <Sidebar footer={
         <>
@@ -94,9 +88,9 @@ function AppLayout() {
         <SidebarCategory icon={<Brain size={20} />} text="Threat Intelligence" defaultOpen>
           <SidebarItem 
             icon={<Earth size={18} />} 
-            text="Global Threat Map"
-            active={location.pathname === "/threat/map"} 
-            onClick={() => navigate("/threat/map")} 
+            text="Global IOC Map"
+            active={location.pathname === "/ioc/map"} 
+            onClick={() => navigate("/ioc/map")} 
           />
           <SidebarItem 
             icon={<Users size={18} />} 
@@ -106,7 +100,7 @@ function AppLayout() {
           />
         </SidebarCategory>
 
-        <SidebarCategory icon={<ScanSearch size={20} />} text="Investigation Tools">
+        <SidebarCategory icon={<ScanSearch size={20} />} text="Investigation Tools" defaultOpen>
           <SidebarItem 
             icon={<Link2   size={18} />} 
             text="Web Sandbox"
@@ -115,9 +109,9 @@ function AppLayout() {
           />
           <SidebarItem 
             icon={<UserRoundKey size={18} />} 
-            text="Email Leak Checker"
-            active={location.pathname === "/check/mail"} 
-            onClick={() => navigate("/check/mail")} 
+            text="Leak Checker"
+            active={location.pathname === "/leak/checker"} 
+            onClick={() => navigate("/leak/checker")} 
           />
         </SidebarCategory> 
         
@@ -127,11 +121,11 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage/>} />
-          <Route path="/threat/map" element={<ThreatPage/>} />
+          <Route path="/ioc/map" element={<ThreatPage/>} />
           <Route path="/activegroups" element={<ActiveGroupsPage/>} />
-          <Route path="/disclaimer" element={<DisclaimerBlock/>} />
           <Route path="/web/sanbox" element={<WebSandbox/>} />
-          <Route path="/check/mail" element={<WebCheckMail/>} />
+          <Route path="/leak/checker" element={<WebCheckMail/>} />
+          <Route path="/disclaimer" element={<DisclaimerBlock/>} />
         </Routes>
       </div>
     </div>

@@ -47,7 +47,7 @@ export default function TableUI({ dataTable }) {
 
         return (
           <span
-            className="inline-block px-1.5 py-0.5 rounded-[var(--radius-card,14px)] text-xs font-medium truncate"
+            className="inline-block px-1.5 py-0.5 rounded-[var(--radius-card)] text-xs font-medium truncate"
             style={{
               background: `color-mix(in srgb, ${color} 16%, transparent)`,
               color: color,
@@ -132,17 +132,15 @@ export default function TableUI({ dataTable }) {
   ], []);
 
   return (
-    <div className="lg:col-span-8">
-      <MetricProvider theme="emerald" exportable>
-        <DataTable
-          data={dataTable}
-          columns={columns}
-          title="Live Threat Feed"
-          pageSize={8}
-          searchable
-          className="card-metricui w-full overflow-hidden"
-        />
-      </MetricProvider>
-    </div>
+    <MetricProvider theme="emerald" exportable>
+      <DataTable
+        data={dataTable}
+        columns={columns}
+        title="IOC Feed"
+        pageSize={8}
+        searchable
+        className="card-metricui h-full overflow-hidden"
+      />
+    </MetricProvider>
   );
 }

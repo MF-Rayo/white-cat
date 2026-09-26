@@ -10,11 +10,8 @@ import { KpiCard,FilterBar, FilterProvider,
 import { Panel } from "@/components/ui/panel";
 import Container from "@/components/Container"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ErrorBoundary } from "@/hooks/ErrorBoundary";
-import { SimpleMap } from "@/components/ui/map"
 
 import CustomInputButton from "@/components/ui/input"
-import { Alert } from "@/components/ui/alert"
 import { Search } from "lucide-react";
 
 function Box ({ domainURL }) {
@@ -25,10 +22,11 @@ function Box ({ domainURL }) {
 
     if (data?.alert) {
         return (
-            <Alert
-                type={data.alert}
-                message={data.message}
-            />
+            //<Alert
+            //    type={data.alert}
+             //   message={data.message}
+            ///>
+            <div>s</div>
         );
     }
 
@@ -96,7 +94,7 @@ function Box ({ domainURL }) {
 
     return(
         <>
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) px-(--pd) pt-(--pd)">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gp) pt-(--pd)">
             <Panel title={`Screenshot ${data.host}`} className="lg:col-span-3">
                 <img src={data.screenshotURL} alt={`Screenshot de ${data.domain}`}
                     className="w-full rounded-b-[var(--radius-card,14px)]"/>
@@ -121,7 +119,7 @@ function Box ({ domainURL }) {
             </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) p-(--pd)">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gp) pt-(--pd)">
             <div className="lg:col-span-2">
                 <DataTable
                     data={data.links}
@@ -249,36 +247,32 @@ function SandboxBody({ search }) {
         }>
     
         {scanURL ? (
-            <ErrorBoundary resetKey={scanURL} onRetry={() => invalidate(scanURL)}>
-                <Suspense fallback={
-                    <div className="flex flex-col items-center justify-center min-h-screen text-[var(--text-secondary)]">
-                        <i className="bx bx-radar bx-spin text-[10vh] text-[var(--primary-color)]"></i>
-                        <p className="text-[2vh] font-mono">Escanning {scanDomain}...</p>
-                    </div>} key={scanURL}>
-                    <Box domainURL={scanURL} />
-                </Suspense>
-            </ErrorBoundary>
+            <Suspense fallback={
+                <div className="flex flex-col items-center justify-center min-h-screen text-[var(--text-secondary)]">
+                    <i className="bx bx-radar bx-spin text-[10vh] text-[var(--primary-color)]"></i>
+                    <p className="text-[2vh] font-mono">Escanning {scanDomain}...</p>
+                </div>} key={scanURL}>
+                <Box domainURL={scanURL} />
+            </Suspense>
         ):(
-            <ErrorBoundary resetKey={domainURL} onRetry={() => invalidate(domainURL)}>
-                <div className="min-h-screen">
-                    <Suspense
-                        fallback={
-                            <>
-                            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 px-4 pt-4">
-                                <div className="lg:col-span-3">
-                                    <DataTable data={[]} loading className="card-metricui"/>
-                                </div>
-                                <div className="lg:col-span-3">
-                                    <DataTable data={[]} loading className="card-metricui"/>
-                                </div>
+            <div className="min-h-screen">
+                <Suspense
+                    fallback={
+                        <>
+                        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 px-4 pt-4">
+                            <div className="lg:col-span-3">
+                                <DataTable data={[]} loading className="card-metricui"/>
                             </div>
-                            </>
-                        }key={domainURL}
-                    >
-                        <Box domainURL={domainURL} />
-                    </Suspense >
-                </div>
-            </ErrorBoundary>
+                            <div className="lg:col-span-3">
+                                <DataTable data={[]} loading className="card-metricui"/>
+                            </div>
+                        </div>
+                        </>
+                    }key={domainURL}
+                >
+                    <Box domainURL={domainURL} />
+                </Suspense >
+            </div>
         )}
 
         </Container>
@@ -302,11 +296,9 @@ export default function Sandbox() {
 
   return (
     <FilterProvider>
-      <ErrorBoundary fallback={<div>Algo salió mal</div>}>
         <Suspense fallback={<Container path="~/SandBox" />}>
-          <SandboxBody search={search} />
+            <SandboxBody search={search} />
         </Suspense>
-      </ErrorBoundary>
     </FilterProvider>
   );
 }

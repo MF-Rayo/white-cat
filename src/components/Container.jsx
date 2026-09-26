@@ -27,10 +27,9 @@ export default function Container({ path, headerContent, children, className = "
         <div className="flex items-center gap-2 shrink-0">
           {headerContent}
         </div>
-
       </div>
 
-      <div className="flex-1 min-h-0 overflow-auto bg-gradient-to-b via-[var(--kitty)]/40 to-[var(--kitty)]/70 text-white/90">
+      <div className="flex-1 min-h-0 overflow-auto p-(--pd)">
         {children}
       </div>
     </div>

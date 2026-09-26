@@ -1,43 +1,14 @@
 import { Suspense, useMemo } from "react"
 import { ResponsiveContainer } from "recharts"
 
-import { SimpleMap } from "@/components/ui/map"
+import Container from "@/components/Container"
 import { Panel } from "@/components/ui/panel";
 import { DataBarChart }  from "@/components/ui/chart";
 
-import Container from "@/components/Container"
-import { KpiCard, AreaChart, LineChart, DonutChart, DataTable, BarChart, MetricProvider } from "metricui";
+import { KpiCard, AreaChart, LineChart, DonutChart, DataTable, BarChart, 
+  MetricProvider, Choropleth, worldFeatures, Badge} from "metricui";
 
 import { DashboardSummaryProvider, useDashboardSummary } from "@/context/DashboardContext";
-
-export function sparklineToAreaChartData(sparkline, seriesId) {
-  const days = sparkline.length; 
-  const today = new Date(); 
-
-  const todayUTC = Date.UTC(
-    today.getUTCFullYear(),
-    today.getUTCMonth(),
-    today.getUTCDate()
-  );
-
-  const startUTC = todayUTC - (days - 1) * 24 * 60 * 60 * 1000;
-
-  const data = sparkline.map((value, i) => {
-    const dayTimestamp = startUTC + i * 24 * 60 * 60 * 1000;
-    const d = new Date(dayTimestamp);
-    
-    const year = d.getUTCFullYear();
-    const month = String(d.getUTCMonth() + 1).padStart(2, "0"); 
-    const day = String(d.getUTCDate()).padStart(2, "0");
-    
-    const label = `${month}-${day}`; 
-    
-    return { x: label, y: value };
-  });
-
-  return [{ id: seriesId, data }];
-}
-
 
 function TableNew({ dataTable }) {
   const columns = useMemo(
@@ -56,132 +27,155 @@ function TableNew({ dataTable }) {
   };
 
   return (
-    <div className="lg:col-span-8">
-      <DataTable
-        data={dataTable}
-        columns={columns}
-        title="Today's Cybersecurity News"
-        pageSize={8}
-        onRowClick={handleRowClick}
-        className="card-metricui w-full overflow-hidden cursor-pointer"
-      />
-    </div>
+    <DataTable
+      title="Today's Cybersecurity News"
+      data={dataTable}
+      columns={columns}
+      pageSize={5}
+      onRowClick={handleRowClick}
+      className="card-metricui h-full overflow-hidden"
+    />
   );
 }
-
 
 function DashboardContent({ apiData }) {
   const data = apiData;
 
   return (
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-(--gap)">
-
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-(--gp)">
         <KpiCard
-          title="Today's Threats"
-          value={data.threat_today}
+          title="Today's IOC"
+          value={data.threat.today}
           format="number"
-          comparison={{ value: data.threat_yesterday }}
+          comparison={{ value: data.threat.yesterday }}
           comparisonLabel="vs yesterday"
           sparkline={{
-            data: data.threat_week_sparkline,
+            data: data.threat.sparkline,
             type: "line",
             interactive: true,
           }}
           className="card-metricui"
         />
-
         <KpiCard
-          title="Threats Of The Week"
-          value={data.threat_week}
+          title="IOC Of The Week"
+          value={data.threat.week}
           format="number"
-          comparison={{ value: data.threat_last_week }}
+          comparison={{ value: data.threat.last_week }}
           comparisonLabel="vs last week"
           sparkline={{
-            data: data.threat_week_sparkline,
+            data: data.threat.sparkline,
             type: "line",
             interactive: true,
           }}
           className="card-metricui"
         />
-
         <KpiCard
-          title="Today's Threat Sources"
-          value={data.source_of_threats}
+          title="Today's IOC Sources"
+          value={data.sources.today}
           format="number"
-          comparison={{ value: data.source_of_yesterday_threats }}
+          comparison={{ value: data.sources.yesterday }}
           comparisonLabel="vs yesterday"
           sparkline={{
-            data: data.source_of_week_sparkline,
+            data: data.sources.sparkline,
             type: "line",
             interactive: true,
           }}
           className="card-metricui"
         />
-
         <KpiCard
           title="Today's Active Group Posts"
-          value={data.active_groups_posts}
+          value={data.groups.posts}
           format="number"
-          comparison={{ value: data.active_groups_posts_yesterday }}
+          comparison={{ value: data.groups.posts_yesterday }}
           comparisonLabel="vs yesterday"
           sparkline={{
-            data: data.active_groups_sparkline,
+            data: data.groups.sparkline,
             type: "line",
             interactive: true,
           }}
           className="card-metricui"
         />
-
       </div>
 
-      <div className="pt-(--pd) grid grid-cols-1 lg:grid-cols-6 gap-(--gap)">
-
+      <div className="pt-(--pd) grid grid-cols-1 lg:grid-cols-6 gap-(--gp)">
         <div className="lg:col-span-4">
           <AreaChart
-            data={sparklineToAreaChartData(data.threat_week_sparkline, "Threat")}
-            title="Threats Of The Week"
+            data={data.threat.chart}
+            title="IOC Of The Week"
             format={{ style: "number" }}
+            curve="monotoneX"
             className="card-metricui"
           />
         </div>
-       
-        <Panel title="The 10 sources of reported threats" 
-          className="lg:col-span-2 lg:h-full
-          font-medium overflow-hidden h-[300px]">
-          <SimpleMap data={data.top_countries_today}></SimpleMap>
-        </Panel>
-
+        <div className="lg:col-span-2">
+          <DonutChart
+            data={data.tops.threat}
+            title="Top IOC Today"
+            enableArcLabels
+            enableArcLinkLabels
+            arcLabelsSkipAngle={15}
+            arcLinkLabelsSkipAngle={15}
+            className="card-metricui"
+            legend={true}
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-(--gap) pt-(--pd) items-stretch">
-        <DonutChart
-          data={data.top_threats_today}
-          title="Top Threats Today"
-          enableArcLabels
-          enableArcLinkLabels
-          arcLabelsSkipAngle={15}
-          arcLinkLabelsSkipAngle={15}
-          className="card-metricui h-full flex-1"
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) pt-(--pd) items-stretch">
+    
+        <Choropleth
+          data={data.tops.source}
+          features={worldFeatures}
+          idField="iso"
+          valueField="reports"
+          title="IOC Map"
+          scaleType="log"
+          tooltipLabel="Population"
+          legend={false}
+          projectionType="naturalEarth1"
+          projectionScale={100}
+          borderWidth={0.5}
+          className="card-metricui"
+          colors={[
+            "#6366f1",
+            "#10b981",
+            "#f59e0b",
+            "#84cc16",
+            "#ef4444",
+            "#ec4899",
+            "#f97316",
+            "#06b6d4",
+            "#8b5cf6"
+          ]}
+        />
+        
+        <DataTable
+          data={data.tops.source}
+          className="card-metricui"
         />
 
         <DonutChart
-          data={data.active_groups}
+          data={data.groups.today}
+          centerValue={data.groups.posts}
+          centerLabel="Total"
           title="Today's Active Group Posts"
           enableArcLabels
           enableArcLinkLabels
           arcLabelsSkipAngle={15}
           arcLinkLabelsSkipAngle={15}
-          className="card-metricui h-full flex-1"
+          className="card-metricui h-full"
+          legend={true}
         />
-
-        <div className="lg:col-span-2" >
-          <DataBarChart groupsData={data?.active_groups_this_week} 
-          title="Active Group Posts of the Week" preset="horizontal"/>
-        </div>
       </div>
-       <div className="py-(--pd)" >
-        <TableNew dataTable={data.cyber_news_today}/>
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gp) pt-(--pd) items-stretch" >
+        <div className="lg:col-span-2">
+          <DataBarChart groupsData={data?.groups?.week} 
+            title="Active Group Posts of the Week" preset="horizontal"/>
+        </div>
+        <div className="lg:col-span-4">
+          <TableNew dataTable={data.news}/>
+        </div>
       </div>
     </>
   )
@@ -192,10 +186,6 @@ function LastDate({ apiData }) {
     if (!apiData?.updated) return null;
     return new Date(apiData.updated);
   }, [apiData?.updated]);
-
-  if (!dateObj || isNaN(dateObj.getTime())) {
-    return null;
-  }
 
   const utcFormatted = dateObj.toLocaleString("en-US", {
     timeZone: "UTC",
@@ -213,13 +203,9 @@ function LastDate({ apiData }) {
 
   return (
     <div className="absolute top-3 right-3 flex items-center gap-2 px-2 py-1">    
-      <span className="relative flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--primary-color) opacity-75" />
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-(--primary-color)" />
-      </span>
-
-      <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400">
-        Updated: UTC {utcFormatted} / Local {localFormatted}
+      <Badge variant="success" dot>Updated</Badge>
+      <span className="text-[10px] font-bold tracking-wider text-slate-400">
+        UTC {utcFormatted} / Local {localFormatted}
       </span>
     </div>
   );
@@ -230,27 +216,23 @@ function DashboardSkeleton() {
   return(
     <>
     <Container path="~/Dashboard">
-      <div className="min-h-screen p-(--pd)">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-(--gap)">
-          {Array.from({ length: 4 }).map((_, index) => (
-          <KpiCard loading className="card-metricui"/>
-          ))}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-(--gp)">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <KpiCard key={index} loading className="card-metricui" />
+        ))}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gp) pt-(--pd)">
+        <div className="lg:col-span-4">
+          <LineChart data={[]} title="IOC Of The Week" loading className="card-metricui"/>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gap) pt-(--pd)">
-          <div className="lg:col-span-4">
-            <LineChart data={[]} title="Users" loading className="card-metricui"/>
-          </div>
-          <div className="lg:col-span-2">
-            <LineChart data={[]} title="Users" loading className="card-metricui"/>
-          </div>
+        <div className="lg:col-span-2">
+          <DonutChart data={[]} title="Top IOC Today" loading className="card-metricui"/>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-(--gap) pt-(--pd)">
-          <DonutChart data={[]} loading className="card-metricui"/>
-          <DonutChart data={[]} loading className="card-metricui"/>
-          <div className="lg:col-span-2" >
-           <DonutChart data={[]} loading className="card-metricui"/>
-          </div>
-        </div>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) pt-(--pd)">
+        <DonutChart data={[]} loading className="card-metricui"/>
+        <DonutChart data={[]} loading className="card-metricui"/>
+        <DonutChart data={[]} loading className="card-metricui"/>
       </div>
     </Container>
     </>
@@ -274,11 +256,9 @@ function DashboardInner() {
 
   return (
     <Container path="~/Dashboard" headerContent={<LastDate apiData={apiData} />}>
-      <div className="min-h-screen p-(--pd)">
-        <MetricProvider exportable>
-          <DashboardContent apiData={apiData} />
-        </MetricProvider>
-      </div>
+      <MetricProvider exportable>
+        <DashboardContent apiData={apiData} />
+      </MetricProvider>
     </Container>
   );
 }

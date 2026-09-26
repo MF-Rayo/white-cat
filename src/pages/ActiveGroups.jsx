@@ -4,7 +4,7 @@ import { fetchData } from "@/lib/fetchData"
 import { endpoints } from "@/lib/api"
 import { DataBarChart }  from "@/components/ui/chart";
 import { Panel } from "@/components/ui/panel";
-import { CardImage, CardSkeleton, NoResults } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import Container from "@/components/Container"
 
 import { DrillDown, DropdownFilter, KpiCard,  BarChart,
@@ -13,12 +13,11 @@ import { DrillDown, DropdownFilter, KpiCard,  BarChart,
 
 function ActiveGroupsList({ apiData }) {
   const data = apiData.read();
-  const [activeTab, setActiveTab] = useState("one_month");
-  const [activeTabToday, setActiveTabToday] = useState("today");
+  const [activeTab, setActiveTab] = useState("today");
 
   return (
-    <div className="p-(--pd)">
-      <div className="grid grid-cols-2 lg:grid-cols-6 gap-(--gap)">
+    <>
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-(--gp)">
         <KpiCard
           title="Group activity this year"
           value={data.ransom_look.stats.posts_year}
@@ -65,7 +64,7 @@ function ActiveGroupsList({ apiData }) {
           className="card-metricui"
         />
         <KpiCard
-          title="Active Group Posts (Last 3 Months)"
+          title="Active Group Posts Last 3 Months"
           value={data.ransom_look.last_90_days.total_reports}
           format="number"
           sparkline={{
@@ -77,80 +76,83 @@ function ActiveGroupsList({ apiData }) {
         />
       </div>
         
-      <div className="grid grid-cols-1 lg:grid-cols-6 py-(--pd) gap-(--gap)">
-        <div className="lg:col-span-2 flex flex-col h-full">
-          <Panel title="Filter">
-            <DashboardNav
-              tabs={[
-                { value: "today", label: "Today" },
-                { value: "week", label: "Week" }
-              ]}
-              value={activeTabToday}
-              onChange={setActiveTabToday}
-            />
-          </Panel>
-          {activeTabToday === "today" && (
-            <MetricProvider theme="" exportable>
-              <DrillDown.Root>
-                <BarChart
-                  data={data?.ransom_look?.today?.groups ?? []}
-                  index="group"
-                  categories={["reports"]}
-                  drillDown
-                  tooltipHint
-                  className="card-metricui"
-                />
-              </DrillDown.Root>
-            </MetricProvider>
-          )}
-          {activeTabToday === "week" && (
-            <DataBarChart groupsData={data?.ransom_look?.last_7_days?.groups} />
-          )}
-        </div>
-        
-        <div className="lg:col-span-4 h-full">
-          <Panel title="Posts Reported">
-            <div className="max-h-[500px] overflow-y-auto p-(--pd)">
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-(--gap)">
-                {data?.ransomware_live?.map((item) => (
-                  <CardImage
-                    key={item.post_url}
-                    title={`Group Name: ${item.group_name}`}
-                    summary={item.description}
-                    frontPage={item.screenshot}
-                    source={`Source: ${item.source}`}
-                    date={item.date}
-                    url={item.post_url}
+      <div className="grid grid-cols-1 pt-(--pd) gap-(--gp) w-full">
+        <Panel title="Filter">
+          <DashboardNav
+            tabs={[
+              { value: "today", label: "Today / Week" },
+              { value: "one_month", label: "1 Month" },
+              { value: "three_months", label: "3 Months" },
+            ]}
+            value={activeTab}
+            onChange={setActiveTab}
+          />
+        </Panel>
+
+        <div className="w-full">
+          {activeTab === "today" && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) h-[auto] lg:h-[60vh]">
+  
+              <Panel title="Posts Reported" className="h-[450px] lg:h-full overflow-hidden">
+                <div className="h-[calc(100%-2.5rem)] overflow-y-auto p-(--pd) pr-2">
+                  <div className="grid grid-cols-1 gap-(--gp)">
+                    {data?.ransomware_live?.map((item) => (
+                      <Card
+                        key={item.post_url || item.victim}
+                        source={`Source: ${item.source}`}
+                        activity={item.activity}
+                        post_url={item.post_url}
+                        discovered={item.discovered}
+                        group_name={item.group_name}
+                        victim={item.victim}
+                        description={item.description}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </Panel>
+
+              <MetricProvider theme="" exportable>
+                <DrillDown.Root className="h-full">
+                  <BarChart
+                    data={data?.ransom_look?.today?.groups ?? []}
+                    index="group"
+                    title="Today"
+                    categories={["reports"]}
+                    drillDown
+                    tooltipHint
+                    className="card-metricui h-full"
                   />
-                ))}
+                </DrillDown.Root>
+              </MetricProvider>
+
+              <div className="h-full">
+                <DataBarChart
+                  groupsData={data?.ransom_look?.last_7_days?.groups}
+                  title="Week"
+                />
               </div>
             </div>
-          </Panel>
+          )}
+
+          {activeTab === "one_month" && (
+            <div className="h-[60vh] w-full">
+              <DataBarChart
+                groupsData={data?.ransom_look?.last_30_days?.groups}
+              />
+            </div>
+          )}
+
+          {activeTab === "three_months" && (
+            <div className="h-[60vh] w-full">
+              <DataBarChart
+                groupsData={data?.ransom_look?.last_90_days?.groups}
+              />
+            </div>
+          )}
         </div>
       </div>
-      
-      <Panel title="Filter">
-        <DashboardNav
-          tabs={[
-            { value: "one_month", label: "1 Month" },
-            { value: "three_months", label: "3 Months" }
-          ]}
-          value={activeTab}
-          onChange={setActiveTab}
-        />
-      </Panel>
-
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-(--gap)">
-        {activeTab === "one_month" && (
-          <DataBarChart groupsData={data?.ransom_look?.last_30_days?.groups} />
-        )}
-
-        {activeTab === "three_months" && (
-          <DataBarChart groupsData={data?.ransom_look?.last_90_days?.groups} />
-        )}
-      </div>
-
-    </div>
+    </>
   );
 }
 
@@ -162,33 +164,30 @@ export default function ActiveGroups() {
     <Container path="~/Active Groups">
       <div className="min-h-screen">
         <Suspense fallback={
-          <div className="p-(--pd)">
-            <div className="grid grid-cols-2 lg:grid-cols-6 gap-(--gap)">
-              {Array.from({ length: 6 }).map((_, index) => (
-              <KpiCard loading className="card-metricui"/>
-              ))}
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-6 py-(--pd) gap-(--gap)">
-              <div className="lg:col-span-2 flex flex-col h-full">
-                <Panel title="Filter" className="h-full">
-                  <Skeleton className="h-full"/>
-                </Panel>
-              </div>
-         
-              <div className="lg:col-span-4 h-full">
-                <Panel title="Posts Reported">
-                  <div className="max-h-[500px] overflow-y-auto p-(--pd)">
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-(--gap)">
-                      {Array.from({ length: 6 }).map((_, index) => (
-                        <CardSkeleton key={index} />
-                      ))}
-                    </div>
-                  </div>
-                </Panel>
-              </div>
-            </div>
+          <>
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-(--gp)">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <KpiCard key={index} loading className="card-metricui" />
+            ))}
           </div>
+          
+          <div className="py-(--pd)">
+            <Panel title="Filter">
+              <DashboardNav
+                tabs={[
+                  { value: "today", label: "Today / Week" },
+                  { value: "one_month", label: "1 Month" },
+                  { value: "three_months", label: "3 Months" },
+                ]}
+              />
+            </Panel>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) h-full">
+            {Array.from({ length: 3 }).map((_, index) => (
+               <BarChart key={index} data={[]} loading className="card-metricui" />
+            ))}
+          </div>
+          </>
         } key={apiData}>
           <ActiveGroupsList apiData={apiData}/>
         </Suspense>

@@ -33,17 +33,17 @@ export function SidebarCategory({ icon, text, children, defaultOpen = false }) {
 
 export default function Sidebar({ children, footer }) {
     const { open, setOpen, isMobile } = useSidebarState()
-
-    const closeIfMobile = () => { if (isMobile) setOpen(false) }
+    // Cerrar al dar click en una opcion
+    const closeIfClick= () => { setOpen(false) }
 
     return (
         <>
             {open && (
-                <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setOpen(false)} />
+                <div className="fixed inset-0 z-40 bg-(--bg-color)/50" onClick={() => setOpen(false)} />
             )}
 
             <aside className={`fixed z-50 top-0 left-0 h-screen flex flex-col
-                ${isMobile ? "w-[85%] max-w-72" : "w-72"} bg-(--bg-color)/90 
+                ${isMobile ? "w-[85%] max-w-72" : "w-72"} bg-(--bg-color) 
                 backdrop-blur-xl border-r border-(--border-color)
                 transition-transform duration-300 ease-in-out
                 ${open ? "translate-x-0" : "-translate-x-full"}`}
@@ -60,7 +60,7 @@ export default function Sidebar({ children, footer }) {
                     </button>
                 </div>
 
-                <SidebarItemsContext.Provider value={{ closeMenu: closeIfMobile }}>
+                <SidebarItemsContext.Provider value={{ closeMenu: closeIfClick }}>
                     <ul className="flex-1 px-3 mt-2 overflow-y-auto overflow-x-hidden min-h-0">{children}</ul>
                     <ul className="px-3 m-0 list-none mb-3">{footer}</ul>
                 </SidebarItemsContext.Provider>

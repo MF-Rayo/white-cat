@@ -5,7 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 import CustomInputButton from "@/components/ui/input"
 import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
-import { ErrorBoundary } from "@/hooks/ErrorBoundary";
 import Container from "@/components/Container"
 import { ShieldAlert, ShieldCheck, ExternalLink, KeyRound, Search } from "lucide-react";
 
@@ -193,14 +192,12 @@ export default function Mail(){
             }>
 
         {activeURL && (
-            <ErrorBoundary resetKey={activeURL} onRetry={() => invalidate(activeURL)}>
-                <Suspense key={activeURL} fallback={
-                    <div className="m-4 border border-(--border-color)">
-                        <Skeleton className="h-[50vh] w-full" />
-                    </div>}>
-                    <BreachList url={activeURL} />
-                </Suspense>
-            </ErrorBoundary>
+            <Suspense key={activeURL} fallback={
+                <div className="m-4 border border-(--border-color)">
+                    <Skeleton className="h-[50vh] w-full" />
+                </div>}>
+                <BreachList url={activeURL} />
+            </Suspense>
         )}
         </Container>
     )

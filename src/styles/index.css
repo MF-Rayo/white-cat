@@ -1,23 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Pixelify+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 @import "tailwindcss";
 @import "config.css";
+@import "map.css";
 @import "metricui-custom.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
-html, body, #root {
+body {
+  background-color: var(--bg-color);      
   min-height: 100vh;
   margin: 0;
   padding: 0;
-}
-
-body {
-  background-color: var(--bg-color);
-  background-position: center;     
-  background-repeat: no-repeat;    
-  background-size: cover;          
-  background-attachment: fixed;
+  font-family: "Nunito", sans-serif;
 }
 
 html, * {
@@ -52,147 +48,7 @@ html::-webkit-scrollbar-thumb:hover,
   background: rgba(255, 255, 255, 0.35) !important;
 }
 
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slideDown {
-  animation: slideDown 0.3s ease-out;
-}
-
-
-/*ESTILO PARA LOS MARCADORES DE LOS MAPAS*/
-
-.leaflet-popup-content-wrapper {
-  background: var(--bg-color) !important;
-  color: var(--text-color) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 6px !important;
-  padding: 0 !important;
-}
-
-.leaflet-popup-tip {
-  background: var(--bg-color) !important;
-  box-shadow: none !important;
-}
-
-/* Ajusta el botón de cerrar */
-.leaflet-popup-close-button {
-  color: #888 !important;
-}
-
-.leaflet-popup-close-button:hover {
-  color: #fff !important;
-}
-
-.leaflet-popup-content {
-  margin: 0 !important;
-}
-
-.container-poppup {
-  font: 13px/1.7 'DM Sans', sans-serif;
-  min-width: 200px;
-  padding: 12px 14px;
-  color: var(--text-color);
-}
-
-.container-poppup .popup-malware-name {
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  font-weight: 700;
-  font-family: 'Nunito', sans-serif !important;
-}
-
-.container-poppup .popup-malware-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.container-poppup .popup-row {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 2px;
-  align-items: flex-start; 
-  font-weight: 700;
-  font-family: 'Nunito', sans-serif !important;
-}
-
-.container-poppup .popup-row span:last-child {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  min-width: 0;            
-  flex: 1;       
-  font-weight: 700;
-  font-family: 'Nunito', sans-serif !important;          
-}
-
-.container-poppup .popup-label {
-  min-width: 70px;
-  flex-shrink: 0;
-}
-
-.container-poppup code {
-  background: rgba(255,255,255,0.07);
-  border-radius: 4px;
-  padding: 0px 5px;
-  font-size: 12px;
-  word-break: break-all;
-}
-
-
-.marker-cluster-small {
-  background-color: color-mix(in srgb, var(--success-color) 25%, transparent) !important; 
-}
-.marker-cluster-small div {
-  background-color: color-mix(in srgb, var(--success-color) 40%, transparent) !important; 
-  border: 1px solid var(--success-color) !important;
-  font-weight: bold;
-}
-
-.marker-cluster-medium {
-  background-color: color-mix(in srgb, var(--warning-color) 25%, transparent) !important; 
-}
-.marker-cluster-medium div {
-  background-color: color-mix(in srgb, var(--warning-color) 40%, transparent) !important; 
-  border: 1px solid var(--warning-color) !important;
-  font-weight: bold;
-}
-
-.marker-cluster-large {
-  background-color: color-mix(in srgb, var(--danger-color) 25%, transparent) !important; 
-}
-.marker-cluster-large div {
-  background-color: color-mix(in srgb, var(--danger-color) 40%, transparent) !important; 
-  border: 1px solid var(--danger-color) !important;
-  font-weight: bold;
-}
-
-.country-tooltip {
-  background-color:var(--bg-color) !important;
-  color: var(--text-color) !important;
-  border: none !important;
-  border-radius: 6px !important;
-  padding: 4px 8px !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-}
-
-.country-tooltip::before {
-  border-top-color: var(--bg-color) !important;
+input:focus {
+  outline: none !important;
+  box-shadow: none; 
 }

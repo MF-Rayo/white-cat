@@ -1,66 +1,95 @@
-import Container from "@/components/Container"
+import { useState } from "react";
+import { DashboardNav } from "metricui";
+import Container from "@/components/Container";
 
-const sectionsEn = [
-  {
-    heading: "Project Purpose",
-    body: "This platform is a self-taught, personal project built to learn full-stack development on my own — React and Tailwind CSS on the frontend, FastAPI on the backend. It is not a commercial product, and no data, service, or subscription is sold through this site.",
-  },
-  {
-    heading: "Data Sources & Attribution",
-    body: "News, threat indicators and related metrics are obtained in about 10 to 30 minutes from public and consolidated cybersecurity sources and APIs. All trademarks, logos and original content are the property of their respective owners. This platform works strictly as an aggregator, giving credit to each source and linking to the original publication.",
-  },
-  {
-    heading: "No Warranty",
-    body: "Content is displayed \"as is\" for informational purposes. While the underlying sources are reputable, no guarantee is made regarding the completeness, timeliness, or correctness of the data shown. Decisions made based on this information are the sole responsibility of the reader.",
-  },
-]
-
-const sectionsEs = [
-  {
-    heading: "Propósito del Proyecto",
-    body: "Esta plataforma es un proyecto personal y autodidacta desarrollado para aprender desarrollo full-stack: React y Tailwind CSS en el frontend, y FastAPI en el backend. No es un producto comercial y no se vende ningún tipo de dato, servicio o suscripción a través de este sitio.",
-  },
-  {
-    heading: "Fuentes de Datos y Atribución",
-    body: "Las noticias, indicadores de amenazas y métricas relacionadas se obtienen en unos 10 a 30 min a partir de fuentes de ciberseguridad y APIs públicas y consolidadas. Todas las marcas registradas, logotipos y contenido original son propiedad de sus respectivos dueños. Esta plataforma funciona estrictamente como un agregador, dando crédito a cada fuente y enlazando a la publicación original.",
-  },
-  {
-    heading: "Sin Garantía",
-    body: "El contenido se muestra \"tal cual\" con fines informativos. Si bien las fuentes utilizadas son reconocidas, no se garantiza la exhaustividad, puntualidad o exactitud de los datos presentados. Las decisiones tomadas con base en esta información son responsabilidad exclusiva del lector.",
-  },
-]
+const disclaimerData = {
+  english: [
+    {
+      title: "Project Purpose",
+      badge: "Educational",
+      body: "This platform is a personal, self-taught project developed to advance full-stack engineering skills (React, Tailwind CSS, and FastAPI). It operates non-commercially; no data, subscriptions, or services are sold.",
+    },
+    {
+      title: "Threat Intelligence Feeds",
+      badge: "CTI Pipeline",
+      body: "IOC reports, active ransomware groups, and victim logs are ingested approximately every 40 minutes from public sources like ThreatFox, Ransomware.live, and Ransomware Look. Raw feeds are normalized and processed for dashboard visualization.",
+    },
+    {
+      title: "News Aggregation & Attribution",
+      badge: "Headlines",
+      body: "Daily headlines are indexed directly from RSS/APIs of security outlets including The Hacker News, BleepingComputer, and The Record. Only titles and direct links are fetched to route users to the original publisher.",
+    },
+    {
+      title: "No Warranty & Ownership",
+      badge: "Legal",
+      body: "All trademarks, logos, and original intellectual property belong to their respective creators. Information is provided 'as is' for research purposes, without guarantees regarding completeness or real-time accuracy.",
+    },
+  ],
+  spanish: [
+    {
+      title: "Propósito del Proyecto",
+      badge: "Educativo",
+      body: "Esta plataforma es un proyecto personal y autodidacta desarrollado para profundizar en el desarrollo full-stack (React, Tailwind CSS y FastAPI). Funciona de manera no comercial; no se vende ningún tipo de dato, servicio o suscripción.",
+    },
+    {
+      title: "Fuentes de CTI e Indicadores",
+      badge: "Pipeline CTI",
+      body: "Los reportes de IOCs, grupos de ransomware activos y publicaciones de víctimas se obtienen cada 40 minutos aproximadamente desde ThreatFox, Ransomware.live y Ransomware Look, procesando la información para su renderizado analítico.",
+    },
+    {
+      title: "Agregación de Noticias",
+      badge: "Titulares",
+      body: "Se extraen únicamente los titulares del día y enlaces directos hacia las fuentes originales como The Hacker News, BleepingComputer y The Record, funcionando estrictamente como un canal de redirección a los medios oficiales.",
+    },
+    {
+      title: "Atribución y Exención",
+      badge: "Aviso Legal",
+      body: "Todas las marcas registradas, logotipos y contenido original pertenecen a sus respectivos dueños. La información se presenta 'tal cual' con fines de investigación, sin garantía implícita de precisión en tiempo real.",
+    },
+  ],
+};
 
 export default function DisclaimerBlock() {
+  const [activeTab, setActiveTab] = useState("english");
+
   return (
-    <Container path="~/Disclaimer" className="bg-[var(--bg-color)]/60">
-      
-      <div className="p-4 m-4 font-mono text-sm text-(--text-color)">
-        <div className="mb-1 text-xs pb-2 select-none">
-          <span className="text-(--primary-color) text-sm font-bold">whitecat@dev: </span>
-          <span className="text-(--text-color) text-sm">cat disclaimer_en.md</span>
-        </div>
-        <p className="font-bold mb-3 text-(--text-secondary)">Legal, Educational Notice & Disclaimer</p>
-        <div className="space-y-3">
-          {sectionsEn.map((s, i) => (
-            <p key={i} className="text-(--text-secondary) leading-relaxed">
-              <strong className="text-(--text-secondary)">{s.heading}:</strong> {s.body}
-            </p>
-          ))}
-        </div>
-        <div className="mt-4 text-xs pb-2 select-none">
-          <span className="text-(--primary-color) text-sm font-bold">whitecat@dev: </span>
-          <span className="text-(--text-color) text-sm">cat disclaimer_es.md</span>
-        </div>
-        <p className="font-bold mb-3 text-(--text-secondary)">Legal, Educational Notice & Disclaimer</p>
-        <div className="space-y-3">
-          {sectionsEs.map((s, i) => (
-            <p key={i} className="text-(--text-secondary) leading-relaxed">
-              <strong className="text-(--text-secondary)">{s.heading}:</strong> {s.body}
-            </p>
+    <Container
+      path="~/Disclaimer"
+      headerContent={
+        <DashboardNav
+          tabs={[
+            { value: "english", label: "English" },
+            { value: "spanish", label: "Spanish" },
+          ]}
+          value={activeTab}
+          onChange={setActiveTab}
+        />
+      }
+    >
+      <div className="p-4 md:p-6 bg-(--bg-color) h-full border border-(--border-color) rounder-[var(--rounder)]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {disclaimerData[activeTab].map((item, index) => (
+            <div
+              key={index}
+              className="card-metricui p-5 flex flex-col justify-between space-y-3"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="font-medium text-sm text-neutral-100">
+                    {item.title}
+                  </h3>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-800 text-neutral-400 border border-neutral-700/50">
+                    {item.badge}
+                  </span>
+                </div>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  {item.body}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
-
     </Container>
-  )
+  );
 }
