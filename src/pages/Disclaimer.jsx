@@ -49,7 +49,7 @@ const disclaimerData = {
   ],
 };
 
-export default function DisclaimerBlock() {
+export default function DisclaimerPage() {
   const [activeTab, setActiveTab] = useState("english");
 
   return (

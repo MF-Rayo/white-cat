@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function Panel({ title, right, children, className = "" }) {
   return (
-    <div className={`bg-(--bg-color) flex flex-col 
+    <div className={`bg-(--card-color) flex flex-col 
       rounded-[var(--radius-card)] border border-[var(--border-color)] ${className}`}>
       <div className="flex items-center justify-between px-4 py-3 border-b border-(--border-color)">
         <div className="flex items-center gap-2">

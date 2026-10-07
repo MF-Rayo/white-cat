@@ -23,16 +23,17 @@ export default function CustomInputButton({
     return (
         <form 
         onSubmit={handleSubmit} 
-        className={`flex items-center gap-2 w-full max-w-md ${containerClassName}`}
+        className={`flex items-center gap-(--gp) w-full max-w-md ${containerClassName}`}
         >
-        <div className="relative flex-1">
+        <div className="relative">
             <input
             type={type}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
             disabled={disabled}
-            className={`w-[20vh] md:w-[40vh] px-4 py-2 text-sm text-(--text-color) bg-background border border-(--border-color) rounded-[var(--radius-card,14px)] 
+            className={`w-[20vh] md:w-[40vh] px-4 py-2 text-sm text-(--text-color) bg-(--card-bg) border border-(--border-color) 
+                rounded-[var(--radius-input)] 
                 focus:outline-none focus:ring-1 focus:ring-transparent focus:border-(--primary-color) transition-all 
                 disabled:opacity-50 disabled:cursor-not-allowed ${inputClassName}`}
             {...restProps}
@@ -42,8 +43,9 @@ export default function CustomInputButton({
         <button
             type="submit"
             disabled={disabled}
-            className={`cursor-pointer px-4 py-2 text-sm font-medium text-(--text-color) bg-(--bg-color)/10 
-                backdrop-blur-xl rounded-[var(--radius-card,14px)] hover:bg-(--bg-color)/90 focus:outline-none 
+            className={`cursor-pointer px-4 py-2 text-sm font-medium text-(--text-color) bg-(--card-bg)
+                border border-(--border-color) 
+                rounded-[var(--radius-button)] hover:bg-(--bg-color) focus:outline-none 
                 flex items-center justify-center gap-2 ${buttonClassName}`}
         >
             {buttonContent}

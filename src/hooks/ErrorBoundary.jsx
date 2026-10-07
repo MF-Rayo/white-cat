@@ -42,7 +42,8 @@ export function ErrorBoundary({ children, resetKey, onRetry, fallback }) {
         showError(error?.detail || error?.message);
       }}
       onRateLimited={(error) => {
-        showWarning(error?.detail);
+        const msg = "Too many requests, please try again later";
+        showWarning(msg);
       }}
       onSessionExpired={() => {
         showWarning("Your session expired, log in again");

@@ -1,38 +1,33 @@
-export const API_URL = "https://darkcat-dz0x.onrender.com"
+export const API_URL = "https://darkcat-8gqf.onrender.com"
 //export const API_URL = "http://localhost:8000"
 
-export const API_VERSION = `${API_URL}/api/v1`;
+export const API_VERSION        = `${API_URL}/api/v1`;
 
-export const API_NEWS = `${API_VERSION}/reported/news`;
-export const API_ACTIVE_GROUPS = `${API_VERSION}/active/groups`;
-export const API_TREAT = `${API_VERSION}/threat`;
-export const API_DASHBOARD = `${API_VERSION}`;
-export const API_SANDBOX = `${API_VERSION}/sandbox`;
-export const API_AUTH = `${API_VERSION}/auth`;
-
+export const API_IOC            = `${API_VERSION}/ioc`;
+export const API_DASHBOARD      = `${API_VERSION}/dashboard`;
+export const API_ACTIVE_GROUPS  = `${API_VERSION}/active/groups`;
+export const API_WEB_ANALYZE    = `${API_VERSION}/web/analyzer`;
+export const API_LEAK_CHECK     = `${API_VERSION}/leak/checker`;
+export const API_AUTH           = `${API_VERSION}/auth`;
+export const API_CVE            = `${API_VERSION}/cve/reported`;
 
 export const endpoints = {
-  summary: `${API_DASHBOARD}/dashboard`,
-  summarySSE: `${API_DASHBOARD}/dashboard/sse`,
-
-  news: `${API_NEWS}`,
+  ioc:          `${API_IOC}`,
+  iocCountry:   `${API_IOC}/country`,
+  iocMalware:   `${API_IOC}/malware`,
+  iocDate:      `${API_IOC}/date`,
 
   activeGroups: `${API_ACTIVE_GROUPS}`,
-  activeGroupsDates: `${API_ACTIVE_GROUPS}/dates`,
-  activeGroupsGroups: `${API_ACTIVE_GROUPS}/names`,
+  webAnalyze:   `${API_WEB_ANALYZE}`,
+  webAnalyzeD:  `${API_WEB_ANALYZE}/domains`,
 
-  threat: `${API_TREAT}`,
-  threatDates: `${API_TREAT}/dates`,
-  threatCountry: `${API_TREAT}/country`,
-  threatName: `${API_TREAT}/name`,
+  leakCheker:   `${API_LEAK_CHECK}/`,
+  cveReported:  `${API_CVE}`,
 
-  sandBoxScan: `${API_SANDBOX}`,
-  sandBoxDomain: `${API_SANDBOX}/domains`,
-  sandBoxPrev: `${API_SANDBOX}/result`,
+  summary:      `${API_DASHBOARD}`,
+  summarySSE:   `${API_DASHBOARD}/sse`,
 
-  checkMail: `${API_VERSION}/check/mail`,
-
-  authLogin: `${API_AUTH}/token`,
   authMe: `${API_AUTH}/me`,
+  authLogin: `${API_AUTH}/token`,
   authLogout: `${API_AUTH}/logout`,
 };

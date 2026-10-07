@@ -46,9 +46,6 @@ Este repositorio representa el código del **Frontend**:
 * [Lucide](https://lucide.dev/)
 * [SeraUI](https://seraui.com/docs/login)
 * [OriginKit](https://www.originkit.dev/components/pixel-arc?preset=base)
-* [Leaflet](https://leafletjs.com/)
-* [Esri World Dark Gray Base](https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/0)
-  
 ---
 
 ## Features

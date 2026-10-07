@@ -1,9 +1,15 @@
 import { useMemo } from "react";
+import { ExternalLink} from "lucide-react"
 import { DataTable, MetricProvider } from "metricui"; 
 
 const COLORS = [
-  "var(--bar_a)", "var(--bar_b)", "var(--bar_c)", "var(--bar_d)", "var(--bar_e)",
-  "var(--bar_f)", "var(--bar_g)", "var(--bar_h)", "var(--bar_i)", "var(--bar_j)",
+  "var(--color_a)",
+  "var(--color_b)",
+  "var(--color_c)",
+  "var(--color_d)",
+  "var(--color_e)",
+  "var(--color_f)",
+  "var(--color_g)",
 ];
 
 function hashToColor(str) {
@@ -15,13 +21,11 @@ function hashToColor(str) {
 }
 
 function formatHour(dateString) {
-  if (!dateString) return "-";
   const utcDate = dateString.endsWith("Z") ? dateString : `${dateString}Z`;
   return new Date(utcDate).toLocaleString(undefined, { hour: "2-digit", minute: "2-digit" });
 }
 
 function formatDate(dateString) {
-  if (!dateString) return "-";
   const utcDate = dateString.endsWith("Z") ? dateString : `${dateString}Z`;
   return new Date(utcDate).toLocaleString(undefined, { day: "2-digit", month: "short", year: "numeric" });
 }
@@ -36,32 +40,9 @@ function getRowData(param) {
 export default function TableUI({ dataTable }) {
   const columns = useMemo(() => [
     { key: "country", header: "Country", type: "text" },
-    { key: "city", header: "City", type: "text" },
-    { 
-      key: "tags", header: "Tags",
-      render: (param) => {
-        const row = getRowData(param);
-        const text = row.tags || (typeof param === "string" ? param : "");
-        const tooltip = row.tags || text;
-        const color = hashToColor(text);
-
-        return (
-          <span
-            className="inline-block px-1.5 py-0.5 rounded-[var(--radius-card)] text-xs font-medium truncate"
-            style={{
-              background: `color-mix(in srgb, ${color} 16%, transparent)`,
-              color: color,
-            }}
-            title={tooltip}
-          >
-            {text || "-"}
-          </span>
-        );
-      },
-    },
-    { key: "ioc_value", header: "IOC", type: "text"},
+    { key: "ioc", header: "IOC", type: "text"},
     {
-      key: "malware_printable", header: "Malware",
+      key: "malware", header: "Malware",
       render: (param) => {
         const row = getRowData(param);
         const text = row.malware_printable || row.malware || (typeof param === "string" ? param : "");
@@ -105,8 +86,8 @@ export default function TableUI({ dataTable }) {
           <span
             className="px-1.5 py-0.5 rounded-[var(--radius-card,14px)] text-xs font-medium"
             style={{
-              background: "color-mix(in srgb, var(--success-color,#22c55e) 12%, transparent)",
-              color: "var(--success-color,#22c55e)",
+              background: "color-mix(in srgb, var(--success-color) 12%, transparent)",
+              color: "var(--success-color)",
             }}
           >
             Monitoring
@@ -129,15 +110,57 @@ export default function TableUI({ dataTable }) {
       },
     },
     { key: "reporter", header: "Reporter", type: "text" },
+    { key: "reference",
+      header: "Ref",
+      render: (param) => {
+        const row = getRowData(param);
+        const referenceVal = row.reference ?? (typeof param === "string" ? param : null);
+        if (!referenceVal){
+          return
+        }
+
+        return (
+          <button
+            type="button"
+            className="cursor-pointer text-(--text-secondary) hover:text-(--primary-color)"
+            onClick={() => window.open(referenceVal)}
+          >
+            <ExternalLink className="w-4 h-4" />
+          </button>
+        );
+      }, 
+    },
+    { 
+      key: "tags", header: "Tags",
+      render: (param) => {
+        const row = getRowData(param);
+        const text = row.tags || (typeof param === "string" ? param : "");
+        const tooltip = row.tags || text;
+        const color = hashToColor(text);
+
+        return (
+          <span
+            className="inline-block px-1.5 py-0.5 rounded-[var(--radius-card)] text-xs font-medium truncate"
+            style={{
+              background: `color-mix(in srgb, ${color} 16%, transparent)`,
+              color: color,
+            }}
+            title={tooltip}
+          >
+            {text || "-"}
+          </span>
+        );
+      },
+    },
   ], []);
 
   return (
-    <MetricProvider theme="emerald" exportable>
+    <MetricProvider exportable>
       <DataTable
-        data={dataTable}
+        data={dataTable.table}
         columns={columns}
-        title="IOC Feed"
-        pageSize={8}
+        title={`IOC FEED (${dataTable.table.length})`}
+        pageSize={20}
         searchable
         className="card-metricui h-full overflow-hidden"
       />

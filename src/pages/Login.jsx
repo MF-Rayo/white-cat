@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Callout } from "metricui";
 import logo from "@/assets/light.png"
 
-import HalftoneBloom from "@/components/HalftoneBloom"
 import DataPixelArc from "@/components/PixelArc"
 
 import { useAuth } from "@/context/AuthContext";

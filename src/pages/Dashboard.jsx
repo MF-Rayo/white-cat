@@ -15,7 +15,6 @@ function TableNew({ dataTable }) {
     () => [
       { key: "title", header: "Title", type: "text" },
       { key: "source", header: "Source", type: "text" },
-      { key: "date", header: "Date", type: "text" },
     ],
     []
   );
@@ -46,12 +45,12 @@ function DashboardContent({ apiData }) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-(--gp)">
         <KpiCard
           title="Today's IOC"
-          value={data.threat.today}
+          value={data.ioc.today}
           format="number"
-          comparison={{ value: data.threat.yesterday }}
+          comparison={{ value: data.ioc.yesterday }}
           comparisonLabel="vs yesterday"
           sparkline={{
-            data: data.threat.sparkline,
+            data: data.ioc.sparkline,
             type: "line",
             interactive: true,
           }}
@@ -59,12 +58,12 @@ function DashboardContent({ apiData }) {
         />
         <KpiCard
           title="IOC Of The Week"
-          value={data.threat.week}
+          value={data.ioc.week}
           format="number"
-          comparison={{ value: data.threat.last_week }}
+          comparison={{ value: data.ioc.last_week }}
           comparisonLabel="vs last week"
           sparkline={{
-            data: data.threat.sparkline,
+            data: data.ioc.sparkline,
             type: "line",
             interactive: true,
           }}
@@ -101,7 +100,7 @@ function DashboardContent({ apiData }) {
       <div className="pt-(--pd) grid grid-cols-1 lg:grid-cols-6 gap-(--gp)">
         <div className="lg:col-span-4">
           <AreaChart
-            data={data.threat.chart}
+            data={data.ioc.chart}
             title="IOC Of The Week"
             format={{ style: "number" }}
             curve="monotoneX"
@@ -128,30 +127,30 @@ function DashboardContent({ apiData }) {
           data={data.tops.source}
           features={worldFeatures}
           idField="iso"
-          valueField="reports"
+          valueField="count"
           title="IOC Map"
-          scaleType="log"
+          scaleType="linear"
           tooltipLabel="Population"
-          legend={false}
+          legend={true}
           projectionType="naturalEarth1"
           projectionScale={100}
           borderWidth={0.5}
           className="card-metricui"
           colors={[
-            "#6366f1",
-            "#10b981",
-            "#f59e0b",
-            "#84cc16",
-            "#ef4444",
-            "#ec4899",
-            "#f97316",
-            "#06b6d4",
-            "#8b5cf6"
+            "var(--color_map_a)",
+            "var(--color_map_b)",
+            "var(--color_map_c)",
+            "var(--color_map_d)",
+            "var(--color_map_e)",
+            "var(--color_map_f)",
+            "var(--color_map_g)",
+            "var(--color_map_h)",
           ]}
         />
         
         <DataTable
           data={data.tops.source}
+          pageSize={8}
           className="card-metricui"
         />
 

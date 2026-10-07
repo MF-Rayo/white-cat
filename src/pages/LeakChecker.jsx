@@ -1,13 +1,18 @@
 import { useState, useMemo, Suspense } from "react";
-import { useAuth } from "@/context/AuthContext";
+
 import SimpleLogin from "@/pages/Login"
-import { Skeleton } from "@/components/ui/skeleton"
-import CustomInputButton from "@/components/ui/input"
+import { useAuth } from "@/context/AuthContext";
+
 import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
-import Container from "@/components/Container"
-import { ShieldAlert, ShieldCheck, ExternalLink, KeyRound, Search } from "lucide-react";
 
+import Container from "@/components/Container"
+import CustomInputButton from "@/components/ui/input"
+
+import { FilterBar, FilterProvider } from "metricui";
+
+import { ShieldAlert, ShieldCheck, ExternalLink, KeyRound, 
+    UserRoundSearch } from "lucide-react";
 
 function formatRecords(n) {
     if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
@@ -29,8 +34,7 @@ function riskMeta(risk) {
 function BreachLogo({ src, name }) {
     const [setFailed] = useState(false);
     return (
-        <img className="h-11 w-11 flex-shrink-0 rounded-lg border 
-        border-(--primary-color) bg-(--primary-color)/20 object-cover"
+        <img className="h-11 w-11 flex-shrink-0 rounded-lg object-cover bg-white"
         src={src} alt={`${name}`} onError={() => setFailed(true)} loading="lazy"/>
     );
 }
@@ -47,7 +51,8 @@ function BreachCard({ breach }) {
     const isVerified = (verified || "").toLowerCase() === "yes";
 
     return (
-            <article className="flex min-w-0 flex-col gap-3.5 border border-(--border-color) p-4 m-4 bg-(--bg-color)/60 backdrop-blur-xl rounded-[var(--radius-card,14px)]">
+        <>
+        <article className="flex min-w-0 flex-col gap-(--gp) border border-(--border-color) bg-(--card-color) p-4 rounded-[var(--radius-card)]">
             <header className="flex items-start gap-3">
                 <BreachLogo src={logo} name={name} />
                 <div className="min-w-0 flex-1">
@@ -129,38 +134,88 @@ function BreachCard({ breach }) {
                 </a>
             )}
         </article>
+        </>
     );
 }
 
 
-function BreachList({ url }) {
-    const apiData = fetchData(url);
-    const breachData = apiData.read();
+function BreachContent({ apiData }) {
+    if (!apiData) {
+        return (
+            <div className="text-center text-sm opacity-70 py-10 text-(--text-secondary)">
+                Enter an email to analyze leaks.
+            </div>
+        );
+    }
 
+    const breachData = apiData.read();
     const breaches = breachData?.ExposedBreaches?.breaches_details ?? breachData?.breaches_details ?? [];
-    
+
     if (breaches.length === 0) {
         return (
-            <div className="text-center text-sm opacity-70 py-10">
+            <div className="text-center text-sm opacity-70 py-10 text-(--text-secondary)">
                 No leaks were found for this email.
             </div>
         );
     }
 
     return (
-        <>
+        <div className="space-y-4">
             {breaches.map((b, i) => (
-                <BreachCard breach={b} key={`${b.breach}-${i}`} />
+                <BreachCard breach={b} key={`${b.breach || b.name || i}-${i}`} />
             ))}
-        </>
+        </div>
+    );
+}
+
+function BreachBody() {
+    const [inputValue, setInputValue] = useState("");
+    const [searchEmail, setSearchEmail] = useState("");
+
+    const params = new URLSearchParams();
+    if (searchEmail) params.set("email", searchEmail);
+
+    const leakChekUrl = searchEmail ? `${endpoints.leakCheker}?${params.toString()}` : null;
+    
+    // Si no hay URL de inico, se pasa null para no realizar peticiones vacías
+    const apiData = leakChekUrl ? fetchData(leakChekUrl) : null;
+
+    const handleSearchSubmit = (value) => {
+        if (!value || !value.trim()) return;
+        setSearchEmail(value.trim());
+    };
+
+    return (
+        <Container path="~/Leak Checker">
+            <FilterBar className="card-metricui mb-4">
+                <CustomInputButton
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onSubmit={handleSearchSubmit}
+                    placeholder="user@example.com"
+                    buttonContent={
+                        <>
+                            <UserRoundSearch size={16} />
+                            <span>Analyze</span>
+                        </>
+                    }
+                />
+            </FilterBar>
+
+            <Suspense fallback={
+                <div className="text-center py-10 opacity-70 text-(--text-secondary)">
+                    Analyzing email leaks...
+                    </div>}>
+                <BreachContent apiData={apiData} />
+            </Suspense>
+        </Container>
     );
 }
 
 
-export default function Mail(){
+
+export default function BreachPage() {
     const { isAuthenticated, loading } = useAuth();
-    const [query, setQuery] = useState("");
-    const [activeURL, setActiveURL] = useState(null);
 
     if (loading) {return (<Container path="~/Loading..."/>);}
 
@@ -172,33 +227,7 @@ export default function Mail(){
         );
     }
 
-    const handleSearch = () => {
-        const trimmed = query.trim();
-        if (!trimmed) return;
-        setActiveURL(`${endpoints.checkMail}?email=${encodeURIComponent(trimmed)}`);
-    };
-
-
     return(
-        <Container path="~/Check Mail"
-            headerContent={
-                <CustomInputButton
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onSubmit={handleSearch}
-                    placeholder="Email..."
-                    buttonContent={<><Search size={16} /><span>Check</span></>}
-                />
-            }>
-
-        {activeURL && (
-            <Suspense key={activeURL} fallback={
-                <div className="m-4 border border-(--border-color)">
-                    <Skeleton className="h-[50vh] w-full" />
-                </div>}>
-                <BreachList url={activeURL} />
-            </Suspense>
-        )}
-        </Container>
+        <BreachBody/>
     )
 }

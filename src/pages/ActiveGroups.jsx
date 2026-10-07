@@ -20,22 +20,22 @@ function ActiveGroupsList({ apiData }) {
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-(--gp)">
         <KpiCard
           title="Group activity this year"
-          value={data.ransom_look.stats.posts_year}
+          value={data.summary.stats.posts_year}
           format="number"
           className="card-metricui"
         />
         <KpiCard
           title="Active Groups Today"
-          value={data.ransom_look.today.unique_groups}
+          value={data.summary.today.unique_groups}
           format="number"
           className="card-metricui"
         />
         <KpiCard
           title="Active Group Posts Today"
-          value={data.ransom_look.today.total_reports}
+          value={data.summary.today.total_reports}
           format="number"
           sparkline={{
-            data: data.ransom_look.last_7_days.sparkline,
+            data: data.summary.last_7_days.sparkline,
             type: "line",
             interactive: true,
           }}
@@ -43,10 +43,10 @@ function ActiveGroupsList({ apiData }) {
         />
         <KpiCard
           title="Active Group Posts This Week"
-          value={data.ransom_look.last_7_days.total_reports}
+          value={data.summary.last_7_days.total_reports}
           format="number"
           sparkline={{
-            data: data.ransom_look.last_7_days.sparkline,
+            data: data.summary.last_7_days.sparkline,
             type: "line",
             interactive: true,
           }}
@@ -54,10 +54,10 @@ function ActiveGroupsList({ apiData }) {
         />
         <KpiCard
           title="Active Group Posts This Month"
-          value={data.ransom_look.last_30_days.total_reports}
+          value={data.summary.last_30_days.total_reports}
           format="number"
           sparkline={{
-            data: data.ransom_look.last_30_days.sparkline,
+            data: data.summary.last_30_days.sparkline,
             type: "line",
             interactive: true,
           }}
@@ -65,10 +65,10 @@ function ActiveGroupsList({ apiData }) {
         />
         <KpiCard
           title="Active Group Posts Last 3 Months"
-          value={data.ransom_look.last_90_days.total_reports}
+          value={data.summary.last_90_days.total_reports}
           format="number"
           sparkline={{
-            data: data.ransom_look.last_90_days.sparkline,
+            data: data.summary.last_90_days.sparkline,
             type: "line",
             interactive: true,
           }}
@@ -93,10 +93,10 @@ function ActiveGroupsList({ apiData }) {
           {activeTab === "today" && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) h-[auto] lg:h-[60vh]">
   
-              <Panel title="Posts Reported" className="h-[450px] lg:h-full overflow-hidden">
+              <Panel title="Today Posts" className="h-[450px] lg:h-full overflow-hidden">
                 <div className="h-[calc(100%-2.5rem)] overflow-y-auto p-(--pd) pr-2">
                   <div className="grid grid-cols-1 gap-(--gp)">
-                    {data?.ransomware_live?.map((item) => (
+                    {data?.posts?.map((item) => (
                       <Card
                         key={item.post_url || item.victim}
                         source={`Source: ${item.source}`}
@@ -115,7 +115,7 @@ function ActiveGroupsList({ apiData }) {
               <MetricProvider theme="" exportable>
                 <DrillDown.Root className="h-full">
                   <BarChart
-                    data={data?.ransom_look?.today?.groups ?? []}
+                    data={data?.summary?.today?.groups ?? []}
                     index="group"
                     title="Today"
                     categories={["reports"]}
@@ -128,7 +128,7 @@ function ActiveGroupsList({ apiData }) {
 
               <div className="h-full">
                 <DataBarChart
-                  groupsData={data?.ransom_look?.last_7_days?.groups}
+                  groupsData={data?.summary?.last_7_days?.groups}
                   title="Week"
                 />
               </div>
@@ -138,7 +138,7 @@ function ActiveGroupsList({ apiData }) {
           {activeTab === "one_month" && (
             <div className="h-[60vh] w-full">
               <DataBarChart
-                groupsData={data?.ransom_look?.last_30_days?.groups}
+                groupsData={data?.summary?.last_30_days?.groups}
               />
             </div>
           )}
@@ -146,7 +146,7 @@ function ActiveGroupsList({ apiData }) {
           {activeTab === "three_months" && (
             <div className="h-[60vh] w-full">
               <DataBarChart
-                groupsData={data?.ransom_look?.last_90_days?.groups}
+                groupsData={data?.summary?.last_90_days?.groups}
               />
             </div>
           )}

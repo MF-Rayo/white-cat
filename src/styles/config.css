@@ -9,20 +9,28 @@
   --pd:          calc(var(--spacing) * 2);
   --gp:          calc(var(--spacing) * 2);
   --radius-card: calc(var(--spacing) * 0);
-
-  --bar_a: #EF4444; 
-  --bar_b: #F59E0B; 
-  --bar_c: #10B981; 
-  --bar_d: #EC4899; 
-  --bar_e: #1d78f8; 
-  --bar_f: #F97316; 
-  --bar_g: #8B5CF6;
-  --bar_h: #99f163; 
-  --bar_i: #14B8A6; 
-  --bar_j: #f1cd63; 
+  --radius-button: calc(var(--spacing) * 2);
+  --radius-input: calc(var(--spacing) * 2);
+  
+  --color_a: #EC4899; 
+  --color_b: #1d78f8; 
+  --color_c: #F97316; 
+  --color_d: #8B5CF6;
+  --color_e: #99f163; 
+  --color_f: #14B8A6; 
+  --color_g: #f1cd63; 
 
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --danger-color:  #ef4444;
   --info-color:    #00d4ff; 
+
+  --color_map_a: #203957; 
+  --color_map_b: #214D73; 
+  --color_map_c: #1D6391; 
+  --color_map_d: #127BB0; 
+  --color_map_e: #0094CF;
+  --color_map_f: #00AEEF; 
+  --color_map_g: #00CAFF; 
+  --color_map_h: #70E4FF;
 }

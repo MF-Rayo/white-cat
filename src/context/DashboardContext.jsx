@@ -16,11 +16,7 @@ export function DashboardSummaryProvider({ children }) {
     esRef.current = es;
 
     es.addEventListener("update", (event) => {
-      try {
-        setData(JSON.parse(event.data));
-      } catch (e) {
-        console.error("Error parseando SSE:", e);
-      }
+      setData(JSON.parse(event.data));
     });
 
     es.onerror = (err) => {
