@@ -16,17 +16,7 @@
   --accent: var(--primary-color);
 }
 
-.metricui-kpi-value, 
-[class*="value"] {
-  color: var(--text-color) !important;
-}
 
-.metricui-kpi-title,
-[class*="title"] {
-  color: var(--text-secondary) !important; 
-}
-
-.metricui-kpi-comparison,
-[class*="comparison"] {
-  color: var(--success-color) !important;
+.card-map path[fill="#1a1a2e"] {
+  fill: var(--bg-color) !important;
 }

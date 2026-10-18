@@ -35,6 +35,7 @@ export function DataBarChart({ groupsData = [], title = " ", preset = "vertical"
           preset={preset}
           categories={["reports"]}
           tooltipHint
+          borderRadius={8}
           className="card-metricui"
           drillDown={({ indexValue }) => {
             const records = recordsByDate[indexValue] ?? [];
@@ -42,7 +43,7 @@ export function DataBarChart({ groupsData = [], title = " ", preset = "vertical"
 
             return (
               <div>
-                <div className="gap-(--gap) py-(--pd)">
+                <div className="gap-(--gp) py-(--pd)">
                   <KpiCard
                     title="RECORDS"
                     value={records.length}

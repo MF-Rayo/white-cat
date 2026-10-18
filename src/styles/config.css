@@ -1,36 +1,28 @@
 :root {
   --primary-color:  #2e64e0;
-  --bg-color:       #050505;
-  --card-color:     #0a0a0c;
+  --bg-color:       #000000;
+  --card-color:     #000000;
   --border-color:   #1e1e22;
+  --border-map:     #6b6b6b;
   --text-color:     #e4e4e7;
   --text-secondary: #a1a1aa;
 
-  --pd:          calc(var(--spacing) * 2);
-  --gp:          calc(var(--spacing) * 2);
-  --radius-card: calc(var(--spacing) * 0);
+  --pd:            calc(var(--spacing) * 2);
+  --gp:            calc(var(--spacing) * 2);
+  --radius-card:   calc(var(--spacing) * 2);
   --radius-button: calc(var(--spacing) * 2);
-  --radius-input: calc(var(--spacing) * 2);
+  --radius-input:  calc(var(--spacing) * 2);
   
   --color_a: #EC4899; 
-  --color_b: #1d78f8; 
-  --color_c: #F97316; 
+  --color_b: #2e64e0; 
+  --color_c: #f59e0b; 
   --color_d: #8B5CF6;
   --color_e: #99f163; 
-  --color_f: #14B8A6; 
-  --color_g: #f1cd63; 
+  --color_f: #ffff00c6; 
+  --color_g: #00d4ff; 
 
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --danger-color:  #ef4444;
   --info-color:    #00d4ff; 
-
-  --color_map_a: #203957; 
-  --color_map_b: #214D73; 
-  --color_map_c: #1D6391; 
-  --color_map_d: #127BB0; 
-  --color_map_e: #0094CF;
-  --color_map_f: #00AEEF; 
-  --color_map_g: #00CAFF; 
-  --color_map_h: #70E4FF;
 }

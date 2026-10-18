@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react"
 import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
 
 import { useAuth } from "@/context/AuthContext"
 import Sidebar, { SidebarItem, SidebarCategory  } from "@/components/Sidebar"
 
 import IOCPage from "@/pages/Ioc"
-import LeakPage from "@/pages/LeakChecker"
-import CVEPage from "@/pages/cveReported"
+import CVEPage from "@/pages/CveReported"
 import DashboardPage from "@/pages/Dashboard"
 import ActiveGroupsPage from "@/pages/ActiveGroups"
 import WebAnalyzePage from "@/pages/WebAnalyzer"
 import DisclaimerPage from "@/pages/Disclaimer"
+import NotFound from "@/pages/NotFound"
 
-import { ChartLine, Earth, Users, Newspaper, LogOut, Bug,
-  Brain, BookOpenText, ScanSearch, Link2, UserRoundKey } from "lucide-react"
+
+import { ChartLine, Earth, Users, LogOut, Bug,
+  Brain, BookOpenText, ScanSearch, Link2 } from "lucide-react"
 
 function App() {
   return (
@@ -117,12 +117,6 @@ function AppLayout() {
             active={location.pathname === "/web/analyzer"} 
             onClick={() => navigate("/web/analyzer")} 
           />
-          <SidebarItem 
-            icon={<UserRoundKey size={18} />} 
-            text="Leak Checker"
-            active={location.pathname === "/leak/checker"} 
-            onClick={() => navigate("/leak/checker")} 
-          />
         </SidebarCategory> 
     
       </Sidebar>
@@ -135,8 +129,8 @@ function AppLayout() {
           <Route path="/active/groups" element={<ActiveGroupsPage/>} />
           <Route path="/cve/reported" element={<CVEPage/>} />
           <Route path="/web/analyzer" element={<WebAnalyzePage/>} />
-          <Route path="/leak/checker" element={<LeakPage/>} />
           <Route path="/disclaimer" element={<DisclaimerPage/>} />
+          <Route path="*" element={<NotFound/>} />
         </Routes>
       </div>
     </div>

@@ -1,5 +1,3 @@
-import { Skeleton } from "@/components/ui/skeleton"
-
 export function Panel({ title, right, children, className = "" }) {
   return (
     <div className={`bg-(--card-color) flex flex-col 

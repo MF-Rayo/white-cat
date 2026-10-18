@@ -1,9 +1,9 @@
-import { Home, Menu } from "lucide-react"
+import { Menu } from "lucide-react"
 import logo from "@/assets/light.png"
 import { useSidebarState } from "@/context/SidebarState"
 
 export default function Container({ path, headerContent, children, className = "" }) {
-  const { open, setOpen } = useSidebarState()
+  const { setOpen } = useSidebarState()
 
   return (
     <div className={`w-full h-full mx-auto flex flex-col overflow-hidden font-mono text-sm ${className}`}>     

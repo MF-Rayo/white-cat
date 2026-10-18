@@ -20,6 +20,16 @@ class ErrorBoundaryClass extends React.Component {
       return;
     }
 
+    if (status === 502) {
+      this.props.onBadGateway?.(error);
+      return;
+    }
+
+    if (status === 504) {
+      this.props.onTimeout?.(error);
+      return;
+    }
+
     this.props.onError?.(error);
   }
 
@@ -48,6 +58,18 @@ export function ErrorBoundary({ children, resetKey, onRetry, fallback }) {
       onSessionExpired={() => {
         showWarning("Your session expired, log in again");
         logout();
+      }}
+      onBadGateway={(error) => {
+        showError(
+          error?.detail ||
+          "The analysis service is unavailable"
+        );
+      }}
+      onTimeout={(error) => {
+        showError(
+          error?.detail ||
+          "The analysis timed out"
+        );
       }}
     >
       {children}

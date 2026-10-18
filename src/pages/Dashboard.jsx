@@ -1,41 +1,13 @@
 import { Suspense, useMemo } from "react"
-import { ResponsiveContainer } from "recharts"
-
 import Container from "@/components/Container"
-import { Panel } from "@/components/ui/panel";
 import { DataBarChart }  from "@/components/ui/chart";
+import { DashboardMap } from "@/components/ui/simpleMap";
 
-import { KpiCard, AreaChart, LineChart, DonutChart, DataTable, BarChart, 
-  MetricProvider, Choropleth, worldFeatures, Badge} from "metricui";
+import { KpiCard, AreaChart, LineChart, DonutChart, 
+  DataTable, MetricProvider, Badge} from "metricui";
 
+import { TableNew, TablePost } from "@/components/ui/table"
 import { DashboardSummaryProvider, useDashboardSummary } from "@/context/DashboardContext";
-
-function TableNew({ dataTable }) {
-  const columns = useMemo(
-    () => [
-      { key: "title", header: "Title", type: "text" },
-      { key: "source", header: "Source", type: "text" },
-    ],
-    []
-  );
-
-  const handleRowClick = (row) => {
-    if (row?.source_of_information) {
-      window.open(row.source_of_information, "_blank", "noopener,noreferrer");
-    }
-  };
-
-  return (
-    <DataTable
-      title="Today's Cybersecurity News"
-      data={dataTable}
-      columns={columns}
-      pageSize={5}
-      onRowClick={handleRowClick}
-      className="card-metricui h-full overflow-hidden"
-    />
-  );
-}
 
 function DashboardContent({ apiData }) {
   const data = apiData;
@@ -103,54 +75,40 @@ function DashboardContent({ apiData }) {
             data={data.ioc.chart}
             title="IOC Of The Week"
             format={{ style: "number" }}
-            curve="monotoneX"
+            curve="natural"
+            enablePoints={true}
+            pointSize={8}
+            pointColor={["var(--primary-color)"]}
+            pointBorderColor={["var(--bg-color)"]}
+            colors={["var(--primary-color)"]}
             className="card-metricui"
           />
         </div>
         <div className="lg:col-span-2">
           <DonutChart
             data={data.tops.threat}
+            centerValue={data.tops.threat.length}
+            centerLabel="Top IOC"
             title="Top IOC Today"
             enableArcLabels
             enableArcLinkLabels
             arcLabelsSkipAngle={15}
             arcLinkLabelsSkipAngle={15}
-            className="card-metricui"
+            className="card-metricui h-full"
             legend={true}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) pt-(--pd) items-stretch">
-    
-        <Choropleth
-          data={data.tops.source}
-          features={worldFeatures}
-          idField="iso"
-          valueField="count"
-          title="IOC Map"
-          scaleType="linear"
-          tooltipLabel="Population"
-          legend={true}
-          projectionType="naturalEarth1"
-          projectionScale={100}
-          borderWidth={0.5}
-          className="card-metricui"
-          colors={[
-            "var(--color_map_a)",
-            "var(--color_map_b)",
-            "var(--color_map_c)",
-            "var(--color_map_d)",
-            "var(--color_map_e)",
-            "var(--color_map_f)",
-            "var(--color_map_g)",
-            "var(--color_map_h)",
-          ]}
-        />
-        
+        <DashboardMap data={data}/>
+
         <DataTable
-          data={data.tops.source}
-          pageSize={8}
+          data={data?.tops?.source?.map((item) => ({
+            country: item.country,
+            reports: item.count,
+          }))}
+          pageSize={6}
           className="card-metricui"
         />
 
@@ -167,13 +125,20 @@ function DashboardContent({ apiData }) {
           legend={true}
         />
       </div>
+  
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--gp) pt-(--pd) items-stretch" >
+        <TablePost dataTable={data.posts}/>
+        <TableNew dataTable={data.news}/>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gp) pt-(--pd) items-stretch" >
         <div className="lg:col-span-2">
           <DataBarChart groupsData={data?.groups?.week} 
             title="Active Group Posts of the Week" preset="horizontal"/>
         </div>
         <div className="lg:col-span-4">
-          <TableNew dataTable={data.news}/>
+          <DataBarChart groupsData={data?.groups?.month}
+          title="Active Group Posts of the Month"/>
         </div>
       </div>
     </>
@@ -238,7 +203,6 @@ function DashboardSkeleton() {
   )
 }
 
-
 export default function DashboardPage() {
   return (
     <Suspense fallback={<DashboardSkeleton />}>
@@ -248,7 +212,6 @@ export default function DashboardPage() {
     </Suspense>
   );
 }
-
 
 function DashboardInner() {
   const apiData = useDashboardSummary();

@@ -10,7 +10,7 @@
 
 El objetivo principal de **White Cat** no es ser un producto comercial ni un servicio de noticias definitivo, sino servir como un **entorno de pruebas**:
 
-* Consumo de APIs públicas y parseo de feeds RSS en segundo plano en un rango de 10 a 30 min.
+* Consumo de APIs públicas y parseo de feeds RSS en segundo plano en un rango de 40 a 60 min.
 * Manejo de estado, contextos y enrutamiento en **React**.
 * Modelado y optimización de consultas asíncronas con **FastAPI** y **SQLAlchemy**.
 * Despliegue continuo de SPA (Single Page Application) en GitHub Pages.

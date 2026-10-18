@@ -1,14 +1,13 @@
 import { Suspense, useState } from "react"
-import { Skeleton } from "@/components/ui/skeleton"
-import { fetchData } from "@/lib/fetchData"
 import { endpoints } from "@/lib/api"
-import { DataBarChart }  from "@/components/ui/chart";
+import { fetchData } from "@/lib/fetchData"
 import { Panel } from "@/components/ui/panel";
-import { Card } from "@/components/ui/card"
+import { TablePost } from "@/components/ui/table"
 import Container from "@/components/Container"
+import { DataBarChart }  from "@/components/ui/chart";
 
-import { DrillDown, DropdownFilter, KpiCard,  BarChart,
-  MetricProvider, DashboardNav, DataTable } from "metricui"
+import { KpiCard,  BarChart, MetricProvider, 
+  DashboardNav, DonutChart } from "metricui"
 
 
 function ActiveGroupsList({ apiData }) {
@@ -17,6 +16,7 @@ function ActiveGroupsList({ apiData }) {
 
   return (
     <>
+      <MetricProvider exportable>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-(--gp)">
         <KpiCard
           title="Group activity this year"
@@ -42,7 +42,7 @@ function ActiveGroupsList({ apiData }) {
           className="card-metricui"
         />
         <KpiCard
-          title="Active Group Posts This Week"
+          title="Posts This Week"
           value={data.summary.last_7_days.total_reports}
           format="number"
           sparkline={{
@@ -53,7 +53,7 @@ function ActiveGroupsList({ apiData }) {
           className="card-metricui"
         />
         <KpiCard
-          title="Active Group Posts This Month"
+          title="Posts This Month"
           value={data.summary.last_30_days.total_reports}
           format="number"
           sparkline={{
@@ -64,7 +64,7 @@ function ActiveGroupsList({ apiData }) {
           className="card-metricui"
         />
         <KpiCard
-          title="Active Group Posts Last 3 Months"
+          title="Posts Last 3 Months"
           value={data.summary.last_90_days.total_reports}
           format="number"
           sparkline={{
@@ -91,46 +91,30 @@ function ActiveGroupsList({ apiData }) {
 
         <div className="w-full">
           {activeTab === "today" && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) h-[auto] lg:h-[60vh]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--gp)">
   
-              <Panel title="Today Posts" className="h-[450px] lg:h-full overflow-hidden">
-                <div className="h-[calc(100%-2.5rem)] overflow-y-auto p-(--pd) pr-2">
-                  <div className="grid grid-cols-1 gap-(--gp)">
-                    {data?.posts?.map((item) => (
-                      <Card
-                        key={item.post_url || item.victim}
-                        source={`Source: ${item.source}`}
-                        activity={item.activity}
-                        post_url={item.post_url}
-                        discovered={item.discovered}
-                        group_name={item.group_name}
-                        victim={item.victim}
-                        description={item.description}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </Panel>
+              <TablePost dataTable={data.posts}/>
 
-              <MetricProvider theme="" exportable>
-                <DrillDown.Root className="h-full">
-                  <BarChart
-                    data={data?.summary?.today?.groups ?? []}
-                    index="group"
-                    title="Today"
-                    categories={["reports"]}
-                    drillDown
-                    tooltipHint
-                    className="card-metricui h-full"
-                  />
-                </DrillDown.Root>
-              </MetricProvider>
-
-              <div className="h-full">
-                <DataBarChart
-                  groupsData={data?.summary?.last_7_days?.groups}
-                  title="Week"
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--gp) h-[auto] lg:h-[60vh]">
+                <DonutChart
+                  data={data?.summary.today.groups}
+                  centerValue={data.summary.today.groups.length}
+                  centerLabel="Total Groups"
+                  title="Today's Active Group Posts"
+                  enableArcLabels
+                  enableArcLinkLabels
+                  arcLabelsSkipAngle={15}
+                  arcLinkLabelsSkipAngle={15}
+                  className="card-metricui h-full"
+                  legend={true}
                 />
+
+                <div className="h-full">
+                  <DataBarChart
+                    groupsData={data?.summary?.last_7_days?.groups}
+                    title="Active Group Posts of the Week"
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -139,6 +123,7 @@ function ActiveGroupsList({ apiData }) {
             <div className="h-[60vh] w-full">
               <DataBarChart
                 groupsData={data?.summary?.last_30_days?.groups}
+                title="Active Group Posts of the Month"
               />
             </div>
           )}
@@ -147,11 +132,13 @@ function ActiveGroupsList({ apiData }) {
             <div className="h-[60vh] w-full">
               <DataBarChart
                 groupsData={data?.summary?.last_90_days?.groups}
+                title="Active Group Posts of the three Month"
               />
             </div>
           )}
         </div>
       </div>
+      </MetricProvider>
     </>
   );
 }
@@ -184,7 +171,7 @@ export default function ActiveGroups() {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) h-full">
             {Array.from({ length: 3 }).map((_, index) => (
-               <BarChart key={index} data={[]} loading className="card-metricui" />
+              <BarChart key={index} data={[]} loading className="card-metricui" />
             ))}
           </div>
           </>

@@ -51,3 +51,47 @@ input:focus {
   outline: none !important;
   box-shadow: none; 
 }
+
+/*Eliminar el fondo blanco del poppup - mapa*/
+.maplibregl-popup-content {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.maplibregl-popup-tip {
+  display: none !important;
+}
+
+.maplibregl-popup-close-button {
+  color: var(--text-secondary);
+  font-size: 18px;
+  padding: 4px 10px;
+  background: transparent !important;
+}
+
+.maplibregl-popup-close-button:hover {
+  color: var(--text-primary);
+}
+
+/*Color negro para el info que esta a la izqueirda del mapa*/
+.maplibregl-ctrl-attrib {
+  background: var(--bg-color) !important;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-button);
+}
+
+.maplibregl-ctrl-attrib a,
+.maplibregl-ctrl-attrib-inner {
+  color: var(--text-secondary) !important;
+}
+
+.maplibregl-ctrl-attrib a:hover {
+  color: var(--text-primary) !important;
+}
+
+.maplibregl-ctrl-attrib-button {
+  background-color: transparent !important;
+  filter: invert(1);
+}
