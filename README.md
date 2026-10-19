@@ -46,6 +46,7 @@ Este repositorio representa el código del **Frontend**:
 * [Lucide](https://lucide.dev/)
 * [SeraUI](https://seraui.com/docs/login)
 * [OriginKit](https://www.originkit.dev/components/pixel-arc?preset=base)
+* [Mapcn](https://www.mapcn.dev/)
 ---
 
 ## Features
