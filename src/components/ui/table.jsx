@@ -151,8 +151,6 @@ const NEWS_COLUMNS = [
     { key: "title", header: "Title", type: "text" },
 ];
 
-const NEWS_DETAILS = [{ key: "description", label: "Description" }];
-
 const POST_COLUMNS = [
     { key: "source", header: "Source",
         render: (params) => {
@@ -192,55 +190,80 @@ const POST_COLUMNS = [
     { key: "victim", header: "Victim", type: "text" },
     ];
 
+const NEWS_DETAILS = [
+    { key: "description", label: "Description" },
+];
+
 const POST_DETAILS = [
     { key: "activity", label: "Activity" },
     { key: "description", label: "Description" },
 ];
 
-function LinkedTable({ data, title, columns, urlKey, details }) {
+const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? "");
+
+function LinkedTable({ data, title, columns, urlKey, details, linkLabel }) {
     const handleRowClick = (row) => {
         const url = row?.[urlKey];
-        if (url) window.open(url, "_blank", "noopener,noreferrer");
+        if (isHttpUrl(url)) window.open(url, "_blank", "noopener,noreferrer");
     };
 
     return (
         <DataTable
-        searchable
-        title={title}
-        data={data}
-        columns={columns}
-        pageSize={5}
-        onRowClick={handleRowClick}
-        className="card-metricui h-full overflow-hidden"
-        renderExpanded={(row) => <RowDetails row={row} fields={details} />}
+            searchable
+            title={title}
+            data={data}
+            columns={columns}
+            pageSize={5}
+            onRowClick={handleRowClick}
+            className="card-metricui h-full overflow-hidden"
+            renderExpanded={(row) => (
+                <RowDetails
+                    row={row}
+                    fields={details}
+                    url={row?.[urlKey]}
+                    linkLabel={linkLabel(row)}
+                />
+            )}
         />
     );
 }
 
-function RowDetails({ row, fields }) {
+function RowDetails({ row, fields, url, linkLabel }) {
     return (
         <div className="grid grid-cols-1 gap-4 p-2 text-xs md:grid-cols-3">
-        <div className="space-y-2 md:col-span-2 text-(--text-secondary)">
-            {fields.map(({ key, label }) => (
-            <p key={key}>
-                <strong className="text-(--text-color)">{label}:</strong>{" "}
-                {row?.[key]}
-            </p>
-            ))}
-        </div>
+            <div className="space-y-2 md:col-span-2 text-(--text-secondary)">
+                {fields.map(({ key, label }) => (
+                    <p key={key} className="whitespace-normal break-words">
+                        <strong className="text-(--text-color)">{label}:</strong>{" "}
+                        {row?.[key]}
+                    </p>
+                ))}
+
+                {isHttpUrl(url) && (
+                    <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-block text-[var(--primary-color)] hover:underline"
+                    >
+                        {linkLabel} →
+                    </a>
+                )}
+            </div>
         </div>
     );
 }
 
-
 export function TableNew({ dataTable }) {
     return (
         <LinkedTable
-        data={dataTable}
-        title="Today's Cybersecurity News"
-        columns={NEWS_COLUMNS}
-        urlKey="source_of_information"
-        details={NEWS_DETAILS}
+            data={dataTable}
+            title="Today's Cybersecurity News"
+            columns={NEWS_COLUMNS}
+            urlKey="source_of_information"
+            details={NEWS_DETAILS}
+            linkLabel={(row) => `Read on ${row.source}`}
         />
     );
 }
@@ -248,11 +271,12 @@ export function TableNew({ dataTable }) {
 export function TablePost({ dataTable }) {
     return (
         <LinkedTable
-        data={dataTable}
-        title="Today's Posts"
-        columns={POST_COLUMNS}
-        urlKey="post_url"
-        details={POST_DETAILS}
+            data={dataTable}
+            title="Today's Posts"
+            columns={POST_COLUMNS}
+            urlKey="post_url"
+            details={POST_DETAILS}
+            linkLabel={(row) => `View post on ${row.source}`}
         />
     );
 }

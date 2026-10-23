@@ -1,6 +1,5 @@
 import { Suspense, useMemo } from "react"
 import Container from "@/components/Container"
-import { DataBarChart }  from "@/components/ui/chart";
 import { DashboardMap } from "@/components/ui/simpleMap";
 
 import { KpiCard, AreaChart, LineChart, DonutChart, 
@@ -122,24 +121,13 @@ function DashboardContent({ apiData }) {
           arcLabelsSkipAngle={15}
           arcLinkLabelsSkipAngle={15}
           className="card-metricui h-full"
-          legend={true}
+          legend={false}
         />
       </div>
   
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--gp) pt-(--pd) items-stretch" >
         <TablePost dataTable={data.posts}/>
         <TableNew dataTable={data.news}/>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-(--gp) pt-(--pd) items-stretch" >
-        <div className="lg:col-span-2">
-          <DataBarChart groupsData={data?.groups?.week} 
-            title="Active Group Posts of the Week" preset="horizontal"/>
-        </div>
-        <div className="lg:col-span-4">
-          <DataBarChart groupsData={data?.groups?.month}
-          title="Active Group Posts of the Month"/>
-        </div>
       </div>
     </>
   )
@@ -216,11 +204,18 @@ export default function DashboardPage() {
 function DashboardInner() {
   const apiData = useDashboardSummary();
 
+  if (apiData){
+    return (
+      <Container path="~/Dashboard" headerContent={<LastDate apiData={apiData} />}>
+        <MetricProvider exportable>
+          <DashboardContent apiData={apiData} />
+        </MetricProvider>
+      </Container>
+    );
+  }
   return (
-    <Container path="~/Dashboard" headerContent={<LastDate apiData={apiData} />}>
-      <MetricProvider exportable>
-        <DashboardContent apiData={apiData} />
-      </MetricProvider>
+    <Container path="~/Dashboard">
+      <p className="text-(--text-color) text-center">No Data Available</p>
     </Container>
-  );
+  )
 }

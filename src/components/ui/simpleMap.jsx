@@ -4,7 +4,6 @@ import {
     Map,
     MapMarker,
     MarkerContent,
-    MarkerPopup,
     MarkerTooltip,
     MapClusterLayer, 
     MapPopup, 
@@ -107,6 +106,7 @@ export function DashboardMap({ data }) {
                     <MarkerTooltip>{location.country}</MarkerTooltip>
                 </MapMarker>
                 ))}
+                <MapControls position="top-left" showZoom showCompass />
             </Map>
         </Panel>
     );

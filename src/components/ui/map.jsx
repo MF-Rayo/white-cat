@@ -686,7 +686,7 @@ function ControlGroup({
   children
 }) {
   return (
-    <div className="border-border bg-background [&>button:not(:last-child)]:border-border flex flex-col overflow-hidden rounded-md border shadow-sm [&>button:not(:last-child)]:border-b">
+    <div className="border-(--border-color) bg-background [&>button:not(:last-child)]:border-(--border-color) flex flex-col overflow-hidden rounded-md border shadow-sm [&>button:not(:last-child)]:border-b">
       {children}
     </div>
   );
@@ -705,8 +705,8 @@ function ControlButton({
       type="button"
       className={cn(
         "flex size-8 items-center justify-center transition-colors",
-        "first:rounded-t-md last:rounded-b-md",
-        "hover:bg-accent dark:hover:bg-accent/40",
+        "first:rounded-t-md last:rounded-b-md cursor-pointer",
+        "bg-(--bg-color) hover:bg-accent dark:hover:bg-accent/40",
         "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset",
         "disabled:pointer-events-none disabled:opacity-50",
       )}
@@ -864,8 +864,8 @@ function CompassButton({
       >
         <path d="M12 2L16 12H12V2Z" className="fill-red-500" />
         <path d="M12 2L8 12H12V2Z" className="fill-red-300" />
-        <path d="M12 22L16 12H12V22Z" className="fill-muted-foreground/60" />
-        <path d="M12 22L8 12H12V22Z" className="fill-muted-foreground/30" />
+        <path d="M12 22L16 12H12V22Z" className="fill-white/60" />
+        <path d="M12 22L8 12H12V22Z" className="fill-white/30" />
       </svg>
     </ControlButton>
   );

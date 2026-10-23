@@ -12,17 +12,17 @@ const disclaimerData = {
     {
       title: "Threat Intelligence Feeds",
       badge: "CTI Pipeline",
-      body: "IOC reports, active ransomware groups, and victim logs are ingested approximately every 40 minutes from public sources like ThreatFox, Ransomware.live, and Ransomware Look. Raw feeds are normalized and processed for dashboard visualization.",
+      body: "IOC data is retrieved approximately every 40 minutes through the official ThreatFox API and stored in this project's database. Active ransomware groups and victim posts are obtained from Ransomware.live and Ransomware Look. Victim posts are claims made by the groups themselves and have not been independently verified.",
     },
     {
       title: "News Aggregation & Attribution",
       badge: "Headlines",
-      body: "Daily headlines are indexed directly from RSS/APIs of security outlets including The Hacker News, BleepingComputer, and The Record. Only titles and direct links are fetched to route users to the original publisher.",
+      body: "Headlines are collected approximately every 50 minutes from the public RSS feeds of outlets such as The Hacker News, BleepingComputer, and The Record. Only the title, source name, a brief description, and the link are kept, and this data is temporary: it is replaced on each refresh. Clicking an item sends you to the original article on the publisher's website.",
     },
     {
       title: "No Warranty & Ownership",
       badge: "Legal",
-      body: "All trademarks, logos, and original intellectual property belong to their respective creators. Information is provided 'as is' for research purposes, without guarantees regarding completeness or real-time accuracy.",
+      body: "All trademarks, logos, and original content belong to their respective owners, and this project is not affiliated with any of the sources mentioned. Information is provided 'as is' for research purposes, without guarantees regarding completeness or real-time accuracy.",
     },
   ],
   spanish: [
@@ -34,17 +34,17 @@ const disclaimerData = {
     {
       title: "Fuentes de CTI e Indicadores",
       badge: "Pipeline CTI",
-      body: "Los reportes de IOCs, grupos de ransomware activos y publicaciones de víctimas se obtienen cada 40 minutos aproximadamente desde ThreatFox, Ransomware.live y Ransomware Look, procesando la información para su renderizado analítico.",
+      body: "Los IOCs se obtienen aproximadamente cada 40 minutos mediante la API oficial de ThreatFox y se almacenan en la base de datos del proyecto. Los grupos de ransomware activos y las publicaciones de víctimas provienen de Ransomware.live y Ransomware Look. Las publicaciones de víctimas son afirmaciones de los propios grupos y no han sido verificadas de forma independiente.",
     },
     {
       title: "Agregación de Noticias",
       badge: "Titulares",
-      body: "Se extraen únicamente los titulares del día y enlaces directos hacia las fuentes originales como The Hacker News, BleepingComputer y The Record, funcionando estrictamente como un canal de redirección a los medios oficiales.",
+      body: "Los titulares se recopilan aproximadamente cada 50 minutos desde los RSS públicos de medios como The Hacker News, BleepingComputer y The Record. Solo se conserva el título, el nombre de la fuente, una breve descripción y el enlace, y estos datos son temporales: se reemplazan en cada actualización. Al hacer clic, se redirige a la noticia original en el sitio del medio.",
     },
     {
       title: "Atribución y Exención",
       badge: "Aviso Legal",
-      body: "Todas las marcas registradas, logotipos y contenido original pertenecen a sus respectivos dueños. La información se presenta 'tal cual' con fines de investigación, sin garantía implícita de precisión en tiempo real.",
+      body: "Todas las marcas registradas, logotipos y contenido original pertenecen a sus respectivos dueños, y este proyecto no está afiliado a ninguna de las fuentes mencionadas. La información se presenta 'tal cual' con fines de investigación, sin garantía de exactitud en tiempo real.",
     },
   ],
 };
@@ -66,7 +66,7 @@ export default function DisclaimerPage() {
         />
       }
     >
-      <div className="p-4 md:p-6 bg-(--bg-color) h-full border border-(--border-color) rounder-[var(--rounder)]">
+      <div className="p-4 md:p-6 h-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {disclaimerData[activeTab].map((item, index) => (
             <div
