@@ -1,34 +1,56 @@
 import { Suspense } from "react"
 import { ErrorBoundary } from "@/hooks/ErrorBoundary"
 
-import { FilterBar, FilterProvider, DataTable, BarChart, DonutChart,
+import { FilterBar, FilterProvider, BarChart,
   DropdownFilter, useMetricFilters, MetricProvider } from "metricui";
 
 import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
 
-import TableUI  from "@/components/ui/table";
-import IocMap from "@/components/ui/simpleMap";
+import { TopSource } from "@/components/ui/table/Source"
+import TableUI  from "@/components/ui/table/Feed";
+import IocMap from "@/components/ui/map/SimpleMap.jsx";
 import Container from "@/components/Container"
 
 const apiDate       = fetchData(endpoints.iocDate)
+const apiHour       = fetchData(endpoints.iocHour)
 const apiCountry    = fetchData(endpoints.iocCountry)
 const apiMalware    = fetchData(endpoints.iocMalware)
 const apiIocType    = fetchData(endpoints.iocType)
 const apiTheartType = fetchData(endpoints.threatType)
+const apiConfidence = fetchData(endpoints.iocConfidence)
+const apiStatus      = fetchData(endpoints.iocStatus)
 
 function DataMap({ apiData }) {
   const data        = apiData.read();
-
   const dates       = apiDate.read();
+  const hours       = apiHour.read();
+  const confidences = apiConfidence.read();
   const country     = apiCountry.read();
   const malware     = apiMalware.read();
   const iocType     = apiIocType.read();
   const threatType  = apiTheartType.read();
-  
+  const status      = apiStatus.read()
+
   return(
     <>
       <FilterBar className="card-metricui">
+
+        <DropdownFilter
+          label="Today's IOC"
+          allLabel="All Dates"
+          options={dates}
+          field="date"
+          showAll
+        />
+
+        <DropdownFilter
+          label="All UTC Hours"
+          allLabel="All UTC Hours"
+          options={hours}
+          field="hour"
+          showAll
+        />
 
         <DropdownFilter
           label="All Malware"
@@ -37,13 +59,13 @@ function DataMap({ apiData }) {
           field="malware"
           showAll
         />
-  
+
         <DropdownFilter
-          label="All Country"
-          options={country}
-          field="country"
+          label="All Threat Types"
+          allLabel="All Threat Types"
+          options={threatType}
+          field="threat_type"
           showAll
-          allLabel="All Countries"
         />
 
         <DropdownFilter
@@ -55,18 +77,26 @@ function DataMap({ apiData }) {
         />
 
         <DropdownFilter
-          label="All Threat Types"
-          options={threatType}
-          field="threat_type"
+          label="Confidence Level"
+          allLabel="All Confidence Levels"
+          options={confidences}
+          field="confidence"
           showAll
-          allLabel="All Threat Types"
         />
 
         <DropdownFilter
-          label="Today's IOC"
-          allLabel="Today's IOC"
-          options={dates}
-          field="date"
+          label="Status"
+          allLabel="All Statuses"
+          options={status}
+          field="status"
+          showAll
+        />
+
+        <DropdownFilter
+          label="All Sources"
+          allLabel="All Sources"
+          options={country}
+          field="country"
           showAll
         />
 
@@ -81,16 +111,7 @@ function DataMap({ apiData }) {
         
         <div className="grid grid-cols-1 lg:col-span-2 gap-(--gp)">
           <IocMap data={data}/>
-
-          <DataTable
-              title="TOP IOC SOURCES"
-              data={data?.sources.map((item) => ({
-                country: item.country,
-                reports: item.count,
-              }))}
-              pageSize={5}
-              className="card-metricui"
-            />
+          <TopSource data={data.sources}/>
         </div> 
       </div>
       </MetricProvider>
@@ -101,18 +122,24 @@ function DataMap({ apiData }) {
 function IOCBody() {
   const filters = useMetricFilters();
 
-  const selectedMalware     = filters?.dimensions?.malware || "all";
-  const selectedCountry     = filters?.dimensions?.country || "all";
-  const selectedDate        = filters?.dimensions?.date || "all";
-  const selectedType        = filters?.dimensions?.ioc_type || "all";
+  const selectedMalware     = filters?.dimensions?.malware     || "all";
+  const selectedCountry     = filters?.dimensions?.country     || "all";
+  const selectedDate        = filters?.dimensions?.date        || "all";
+  const selectedType        = filters?.dimensions?.ioc_type    || "all";
   const selectedThreatType  = filters?.dimensions?.threat_type || "all";
-  
+  const selectedConfidence  = filters?.dimensions?.confidence  || "all";
+  const selectedStatus      = filters?.dimensions?.status      || "all";
+  const selectedHour        = filters?.dimensions?.hour      || "all";
+
   const params = new URLSearchParams();
-  if (selectedMalware !== "all") params.set("malware", selectedMalware);
-  if (selectedCountry !== "all") params.set("country", selectedCountry);
-  if (selectedDate !== "all") params.set("date", selectedDate);
-  if (selectedType !== "all") params.set("ioc_type", selectedType);
+  if (selectedMalware    !== "all") params.set("malware", selectedMalware);
+  if (selectedCountry    !== "all") params.set("country", selectedCountry);
+  if (selectedDate       !== "all") params.set("date", selectedDate);
+  if (selectedType       !== "all") params.set("ioc_type", selectedType);
   if (selectedThreatType !== "all") params.set("threat_type", selectedThreatType);
+  if (selectedConfidence !== "all") params.set("confidence", selectedConfidence);
+  if (selectedStatus     !== "all") params.set("status", selectedStatus);
+  if (selectedHour       !== "all") params.set("hour", selectedHour);
 
 
   const theartUrl = params.toString()
@@ -122,7 +149,7 @@ function IOCBody() {
   const apiData = fetchData(theartUrl);
 
   return (
-    <Container path="~/IOC">
+    <Container path="~/Reported IOC">
       <ErrorBoundary resetKey={theartUrl}>
       <Suspense fallback={
         <>

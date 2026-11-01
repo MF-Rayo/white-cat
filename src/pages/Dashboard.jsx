@@ -1,11 +1,13 @@
-import { Suspense, useMemo } from "react"
+import { Suspense } from "react"
 import Container from "@/components/Container"
-import { DashboardMap } from "@/components/ui/simpleMap";
+import { TopSource } from "@/components/ui/table/Source"
+import { DashboardMap } from "@/components/ui/map/SimpleMap";
 
-import { KpiCard, AreaChart, LineChart, DonutChart, 
-  DataTable, MetricProvider, Badge} from "metricui";
+import { KpiCard, AreaChart, LineChart, 
+  DonutChart, MetricProvider, Badge} from "metricui";
 
-import { TableNew, TablePost } from "@/components/ui/table"
+import { FormatDate } from "@/components/ui/date/FormatDate"
+import { TableNew, TablePost } from "@/components/ui/table/Posts"
 import { DashboardSummaryProvider, useDashboardSummary } from "@/context/DashboardContext";
 
 function DashboardContent({ apiData }) {
@@ -94,22 +96,14 @@ function DashboardContent({ apiData }) {
             arcLabelsSkipAngle={15}
             arcLinkLabelsSkipAngle={15}
             className="card-metricui h-full"
-            legend={true}
+            legend={false}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp) pt-(--pd) items-stretch">
         <DashboardMap data={data}/>
-
-        <DataTable
-          data={data?.tops?.source?.map((item) => ({
-            country: item.country,
-            reports: item.count,
-          }))}
-          pageSize={6}
-          className="card-metricui"
-        />
+        <TopSource data={data.tops.source}/>
 
         <DonutChart
           data={data.groups.today}
@@ -132,37 +126,6 @@ function DashboardContent({ apiData }) {
     </>
   )
 }
-
-function LastDate({ apiData }) {
-  const dateObj = useMemo(() => {
-    if (!apiData?.updated) return null;
-    return new Date(apiData.updated);
-  }, [apiData?.updated]);
-
-  const utcFormatted = dateObj.toLocaleString("en-US", {
-    timeZone: "UTC",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-
-  const localFormatted = dateObj.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-
-  return (
-    <div className="absolute top-3 right-3 flex items-center gap-2 px-2 py-1">    
-      <Badge variant="success" dot>Updated</Badge>
-      <span className="text-[10px] font-bold tracking-wider text-slate-400">
-        UTC {utcFormatted} / Local {localFormatted}
-      </span>
-    </div>
-  );
-}
-
 
 function DashboardSkeleton() {
   return(
@@ -206,7 +169,14 @@ function DashboardInner() {
 
   if (apiData){
     return (
-      <Container path="~/Dashboard" headerContent={<LastDate apiData={apiData} />}>
+      <Container 
+      path="~/Dashboard" 
+      headerContent={
+        <FormatDate 
+        date={apiData.updated} 
+        type={"horizontal"}
+        format={"short"} />
+      }>
         <MetricProvider exportable>
           <DashboardContent apiData={apiData} />
         </MetricProvider>

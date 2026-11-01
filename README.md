@@ -1,6 +1,6 @@
 # White and Dark Cat 
 
-> **Nota de proyecto:** Este es un **proyecto personal experimental e incompleto**. Su único propósito es poner en práctica lo aprendido en **React** (Frontend) y **FastAPI** (Backend), explorando la integración de APIs, bases de datos asíncronas y consumo de datos.
+> **Nota de proyecto:** Este es un **proyecto personal experimental e incompleto**. Su único propósito es poner en práctica lo aprendido en **React** (Frontend) y **FastAPI** (Backend), explorando la integración de APIs, bases de datos asíncronas y consumo de datos. Ademas este va a ir cambiando agregando y eliminando recursos.  
 
 **Demo:** [https://mf-rayo.github.io/white-cat/](https://mf-rayo.github.io/white-cat/#/dashboard)
 
@@ -13,13 +13,12 @@ El objetivo principal de **White Cat** no es ser un producto comercial ni un ser
 * Consumo de APIs públicas y parseo de feeds RSS en segundo plano en un rango de 40 a 60 min.
 * Manejo de estado, contextos y enrutamiento en **React**.
 * Modelado y optimización de consultas asíncronas con **FastAPI** y **SQLAlchemy**.
-* Despliegue continuo de SPA (Single Page Application) en GitHub Pages.
 
 ---
 
 ## Aviso Legal, Atribución y Fuentes (Fair Use Disclaimer)
 
-**White Cat NO reclama autoría de ningún contenido periodístico.**
+**White Cat NO reclama autoría de ningún contenido.**
 
 1. **Uso de Feeds RSS Públicos:** La información de noticias se extrae a través de los feeds RSS abiertos y públicos brindados por sitios de ciberseguridad como *BleepingComputer, The Hacker News, The Record*, entre otros.
 2. **Formato de Presentación (Snippets):** La aplicación únicamente muestra un extracto o titular breve.
@@ -42,18 +41,7 @@ Este repositorio representa el código del **Frontend**:
 
 ## Componentes
 
-* [MetricUI](https://www.metricui.com)
+* [MetricUI](https://github.com/mpmcgowen/metricui)
 * [Lucide](https://lucide.dev/)
-* [SeraUI](https://seraui.com/docs/login)
 * [OriginKit](https://www.originkit.dev/components/pixel-arc?preset=base)
 * [Mapcn](https://www.mapcn.dev/)
----
-
-## Features
-
-* [x] Estructura inicial de Dashboard y componentes UI.
-* [x] Mapeo e integración de endpoints en React.
-* [x] Manejo de errores.
-* [ ] Optimización de rendimiento y carga modular.
-* [ ] Ajuste responsive completo.
-* [x] Server Sent Events.

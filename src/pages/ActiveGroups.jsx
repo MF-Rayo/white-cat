@@ -1,8 +1,8 @@
 import { Suspense, useMemo, useState } from "react"
 import { endpoints } from "@/lib/api"
 import { fetchData } from "@/lib/fetchData"
-import { Panel } from "@/components/ui/panel"
-import { TablePost } from "@/components/ui/table"
+import { Panel } from "@/components/ui/Panel"
+import { TablePost } from "@/components/ui/table/Posts"
 import Container from "@/components/Container"
 
 import {
@@ -166,11 +166,25 @@ export default function ActiveGroups() {
                   <KpiCard key={i} loading className="card-metricui" />
                 ))}
               </div>
+              <div className="grid grid-cols-1 gap-(--gp) w-full pb-(--pd)">
+                <Panel title="Filter">
+                  <DashboardNav
+                    tabs={[
+                      { value: "", label: "Today" },
+                      { value: "", label: "Week" },
+                      { value: "", label: "1 Month" },
+                      { value: "", label: "3 Months" },
+                    ]}
+                    value={[]}
+                    onChange={[]}
+                  />
+                </Panel>
+              </div>
              
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-(--gp)">
                 <DonutChart data={[]} loading className="card-metricui" />
                 <div className="lg:col-span-2">
-                  <DataTable data={[]} loading className="card-metricui" />
+                  <DonutChart data={[]} loading className="card-metricui" />
                 </div>
               </div>
             </>

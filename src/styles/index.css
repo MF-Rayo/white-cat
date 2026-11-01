@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-
 @import "tailwindcss";
 @import "config.css";
 @import "metricui-custom.css";
@@ -12,7 +11,8 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  font-family: "Nunito", sans-serif;
+  font-family: 'Nunito', 'Inter', sans-serif;
+  font-weight: 600;
 }
 
 html, * {
@@ -52,28 +52,42 @@ input:focus {
   box-shadow: none; 
 }
 
-/*Eliminar el fondo blanco del poppup - mapa*/
+/*Fondo, esquinas y borde del contenido principal */
 .maplibregl-popup-content {
-  background: transparent !important;
+  background: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  font-family: 'Nunito', sans-serif !important;
+  border: 1px solid var(--border-color) !important;
   padding: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
 }
 
-.maplibregl-popup-tip {
-  display: none !important;
-}
+/*Forzar que TODAS las variantes de la punta (tip) adopten el color oscuro */
+.maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: var(--bg-color) !important; }
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: var(--bg-color) !important; }
+.maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: var(--bg-color) !important; }
+.maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: var(--bg-color) !important; }
 
+/*Anclajes en esquinas*/
+.maplibregl-popup-anchor-top-left .maplibregl-popup-tip { border-bottom-color: var(--bg-color) !important; }
+.maplibregl-popup-anchor-top-right .maplibregl-popup-tip { border-bottom-color: var(--bg-color) !important; }
+.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip { border-top-color: var(--bg-color) !important; }
+.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip { border-top-color: var(--bg-color) !important; }
+
+/*Estilo del botón de cierre */
 .maplibregl-popup-close-button {
-  color: var(--text-secondary);
-  font-size: 18px;
-  padding: 4px 10px;
-  background: transparent !important;
+  color: var(--text-secondary) !important;
+  width: 28px;
+  height: 28px;
+  padding: 0 !important;
+  margin: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px !important;
+  line-height: 1;
+  border-radius: 6px !important; 
 }
 
-.maplibregl-popup-close-button:hover {
-  color: var(--text-primary);
-}
 
 /*Color negro para el info que esta a la izqueirda del mapa*/
 .maplibregl-ctrl-attrib {

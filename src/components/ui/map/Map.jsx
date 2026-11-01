@@ -937,7 +937,7 @@ function MapPopup({
   return createPortal(
     <div
       className={cn(
-        "bg-popover text-popover-foreground relative max-w-62 rounded-md border p-3 shadow-md",
+        "bg-(--bg-color) text-popover-foreground relative w-80 lg:w-[80vh]",
         "animate-in fade-in-0 zoom-in-95 duration-200 ease-out",
         className,
       )}
@@ -1944,7 +1944,7 @@ function MapClusterLayer(
     clusterRadius = 50,
     clusterColors = DEFAULT_CLUSTER_COLORS,
     clusterThresholds = DEFAULT_CLUSTER_THRESHOLDS,
-    pointColor = "#3b82f6",
+    pointColor = "#38bdf8",
     onPointClick,
     onClusterClick
   }

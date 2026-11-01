@@ -1,19 +1,17 @@
 import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom"
 
-import { useAuth } from "@/context/AuthContext"
 import Sidebar, { SidebarItem, SidebarCategory  } from "@/components/Sidebar"
 
 import IOCPage from "@/pages/Ioc"
-import CVEPage from "@/pages/CveReported"
+import CVEPage from "@/pages/ReportedCve"
 import DashboardPage from "@/pages/Dashboard"
 import ActiveGroupsPage from "@/pages/ActiveGroups"
-import WebAnalyzePage from "@/pages/WebAnalyzer"
 import DisclaimerPage from "@/pages/Disclaimer"
 import NotFound from "@/pages/NotFound"
 
 
-import { ChartLine, Earth, Users, LogOut, Bug,
-  Brain, BookOpenText, ScanSearch, Link2 } from "lucide-react"
+import { ChartLine, Earth, Users, Bug,
+  Brain, BookOpenText } from "lucide-react"
 
 function App() {
   return (
@@ -27,35 +25,12 @@ function AppLayout() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  function Logout(){
-    const { isAuthenticated, logout } = useAuth();
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    async function handleLogout(){
-      await logout();
-      navigate("/")
-    }
-
-    if (isAuthenticated)
-      return(
-        <SidebarItem 
-          icon={<LogOut size={20} />} 
-          text="Logout"
-          active={location.pathname === "/logout"} 
-          onClick={handleLogout} 
-          alert 
-        />
-      )
-  }
-
   return (
     <div className="flex h-screen w-full">
       
       <Sidebar footer={
         <>
           <hr className="my-3 border-white/5" />
-          <Logout/>
           <SidebarItem 
             icon={<BookOpenText size={20} />} 
             text="Disclaimer"
@@ -91,9 +66,9 @@ function AppLayout() {
         <SidebarCategory icon={<Brain size={20} />} text="Threat Intelligence" defaultOpen>
           <SidebarItem 
             icon={<Earth size={18} />} 
-            text="Global IOC"
-            active={location.pathname === "/ioc"} 
-            onClick={() => navigate("/ioc")} 
+            text="Reported IOCs"
+            active={location.pathname === "/reported/ioc"} 
+            onClick={() => navigate("/reported/ioc")} 
           />
           <SidebarItem 
             icon={<Users size={18} />} 
@@ -103,32 +78,20 @@ function AppLayout() {
           />
           <SidebarItem 
             icon={<Bug size={20} />} 
-            text="CVE Reported"
-            active={location.pathname === "/cve/reported"} 
-            onClick={() => navigate("/cve/reported")} 
+            text="Reported CVEs"
+            active={location.pathname === "/reported/cve"} 
+            onClick={() => navigate("/reported/cve")} 
           />
         </SidebarCategory>
-
-
-        <SidebarCategory icon={<ScanSearch size={20} />} text="Investigation Tools" defaultOpen>
-          <SidebarItem 
-            icon={<Link2   size={18} />} 
-            text="Web Analyzer"
-            active={location.pathname === "/web/analyzer"} 
-            onClick={() => navigate("/web/analyzer")} 
-          />
-        </SidebarCategory> 
-    
       </Sidebar>
 
       <div className="h-screen w-full overflow-y-auto">
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage/>} />
-          <Route path="/ioc" element={<IOCPage/>} />
+          <Route path="/reported/ioc" element={<IOCPage/>} />
           <Route path="/active/groups" element={<ActiveGroupsPage/>} />
-          <Route path="/cve/reported" element={<CVEPage/>} />
-          <Route path="/web/analyzer" element={<WebAnalyzePage/>} />
+          <Route path="/reported/cve" element={<CVEPage/>} />
           <Route path="/disclaimer" element={<DisclaimerPage/>} />
           <Route path="*" element={<NotFound/>} />
         </Routes>
