@@ -7,7 +7,7 @@ import { KpiCard, AreaChart, LineChart,
   DonutChart, MetricProvider, Badge} from "metricui";
 
 import { FormatDate } from "@/components/ui/date/FormatDate"
-import { TableNew, TablePost } from "@/components/ui/table/Posts"
+import { TablePost } from "@/components/ui/table/Posts"
 import { DashboardSummaryProvider, useDashboardSummary } from "@/context/DashboardContext";
 
 function DashboardContent({ apiData }) {
@@ -119,9 +119,8 @@ function DashboardContent({ apiData }) {
         />
       </div>
   
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--gp) pt-(--pd) items-stretch" >
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-(--gp) pt-(--pd) items-stretch" >
         <TablePost dataTable={data.posts}/>
-        <TableNew dataTable={data.news}/>
       </div>
     </>
   )

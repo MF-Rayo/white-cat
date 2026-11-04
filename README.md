@@ -20,10 +20,7 @@ El objetivo principal de **White Cat** no es ser un producto comercial ni un ser
 
 **White Cat NO reclama autoría de ningún contenido.**
 
-1. **Uso de Feeds RSS Públicos:** La información de noticias se extrae a través de los feeds RSS abiertos y públicos brindados por sitios de ciberseguridad como *BleepingComputer, The Hacker News, The Record*, entre otros.
-2. **Formato de Presentación (Snippets):** La aplicación únicamente muestra un extracto o titular breve.
-3. **Redirección Obligatoria:** Todos los elementos incluyen de manera clara y visible la **fuente original** y un enlace directo. La lectura completa del artículo **siempre ocurre en el sitio web del autor original**.
-4. **Fines meramente educativos:** Este proyecto es sin fines de lucro. Si representas a alguno de los sitios web indexados y deseas que se remueva la vista previa de tus feeds, por favor abre un *Issue* en este repositorio y se eliminará de inmediato.
+Este proyecto es sin fines de lucro. Si representas a alguno de los sitios web indexados y deseas que se remueva la vista previa de tus feeds, por favor abre un *Issue* en este repositorio y se eliminará de inmediato.
 
 ---
 
